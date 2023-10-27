@@ -1,3 +1,4 @@
+package model;
 
 /**
  * Creates the dungeon with a difficulty and map.
