@@ -9,6 +9,7 @@ public abstract class DungeonCharacter {
      * The name provided to the DungeonCharacter.
      */
     private final String myName;
+
     /**
      * The experience level of the DungeonCharacter.
      */
@@ -52,5 +53,33 @@ public abstract class DungeonCharacter {
     private static void attackBehavior(final int theMinDamage, final int theMaxDamage) {
         // TODO -JA: Perhaps attack behavior should be configurable on a per-class basis
         //           or otherwise be substitutable via a attackBehavior Factory
+    }
+
+    public String getMyName() {
+        return myName;
+    }
+
+    public int getMyLevel() {
+        return myLevel;
+    }
+
+    public int getMyHealthPoints() {
+        return myHealthPoints;
+    }
+
+    public int getMyAttackSpeed() {
+        return myAttackSpeed;
+    }
+
+    public double getMyHitChance() {
+        return myHitChance;
+    }
+
+    public int getMyMinDamage() {
+        return myMinDamage;
+    }
+
+    public int getMyMaxDamage() {
+        return myMaxDamage;
     }
 }
