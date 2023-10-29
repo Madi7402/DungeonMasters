@@ -33,7 +33,8 @@ public abstract class Hero extends DungeonCharacter {
 
     @Override
     public String toString() {
-        return "Level " + super.getMyLevel() + "Character: " + this.getClass() + "Health: "
-                + super.getMyHealthPoints() + "Inventory: " + myInventory.toString();
+        return "Level " + super.getMyLevel() + "Character: " + this.getClass().getName()
+                + " Health: " + super.getMyHealthPoints() + " Inventory: "
+                + myInventory.toString();
     }
 }
