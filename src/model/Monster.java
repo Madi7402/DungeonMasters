@@ -41,7 +41,7 @@ public class Monster extends DungeonCharacter {
 
     @Override
     public String toString() {
-        return "Level " + super.getMyLevel() + "Character: " + this.getClass().getName()
+        return "Level " + super.getMyLevel() + " Character: " + this.getClass().getName()
                 + " Health: " + super.getMyHealthPoints() + " Heal Chance: " + myHealChance;
     }
 }
