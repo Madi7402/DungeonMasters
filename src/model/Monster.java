@@ -32,6 +32,9 @@ public class Monster extends DungeonCharacter {
         // TODO -JA: Attack logic here
     }
 
+    /**
+     * Heal Monster by defined amount.
+     */
     public void heal() {
         // TODO -JA: Heal logic here
         // Select random value between Min/Max heal
@@ -39,6 +42,10 @@ public class Monster extends DungeonCharacter {
         // Or we could cap to a certain percentage (such as only healing to 80% of max health)
     }
 
+    /**
+     * Provide various information about the Monster.
+     * @return a String containing useful information about the Monster
+     */
     @Override
     public String toString() {
         return "Level " + super.getMyLevel() + " Character: " + this.getClass().getName()

@@ -5,7 +5,12 @@ package model;
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
 public class Ogre extends Monster{
-    public Ogre(int theMinHeal, int theMaxHeal) {
+    /**
+     * Construct an Ogre.
+     * @param theMinHeal the least amount for the Monster to heal
+     * @param theMaxHeal the greatest amount for the monster to heal
+     */
+    public Ogre(int theMinHeal, int theMaxHeal) { // TODO -JA: Is this constructor useful?
         super(theMinHeal, theMaxHeal);
     }
 }
