@@ -5,4 +5,7 @@ package model;
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
 public class Warrior extends Hero{
+    Warrior(String theName) {
+        super(theName);
+    }
 }

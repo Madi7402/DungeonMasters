@@ -5,4 +5,7 @@ package model;
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
 public class Priestess extends Hero{
+    Priestess(String theName) {
+        super(theName);
+    }
 }
