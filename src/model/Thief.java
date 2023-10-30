@@ -5,7 +5,7 @@ package model;
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
 public class Thief extends Hero {
-    Thief(String theName) {
+    public Thief(String theName) {
         super(theName);
     }
 }
