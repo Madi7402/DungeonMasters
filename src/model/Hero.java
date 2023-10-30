@@ -21,6 +21,11 @@ public abstract class Hero extends DungeonCharacter {
      * Probability of blocking a successful attack from a Monster.
      */
     private double myBlockChance;
+
+    /**
+     * Construct a Hero.
+     * @param theName the provided name of the Hero
+     */
     Hero(final String theName) { // TODO -JA: Do we want to construct with a starting level?
         super(theName, 1);
         myInventory = new ArrayList<>();
@@ -28,6 +33,10 @@ public abstract class Hero extends DungeonCharacter {
         myBlockChance = 25.0; // TODO -JA: determine reasonable values and read from SQLite DB
     }
 
+    /**
+     * Attack selected Monster.
+     * @param theTarget the Monster the Hero is attacking
+     */
     public void attack(final Monster theTarget) {
         // TODO -JA: Attack Logic
     }
