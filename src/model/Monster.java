@@ -10,7 +10,7 @@ public class Monster extends DungeonCharacter {
      */
     private int myMinHeal;
     /**
-     * Maximum amount to heal
+     * Maximum amount to heal.
      */
     private int myMaxHeal;
     /**
