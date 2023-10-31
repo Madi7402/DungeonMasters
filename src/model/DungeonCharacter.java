@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Random;
+
 /**
  * An abstract class that represents an entity in the dungeon that can engage in combat.
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
@@ -35,6 +37,10 @@ public abstract class DungeonCharacter {
      * The greatest amount of damage a successful attack will cause.
      */
     private int myMaxDamage;
+    /**
+     * Random source for our DungeonCharacter.
+     */
+    protected static final Random RANDOM_SOURCE = new Random(); // TODO -JA: Probably should use a getter instead.
 
     DungeonCharacter(final String theName, final int theLevel) {
         myName = theName;
@@ -81,5 +87,45 @@ public abstract class DungeonCharacter {
 
     public int getMyMaxDamage() {
         return myMaxDamage;
+    }
+
+    /**
+     * Reduce health by provided amount
+     * @param theDamage the amount of damage taken
+     */
+    protected void takeDamage(final int theDamage) {
+        if (theDamage < 0) {
+            throw new IllegalArgumentException("Damage value should never be negative");
+        } else if (theDamage >= myHealthPoints) {
+            myHealthPoints = 0;
+            // notify of death
+        } else {
+            myHealthPoints -= theDamage;
+        }
+    }
+
+    /**
+     * Heal health by provided amount
+     * @param theHealth the amount of health to heal
+     * @return true if healing has occurred
+     */
+    protected boolean heal(final int theHealth) {
+        if (theHealth < 0) {
+            throw new IllegalArgumentException("Health value must not be negative to heal");
+        }
+
+        // TODO -JA: keep track of maximum health for the character and don't exceed that.
+
+        myHealthPoints += theHealth;
+        return true;
+    }
+
+    /**
+     * Determine if an action was successful with provided probability.
+     * @param theChance percetnage of being successful (e.g. 40.0 for a 40% chance)
+     * @return true if probability was a success.
+     */
+    protected boolean randomChance(final double theChance) {
+        return RANDOM_SOURCE.nextDouble() <= theChance/100;
     }
 }

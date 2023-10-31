@@ -6,7 +6,12 @@ package model;
  */
 public class Thief extends Hero {
     /**
+     * The Thief's special skill.
+     */
+    private final static SpecialSkill mySpecSkill = SpecialSkill.SURPRISE_ATTACK;
+    /**
      * Construct a Thief.
+     *
      * @param theName the provided name of the Hero.
      */
     public Thief(final String theName) {
@@ -14,15 +19,16 @@ public class Thief extends Hero {
     }
 
     /**
-     * Attack a Monster target with provided skill.
-     * @param theTarget the Monster to be attacked
-     * @param theSpecSkill the special skill to be used
+     * Perform special skill.
+     *
+     * @return true if successful
      */
-    public void attack(final Monster theTarget, final SpecialSkill theSpecSkill) {
-        // TODO -JA: (!) IMPORTANT (!), since our method signature differs from the Hero class
-        //           we are NOT actually overriding the Hero attack method!
-        //           This may lead to confusion and may prove suboptimal.
-
-        // TODO -JA: Attack logic with special skill taken into account
+    @Override
+    protected boolean specialSkill() {
+        if (randomChance(mySpecSkill.getChance())) { // TODO - JA: Special Attack logic
+            return true;
+        } else {
+            return false;
+        }
     }
 }

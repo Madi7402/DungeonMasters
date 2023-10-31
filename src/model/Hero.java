@@ -14,10 +14,6 @@ public abstract class Hero extends DungeonCharacter {
      */
     private final List<Item> myInventory;
     /**
-     * The special skill defined by our character type.
-     */
-    private final SpecialSkill mySpecSkill;
-    /**
      * Probability of blocking a successful attack from a Monster.
      */
     private double myBlockChance;
@@ -29,7 +25,6 @@ public abstract class Hero extends DungeonCharacter {
     Hero(final String theName) { // TODO -JA: Do we want to construct with a starting level?
         super(theName, 1);
         myInventory = new ArrayList<>();
-        mySpecSkill = SpecialSkill.DEFAULT;
         myBlockChance = 25.0; // TODO -JA: determine reasonable values and read from SQLite DB
     }
 
@@ -39,6 +34,23 @@ public abstract class Hero extends DungeonCharacter {
      */
     public void attack(final Monster theTarget) {
         // TODO -JA: Attack Logic
+        if (RANDOM_SOURCE.nextDouble() <= getMyHitChance()) {
+            // Attack
+            theTarget.takeDamage(calculateDamage());
+        } else {
+            // Attack failed
+            // TODO -JA: notify observers that attack failed? or should we return a boolean?
+        }
+    }
+
+    /**
+     * The special skill our Heroes implement.
+     * @return
+     */
+    protected abstract boolean specialSkill();
+
+    private int calculateDamage() {
+        return RANDOM_SOURCE.nextInt(getMyMinDamage(), getMyMaxDamage());
     }
 
     @Override
