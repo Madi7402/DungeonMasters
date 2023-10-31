@@ -34,7 +34,7 @@ public abstract class Hero extends DungeonCharacter {
      */
     public void attack(final Monster theTarget) {
         // TODO -JA: Attack Logic
-        if (RANDOM_SOURCE.nextDouble() <= getMyHitChance()) {
+        if (randomChance(getMyHitChance())) {
             // Attack
             theTarget.takeDamage(calculateDamage());
         } else {
@@ -50,7 +50,7 @@ public abstract class Hero extends DungeonCharacter {
     protected abstract boolean specialSkill();
 
     private int calculateDamage() {
-        return RANDOM_SOURCE.nextInt(getMyMinDamage(), getMyMaxDamage());
+        return getRandomSource().nextInt(getMyMinDamage(), getMyMaxDamage());
     }
 
     @Override

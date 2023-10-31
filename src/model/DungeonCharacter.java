@@ -40,7 +40,7 @@ public abstract class DungeonCharacter {
     /**
      * Random source for our DungeonCharacter.
      */
-    protected static final Random RANDOM_SOURCE = new Random(); // TODO -JA: Probably should use a getter instead.
+    private static final Random RANDOM_SOURCE = new Random(); // TODO -JA: Probably should use a getter instead.
 
     DungeonCharacter(final String theName, final int theLevel) {
         myName = theName;
@@ -127,5 +127,13 @@ public abstract class DungeonCharacter {
      */
     protected boolean randomChance(final double theChance) {
         return RANDOM_SOURCE.nextDouble() <= theChance/100;
+    }
+
+    /**
+     * Get DungeonCharacter's random source generator.
+     * @return random source for probability / damage / health calculations.
+     */
+    protected Random getRandomSource() {
+        return RANDOM_SOURCE; // TODO -JA: is this getter a good idea?
     }
 }
