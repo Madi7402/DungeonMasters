@@ -24,10 +24,9 @@ public class Warrior extends Hero {
      */
     @Override
     protected boolean specialSkill() {
-        if (randomChance(mySpecSkill.getChance())) { // TODO - JA: Special Attack logic
-            return true;
-        } else {
+        if (!randomChance(mySpecSkill.getChance())) { // TODO - JA: Special Attack logic
             return false;
         }
+        return true;
     }
 }
