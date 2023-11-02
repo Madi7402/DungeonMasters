@@ -38,6 +38,18 @@ public abstract class DungeonCharacter {
      */
     private int myMaxDamage;
     /**
+     * Minimum amount to heal (FOR MONSTER).
+     */
+    private int myMinHeal;
+    /**
+     * Maximum amount to heal (FOR MONSTER).
+     */
+    private int myMaxHeal;
+    /**
+     * Chance to heal (FOR MONSTER).
+     */
+    private double myHealChance;
+    /**
      * Random source for our DungeonCharacter.
      */
     private static final Random RANDOM_SOURCE = new Random(); // TODO -JA: Probably should use a getter instead.
@@ -90,6 +102,17 @@ public abstract class DungeonCharacter {
         return myMaxDamage;
     }
 
+    public int getMyMaxHeal() {
+        return myMaxHeal;
+    }
+
+    public int getMyMinHeal() {
+        return myMinHeal;
+    }
+
+    public double getMyHealChance() {
+        return myHealChance;
+    }
     /**
      * Reduce health by provided amount.
      * @param theDamage the amount of damage taken

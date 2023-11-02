@@ -5,24 +5,8 @@ package model;
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
 public class Monster extends DungeonCharacter {
-    /**
-     * Minimum amount to heal.
-     */
-    private int myMinHeal;
-    /**
-     * Maximum amount to heal.
-     */
-    private int myMaxHeal;
-    /**
-     * Probability of healing after taking damage.
-     */
-    private double myHealChance;
-
-    Monster(final int theMinHeal, final int theMaxHeal) {
+    Monster() {
         super("Monster", 1); // TODO -JA: set monster name
-        myMinHeal = theMinHeal;
-        myMaxHeal = theMaxHeal;
-        myHealChance = 10.0; // TODO -JA: Decide reasonable values
     }
 
     /**
@@ -49,6 +33,6 @@ public class Monster extends DungeonCharacter {
     @Override
     public String toString() {
         return "Level " + super.getMyLevel() + " Character: " + this.getClass().getName()
-                + " Health: " + super.getMyHealthPoints() + " Heal Chance: " + myHealChance;
+                + " Health: " + super.getMyHealthPoints() + " Heal Chance: " + super.getMyHealChance();
     }
 }
