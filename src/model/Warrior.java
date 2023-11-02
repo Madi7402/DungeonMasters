@@ -23,7 +23,7 @@ public class Warrior extends Hero {
      * @return true if successful
      */
     @Override
-    protected boolean specialSkill() {
+    public boolean specialSkill(final DungeonCharacter theTarget) {
         if (!randomChance(mySpecSkill.getChance())) { // TODO - JA: Special Attack logic
             return false;
         }

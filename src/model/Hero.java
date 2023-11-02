@@ -45,9 +45,9 @@ public abstract class Hero extends DungeonCharacter {
 
     /**
      * The special skill our Heroes implement.
-     * @return
+     * @return true if special Skill had an effect
      */
-    protected abstract boolean specialSkill();
+    public abstract boolean specialSkill(final DungeonCharacter theTarget);
 
     private int calculateDamage() {
         return getRandomSource().nextInt(getMyMinDamage(), getMyMaxDamage());
