@@ -61,6 +61,7 @@ public abstract class DungeonCharacter {
         //           or otherwise be substitutable via a attackBehavior Factory
     }
 
+    // TODO -JA: Migrate these statistics setters/getters into dedicated stats object
     public String getMyName() {
         return myName;
     }
@@ -90,22 +91,27 @@ public abstract class DungeonCharacter {
     }
 
     /**
-     * Reduce health by provided amount
+     * Reduce health by provided amount.
      * @param theDamage the amount of damage taken
+     * @return true if damage has occurred
      */
-    protected void takeDamage(final int theDamage) {
-        if (theDamage < 0) {
-            throw new IllegalArgumentException("Damage value should never be negative");
-        } else if (theDamage >= myHealthPoints) {
-            myHealthPoints = 0;
-            // notify of death
+    protected boolean takeDamage(final int theDamage) {
+        if (theDamage < 0 || myHealthPoints == 0) {
+           return false;
+        }
+
+        if (theDamage >= myHealthPoints) {
+            myHealthPoints = 0; // Character death
+            // TODO -JA: notify observers of death
         } else {
             myHealthPoints -= theDamage;
         }
+
+        return true;
     }
 
     /**
-     * Heal health by provided amount
+     * Heal health by provided amount.
      * @param theHealth the amount of health to heal
      * @return true if healing has occurred
      */
@@ -113,16 +119,16 @@ public abstract class DungeonCharacter {
         if (theHealth < 0) {
             throw new IllegalArgumentException("Health value must not be negative to heal");
         }
+        // TODO -JA: Should we be able to heal if we are dead (health == 0)?
 
         // TODO -JA: keep track of maximum health for the character and don't exceed that.
-
         myHealthPoints += theHealth;
         return true;
     }
 
     /**
      * Determine if an action was successful with provided probability.
-     * @param theChance percetnage of being successful (e.g. 40.0 for a 40% chance)
+     * @param theChance percentage of being successful (e.g. 40.0 for a 40% chance)
      * @return true if probability was a success.
      */
     protected boolean randomChance(final double theChance) {
