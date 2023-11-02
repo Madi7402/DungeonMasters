@@ -8,7 +8,7 @@ public class Warrior extends Hero {
     /**
      * The Warrior's special skill.
      */
-    private final static SpecialSkill mySpecSkill = SpecialSkill.CRUSHING_BLOW;
+    private static final SpecialSkill mySpecSkill = SpecialSkill.CRUSHING_BLOW;
 
     /**
      * Construct a Warrior.

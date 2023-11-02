@@ -8,7 +8,7 @@ public class Thief extends Hero {
     /**
      * The Thief's special skill.
      */
-    private final static SpecialSkill mySpecSkill = SpecialSkill.SURPRISE_ATTACK;
+    private static final SpecialSkill mySpecSkill = SpecialSkill.SURPRISE_ATTACK;
     /**
      * Construct a Thief.
      *

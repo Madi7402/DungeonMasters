@@ -8,7 +8,7 @@ public class Priestess extends Hero {
     /**
      * The Priestess' special skill.
      */
-    private final static SpecialSkill mySpecSkill = SpecialSkill.HEAL;
+    private static final SpecialSkill mySpecSkill = SpecialSkill.HEAL;
 
     /**
      * Construct a Priestess.
