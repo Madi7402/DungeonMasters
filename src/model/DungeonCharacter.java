@@ -66,6 +66,9 @@ public abstract class DungeonCharacter {
         myHitChance = 75.0;
         myMinDamage = 25;
         myMaxDamage = 35;
+        myMinHeal = 5;
+        myMaxHeal = 15;
+        myHealChance = 10;
     }
 
     private static void attackBehavior(final int theMinDamage, final int theMaxDamage) {
@@ -114,6 +117,11 @@ public abstract class DungeonCharacter {
         return myHealChance;
     }
 
+    /**
+     * Set myHealthPoints for this DungeonCharacter
+     * @param theHealthPoints a value above >= 0 representing the character's health points
+     * @throws IllegalArgumentException if theHealthPoints < 0
+     */
     public void setMyHealthPoints(final int theHealthPoints) {
         if (theHealthPoints < 0) {
             throw new IllegalArgumentException("Health points must not be less than 0");
@@ -145,6 +153,7 @@ public abstract class DungeonCharacter {
      * Heal health by provided amount.
      * @param theHealth the amount of health to heal
      * @return true if healing has occurred
+     * @throws IllegalArgumentException if theHealth is a negative value
      */
     protected boolean heal(final int theHealth) {
         if (theHealth < 0) {

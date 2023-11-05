@@ -24,7 +24,7 @@ public class Thief extends Hero {
      * @return true if successful
      */
     @Override
-    public boolean specialSkill(final DungeonCharacter theTarget) { // TODO -JA: TEST ME, is this logic good?
+    public boolean specialSkill(final DungeonCharacter theTarget) {
         double randValue = getRandomSource().nextDouble();
         if (randValue <= 0.4) { // 40% chance of Success, two attacks
             attack(theTarget);

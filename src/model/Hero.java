@@ -59,6 +59,10 @@ public abstract class Hero extends DungeonCharacter {
      */
     public abstract boolean specialSkill(final DungeonCharacter theTarget);
 
+    /**
+     * Return various Hero stats as string.
+     * @return Level, Character Type, Health, and Inventory of Hero
+     */
     @Override
     public String toString() {
         return "Level " + super.getMyLevel() + " Character: " + this.getClass().getName()
