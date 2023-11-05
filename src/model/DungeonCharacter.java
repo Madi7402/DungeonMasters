@@ -66,6 +66,9 @@ public abstract class DungeonCharacter {
         myHitChance = 75.0;
         myMinDamage = 25;
         myMaxDamage = 35;
+        myMinHeal = 5;
+        myMaxHeal = 15;
+        myHealChance = 10;
     }
 
     private static void attackBehavior(final int theMinDamage, final int theMaxDamage) {
