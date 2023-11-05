@@ -1,5 +1,4 @@
 package Tests;
-import model.Monster;
 import model.Ogre;
 import model.Thief;
 import org.junit.jupiter.api.Test;
