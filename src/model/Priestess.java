@@ -25,9 +25,10 @@ public class Priestess extends Hero {
      */
     @Override
     public boolean specialSkill(final DungeonCharacter theTarget) {
-        if (!randomChance(mySpecSkill.getChance())) { // TODO - JA: Special Attack logic
+        if (!randomChance(mySpecSkill.getChance())) {
             return false;
         }
+        heal(randomValue(5, 10)); // TODO -JA: replace arbitrary numbers, perhaps closer to a potion
         return true;
     }
 }
