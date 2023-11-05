@@ -19,15 +19,22 @@ public class Thief extends Hero {
     }
 
     /**
-     * Perform special skill.
+     * Perform special skill (Surprise attack!).
      *
      * @return true if successful
      */
     @Override
-    public boolean specialSkill(final DungeonCharacter theTarget) {
-        if (!randomChance(mySpecSkill.getChance())) { // TODO - JA: Special Attack logic
+    public boolean specialSkill(final DungeonCharacter theTarget) { // TODO -JA: TEST ME, is this logic good?
+        double randValue = getRandomSource().nextDouble();
+        if (randValue <= 0.4) { // 40% chance of Success, two attacks
+            attack(theTarget);
+            attack(theTarget); // Extra attack
+            return true;
+        } else if (randValue <= 0.6) { // 20% chance Thief is caught
             return false;
         }
+
+        attack(theTarget); // Other 40% chance of just a normal attack
         return true;
     }
 }
