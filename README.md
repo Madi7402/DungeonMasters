@@ -7,7 +7,7 @@
 `--module-path lib/javafx --add-modules javafx.controls,javafx.fxml` into VM Options of run configuration in IDEA
 
 ### Place these in root of project directory
-SqliteDB Driver: https://github.com/xerial/sqlite-jdbc/releases/download/3.43.2.2/sqlite-jdbc-3.43.2.2.jar
+SQLiteDB Driver: https://github.com/xerial/sqlite-jdbc/releases/download/3.43.2.2/sqlite-jdbc-3.43.2.2.jar
 
 SQLite Logger: https://search.maven.org/remotecontent?filepath=org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar
 
