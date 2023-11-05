@@ -122,7 +122,7 @@ public abstract class DungeonCharacter {
     }
 
     /**
-     * Attack selected Monster.
+     * Attack selected DungeonCharacter based on min/max stats of character.
      * @param theTarget the Monster the Hero is attacking
      * @return true if the attack hit and was not blocked
      */
