@@ -113,25 +113,33 @@ public abstract class DungeonCharacter {
     public double getMyHealChance() {
         return myHealChance;
     }
+
+    public void setMyHealthPoints(final int theHealthPoints) {
+        if (theHealthPoints < 0) {
+            throw new IllegalArgumentException("Health points must not be less than 0");
+        }
+        this.myHealthPoints = theHealthPoints; // TODO -JA: notify observers of health change
+    }
+
+    /**
+     * Attack selected Monster.
+     * @param theTarget the Monster the Hero is attacking
+     * @return true if the attack hit and was not blocked
+     */
+    public boolean attack(final DungeonCharacter theTarget) {
+        if (randomChance(getMyHitChance())) { // Attack
+            // TODO -JA: notify observers that attack *hit*
+            return theTarget.takeDamage(randomValue(getMyMinDamage(), getMyMaxDamage()));
+        }
+        return false; // TODO -JA: notify observers that attack *missed*
+    }
+
     /**
      * Reduce health by provided amount.
      * @param theDamage the amount of damage taken
      * @return true if damage has occurred
      */
-    protected boolean takeDamage(final int theDamage) {
-        if (theDamage < 0 || myHealthPoints == 0) {
-           return false;
-        }
-
-        if (theDamage >= myHealthPoints) {
-            myHealthPoints = 0; // Character death
-            // TODO -JA: notify observers of death
-        } else {
-            myHealthPoints -= theDamage;
-        }
-
-        return true;
-    }
+    protected abstract boolean takeDamage(final int theDamage);
 
     /**
      * Heal health by provided amount.
@@ -156,6 +164,14 @@ public abstract class DungeonCharacter {
      */
     protected boolean randomChance(final double theChance) {
         return RANDOM_SOURCE.nextDouble() <= theChance/100;
+    }
+
+    /**
+     * Calculate the random damage within range for attack based on character Stats
+     * @return amount of damage for attack
+     */
+    protected int randomValue(final int theMin, final int theMax) {
+        return getRandomSource().nextInt(theMin, theMax);
     }
 
     /**
