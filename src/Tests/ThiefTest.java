@@ -9,6 +9,7 @@ public class ThiefTest {
         Thief thief = new Thief("TestName");
         assertNotNull(thief);
     }
+
     @Test
     public void toStringTest() {
         Thief thief = new Thief("TestName");

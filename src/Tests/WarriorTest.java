@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class WarriorTest {
+    @Test
     public void constructorTest() {
         Warrior warrior = new Warrior("TestName");
         assertNotNull(warrior);
