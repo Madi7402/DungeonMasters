@@ -32,7 +32,7 @@ public abstract class DungeonCharacter {
     DungeonCharacter(final String theName, final int theLevel) {
         myName = theName;
         myLevel = theLevel;
-        myStats = new CharStats();
+        myStats = new CharStats(this.getClass().getSimpleName().toLowerCase()); // TODO -JA: Currently SQL issue cases termination, catch/try here?
         myHealthPoints = myStats.startingHealth(); // TODO -JA: Do we just want to build this into CharStats?
     }
 
@@ -124,6 +124,10 @@ public abstract class DungeonCharacter {
         return RANDOM_SOURCE; // TODO -JA: is this getter a good idea?
     }
 
+    /**
+     * Get the current amount of health points of the character.
+     * @return number of health points remaining.
+     */
     public int getMyHealthPoints() {
         return myHealthPoints;
     }

@@ -1,4 +1,10 @@
 package model;
+import org.sqlite.SQLiteDataSource;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Contain various statistics and parameters for DungeonCharacters.
@@ -38,19 +44,43 @@ public class CharStats {
      */
     private double myHealChance;
 
-    public CharStats() {
+    /**
+     * Chance to block attack (FOR HERO)
+     * @param theClassName
+     */
+    private double myBlockChance;
+
+    public CharStats(final String theClassName) {
         // TODO -JA: Create a specification outlying appropriate values for DungeonCharacter
         //           statistics and damage characteristics.
+        SQLiteDataSource ds = null; // From example code
+        try {
+            ds = new SQLiteDataSource();
+            ds.setUrl("jdbc:sqlite:database.sqlite.db");
+        } catch ( Exception e ) { // TODO -JA: Does anything really throw an exception here?
+            e.printStackTrace();
+        }
 
-        // TODO -JA: retrieve statistics from SQLite database for each particular child class
-        myStartingHealth = 100;
-        myAttackSpeed = 20;
-        myHitChance = 75.0;
-        myMinDamage = 25;
-        myMaxDamage = 35;
-        myMinHeal = 5;
-        myMaxHeal = 15;
-        myHealChance = 10;
+        String query = "SELECT * FROM character where name == '" + theClassName + "'"; // TODO -JA: SQLi potential
+
+        try (Connection conn = ds.getConnection();
+             Statement stmt = conn.createStatement(); ) {
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            myStartingHealth = rs.getInt("health_points");
+            myAttackSpeed = rs.getInt("attack_speed");
+            myMinDamage = rs.getInt("min_damage");
+            myMaxDamage = rs.getInt("max_damage");
+            myMinHeal = rs.getInt("min_heal");
+            myMaxHeal = rs.getInt("max_heal");
+            myHitChance = rs.getDouble("hit_chance");
+            myHealChance = rs.getDouble("heal_chance");
+            myBlockChance = rs.getDouble("block_chance");
+        } catch ( SQLException e ) {
+            e.printStackTrace();
+            System.exit(1);
+        }
     }
 
     public int startingHealth() {
@@ -83,5 +113,9 @@ public class CharStats {
 
     public double healChance() {
         return myHealChance;
+    }
+
+    public double blockChance() {
+        return myBlockChance;
     }
 }
