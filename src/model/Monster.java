@@ -5,41 +5,32 @@ package model;
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
 public class Monster extends DungeonCharacter {
-    /**
-     * Minimum amount to heal.
-     */
-    private int myMinHeal;
-    /**
-     * Maximum amount to heal.
-     */
-    private int myMaxHeal;
-    /**
-     * Probability of healing after taking damage.
-     */
-    private double myHealChance;
-
-    Monster(final int theMinHeal, final int theMaxHeal) {
+    Monster() {
         super("Monster", 1); // TODO -JA: set monster name
-        myMinHeal = theMinHeal;
-        myMaxHeal = theMaxHeal;
-        myHealChance = 10.0; // TODO -JA: Decide reasonable values
     }
-
     /**
-     * Attack the Hero.
+     * Reduce health by provided amount, possibly heal afterward.
+     * @param theDamage the amount of damage taken
+     * @return true if damage has occurred
      */
-    public void attack() {
-        // TODO -JA: Attack logic here
-    }
+    @Override
+    protected boolean takeDamage(final int theDamage) {
+        if (theDamage < 0 || getMyHealthPoints() == 0) {
+            return false;
+        }
 
-    /**
-     * Heal Monster by defined amount.
-     */
-    public void heal() {
-        // TODO -JA: Heal logic here
-        // Select random value between Min/Max heal
-        // Add value to HealthPoints upto the maximum HealthPoints for the monster
-        // Or we could cap to a certain percentage (such as only healing to 80% of max health)
+        if (theDamage >= getMyHealthPoints()) { // Dead, never heal
+            setMyHealthPoints(0); // TODO -JA: notify observers of death
+            return true;
+        }
+
+        // Monsters have a chance to heal after an attack that loses hit points, if they're alive.
+        setMyHealthPoints(getMyHealthPoints() - theDamage);
+        if (randomChance(getMyHealChance())) { // Random chance to heal after taking damage when not dead
+            heal(randomValue(getMyMinHeal(), getMyMaxHeal())); // TODO -JA: max healing to maxHealthPoints or a cap
+        }
+
+        return true;
     }
 
     /**
@@ -49,6 +40,6 @@ public class Monster extends DungeonCharacter {
     @Override
     public String toString() {
         return "Level " + super.getMyLevel() + " Character: " + this.getClass().getName()
-                + " Health: " + super.getMyHealthPoints() + " Heal Chance: " + myHealChance;
+                + " Health: " + super.getMyHealthPoints() + " Heal Chance: " + super.getMyHealChance();
     }
 }

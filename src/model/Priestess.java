@@ -6,6 +6,11 @@ package model;
  */
 public class Priestess extends Hero {
     /**
+     * The Priestess' special skill.
+     */
+    private static final SpecialSkill mySpecSkill = SpecialSkill.HEAL;
+
+    /**
      * Construct a Priestess.
      * @param theName the provided name of the Hero.
      */
@@ -14,15 +19,16 @@ public class Priestess extends Hero {
     }
 
     /**
-     * Attack a Monster target with provided skill.
-     * @param theTarget the Monster to be attacked
-     * @param theSpecSkill the special skill to be used
+     * Perform special skill.
+     *
+     * @return true if successful
      */
-    public void attack(final Monster theTarget, final SpecialSkill theSpecSkill) {
-        // TODO -JA: (!) IMPORTANT (!), since our method signature differs from the Hero class
-        //           we are NOT actually overriding the Hero attack method!
-        //           This may lead to confusion and may prove suboptimal.
-
-        // TODO -JA: Attack logic with special skill taken into account
+    @Override
+    public boolean specialSkill(final DungeonCharacter theTarget) {
+        if (!randomChance(mySpecSkill.getChance())) {
+            return false;
+        }
+        heal(randomValue(getMyMinHeal(), getMyMaxHeal())); // TODO -JA: perhaps decide stats closer to a potion
+        return true;
     }
 }
