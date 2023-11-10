@@ -21,34 +21,9 @@ public abstract class DungeonCharacter {
      */
     private int myHealthPoints;
     /**
-     * The attack speed of the DungeonCharacter.<hr/>
-     * In a fight: the character with the highest attack speed attacks first.
+     * The statistics of the DungeonCharacter.
      */
-    private int myAttackSpeed;
-    /**
-     * The probability that an attack will be successful in inflicting damage.
-     */
-    private double myHitChance;
-    /**
-     * The least amount of damage a successful attack will cause.
-     */
-    private int myMinDamage;
-    /**
-     * The greatest amount of damage a successful attack will cause.
-     */
-    private int myMaxDamage;
-    /**
-     * Minimum amount to heal (FOR MONSTER).
-     */
-    private int myMinHeal;
-    /**
-     * Maximum amount to heal (FOR MONSTER).
-     */
-    private int myMaxHeal;
-    /**
-     * Chance to heal (FOR MONSTER).
-     */
-    private double myHealChance;
+    protected CharStats myStats; // TODO -JA: Do we want this to be private?
     /**
      * Random source for our DungeonCharacter.
      */
@@ -57,18 +32,8 @@ public abstract class DungeonCharacter {
     DungeonCharacter(final String theName, final int theLevel) {
         myName = theName;
         myLevel = theLevel;
-        // TODO -JA: Create a specification outlying appropriate values for DungeonCharacter
-        //           statistics and damage characteristics.
-
-        // TODO -JA: retrieve statistics from SQLite database for each particular child class
-        myHealthPoints = 100;
-        myAttackSpeed = 20;
-        myHitChance = 75.0;
-        myMinDamage = 25;
-        myMaxDamage = 35;
-        myMinHeal = 5;
-        myMaxHeal = 15;
-        myHealChance = 10;
+        myStats = new CharStats(this.getClass().getSimpleName().toLowerCase()); // TODO -JA: Currently SQL issue cases termination, catch/try here?
+        myHealthPoints = myStats.startingHealth(); // TODO -JA: Do we just want to build this into CharStats?
     }
 
     private static void attackBehavior(final int theMinDamage, final int theMaxDamage) {
@@ -83,38 +48,6 @@ public abstract class DungeonCharacter {
 
     public int getMyLevel() {
         return myLevel;
-    }
-
-    public int getMyHealthPoints() {
-        return myHealthPoints;
-    }
-
-    public int getMyAttackSpeed() {
-        return myAttackSpeed;
-    }
-
-    public double getMyHitChance() {
-        return myHitChance;
-    }
-
-    public int getMyMinDamage() {
-        return myMinDamage;
-    }
-
-    public int getMyMaxDamage() {
-        return myMaxDamage;
-    }
-
-    public int getMyMaxHeal() {
-        return myMaxHeal;
-    }
-
-    public int getMyMinHeal() {
-        return myMinHeal;
-    }
-
-    public double getMyHealChance() {
-        return myHealChance;
     }
 
     /**
@@ -135,9 +68,9 @@ public abstract class DungeonCharacter {
      * @return true if the attack hit and was not blocked
      */
     public boolean attack(final DungeonCharacter theTarget) {
-        if (randomChance(getMyHitChance())) { // Attack
+        if (randomChance(myStats.hitChance())) { // Attack
             // TODO -JA: notify observers that attack *hit*
-            return theTarget.takeDamage(randomValue(getMyMinDamage(), getMyMaxDamage()));
+            return theTarget.takeDamage(randomValue(myStats.minDamage(), myStats.maxDamage()));
         }
         return false; // TODO -JA: notify observers that attack *missed*
     }
@@ -189,5 +122,13 @@ public abstract class DungeonCharacter {
      */
     protected Random getRandomSource() {
         return RANDOM_SOURCE; // TODO -JA: is this getter a good idea?
+    }
+
+    /**
+     * Get the current amount of health points of the character.
+     * @return number of health points remaining.
+     */
+    public int getMyHealthPoints() {
+        return myHealthPoints;
     }
 }

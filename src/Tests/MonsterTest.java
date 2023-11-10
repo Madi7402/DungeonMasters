@@ -17,6 +17,6 @@ public class MonsterTest {
     @Test
     public void toStringTest() {
         Ogre ogre = new Ogre();
-        assertEquals("Level 1 Character: model.Ogre Health: 100 Heal Chance: 10.0", ogre.toString());
+        assertEquals("Level 1 Character: model.Ogre Health: 200 Heal Chance: 10.0", ogre.toString());
     }
 }

@@ -26,8 +26,8 @@ public class Monster extends DungeonCharacter {
 
         // Monsters have a chance to heal after an attack that loses hit points, if they're alive.
         setMyHealthPoints(getMyHealthPoints() - theDamage);
-        if (randomChance(getMyHealChance())) { // Random chance to heal after taking damage when not dead
-            heal(randomValue(getMyMinHeal(), getMyMaxHeal())); // TODO -JA: max healing to maxHealthPoints or a cap
+        if (randomChance(myStats.healChance())) { // Random chance to heal after taking damage when not dead
+            heal(randomValue(myStats.minHeal(), myStats.maxHeal())); // TODO -JA: max healing to maxHealthPoints or a cap
         }
 
         return true;
@@ -40,6 +40,6 @@ public class Monster extends DungeonCharacter {
     @Override
     public String toString() {
         return "Level " + super.getMyLevel() + " Character: " + this.getClass().getName()
-                + " Health: " + super.getMyHealthPoints() + " Heal Chance: " + super.getMyHealChance();
+                + " Health: " + super.getMyHealthPoints() + " Heal Chance: " + myStats.healChance();
     }
 }

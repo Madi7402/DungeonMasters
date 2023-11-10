@@ -13,7 +13,7 @@ public class PriestessTest {
     @Test
     public void toStringTest() {
         Priestess priestess = new Priestess("TestName");
-        assertEquals("Level 1 Character: model.Priestess Health: 100 Inventory: []", priestess.toString());
+        assertEquals("Level 1 Character: model.Priestess Health: 75 Inventory: []", priestess.toString());
     }
 
     @Test

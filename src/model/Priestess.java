@@ -28,7 +28,7 @@ public class Priestess extends Hero {
         if (!randomChance(mySpecSkill.getChance())) {
             return false;
         }
-        heal(randomValue(getMyMinHeal(), getMyMaxHeal())); // TODO -JA: perhaps decide stats closer to a potion
+        heal(randomValue(myStats.minHeal(), myStats.maxHeal())); // TODO -JA: perhaps decide stats closer to a potion
         return true;
     }
 }
