@@ -52,7 +52,7 @@ public abstract class Hero extends DungeonCharacter {
      * The special skill our Heroes implement.
      * @return true if special Skill had an effect
      */
-    public abstract boolean specialSkill(final DungeonCharacter theTarget);
+    public abstract boolean specialSkill(DungeonCharacter theTarget);
 
     /**
      * Return various Hero stats as string.

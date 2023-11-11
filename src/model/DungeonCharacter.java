@@ -8,6 +8,14 @@ import java.util.Random;
  */
 public abstract class DungeonCharacter {
     /**
+     * Random source for our DungeonCharacter.
+     */
+    private static final Random RANDOM_SOURCE = new Random();
+    /**
+     * The statistics of the DungeonCharacter.
+     */
+    protected CharStats myStats; // TODO -JA: Do we want this to be private?
+    /**
      * The name provided to the DungeonCharacter.
      */
     private final String myName;
@@ -20,14 +28,6 @@ public abstract class DungeonCharacter {
      * The amount of health points the DungeonCharacter has (<b>remaining</b>).
      */
     private int myHealthPoints;
-    /**
-     * The statistics of the DungeonCharacter.
-     */
-    protected CharStats myStats; // TODO -JA: Do we want this to be private?
-    /**
-     * Random source for our DungeonCharacter.
-     */
-    private static final Random RANDOM_SOURCE = new Random(); // TODO -JA: Probably should use a getter instead.
 
     DungeonCharacter(final String theName, final int theLevel) {
         myName = theName;
@@ -51,7 +51,7 @@ public abstract class DungeonCharacter {
     }
 
     /**
-     * Set myHealthPoints for this DungeonCharacter
+     * Set myHealthPoints for this DungeonCharacter.
      * @param theHealthPoints a value above >= 0 representing the character's health points
      * @throws IllegalArgumentException if theHealthPoints < 0
      */
@@ -105,11 +105,11 @@ public abstract class DungeonCharacter {
      * @return true if probability was a success.
      */
     protected boolean randomChance(final double theChance) {
-        return RANDOM_SOURCE.nextDouble() <= theChance/100;
+        return RANDOM_SOURCE.nextDouble() <= theChance / 100;
     }
 
     /**
-     * Calculate the random damage within range for attack based on character Stats
+     * Calculate the random damage within range for attack based on character Stats.
      * @return amount of damage for attack
      */
     protected int randomValue(final int theMin, final int theMax) {

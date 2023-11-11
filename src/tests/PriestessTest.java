@@ -1,4 +1,4 @@
-package Tests;
+package tests;
 import model.Ogre;
 import model.Priestess;
 import org.junit.jupiter.api.Test;

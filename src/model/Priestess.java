@@ -8,7 +8,7 @@ public class Priestess extends Hero {
     /**
      * The Priestess' special skill.
      */
-    private static final SpecialSkill mySpecSkill = SpecialSkill.HEAL;
+    private static final SpecialSkill SPECIAL_SKILL = SpecialSkill.HEAL;
 
     /**
      * Construct a Priestess.
@@ -25,7 +25,7 @@ public class Priestess extends Hero {
      */
     @Override
     public boolean specialSkill(final DungeonCharacter theTarget) {
-        if (!randomChance(mySpecSkill.getChance())) {
+        if (!randomChance(SPECIAL_SKILL.getChance())) {
             return false;
         }
         heal(randomValue(myStats.minHeal(), myStats.maxHeal())); // TODO -JA: perhaps decide stats closer to a potion

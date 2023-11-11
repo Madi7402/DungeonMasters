@@ -1,4 +1,4 @@
-package Tests;
+package tests;
 
 import model.Ogre;
 import model.Warrior;

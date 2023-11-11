@@ -1,4 +1,4 @@
-package Tests;
+package tests;
 import model.Ogre;
 import model.Thief;
 import org.junit.jupiter.api.Test;
@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MonsterTest {
     @Test
     public void takeDamageDeadTest() {
-        Thief thief = new Thief("TestName");
-        Ogre ogre = new Ogre();
+        final Thief thief = new Thief("TestName");
+        final Ogre ogre = new Ogre();
         while (ogre.getMyHealthPoints() > 0) { // Kill Ogre
             thief.attack(ogre);
         }
@@ -16,7 +16,7 @@ public class MonsterTest {
     }
     @Test
     public void toStringTest() {
-        Ogre ogre = new Ogre();
+        final Ogre ogre = new Ogre();
         assertEquals("Level 1 Character: model.Ogre Health: 200 Heal Chance: 10.0", ogre.toString());
     }
 }

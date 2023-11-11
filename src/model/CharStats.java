@@ -1,6 +1,6 @@
 package model;
-import org.sqlite.SQLiteDataSource;
 
+import org.sqlite.SQLiteDataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,28 +45,22 @@ public class CharStats {
     private double myHealChance;
 
     /**
-     * Chance to block attack (FOR HERO)
-     * @param theClassName
+     * Chance to block attack (FOR HERO).
      */
     private double myBlockChance;
 
     public CharStats(final String theClassName) {
         // TODO -JA: Create a specification outlying appropriate values for DungeonCharacter
         //           statistics and damage characteristics.
-        SQLiteDataSource ds = null; // From example code
-        try {
-            ds = new SQLiteDataSource();
-            ds.setUrl("jdbc:sqlite:database.sqlite.db");
-        } catch ( Exception e ) { // TODO -JA: Does anything really throw an exception here?
-            e.printStackTrace();
-        }
+        final SQLiteDataSource ds = new SQLiteDataSource(); // From example code
+        ds.setUrl("jdbc:sqlite:database.sqlite.db");
 
-        String query = "SELECT * FROM character where name == '" + theClassName + "'"; // TODO -JA: SQLi potential
+        final String query = "SELECT * FROM character where name == '" + theClassName + "'"; // TODO -JA: SQLi potential
 
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement(); ) {
 
-            ResultSet rs = stmt.executeQuery(query);
+            final ResultSet rs = stmt.executeQuery(query);
 
             myStartingHealth = rs.getInt("health_points");
             myAttackSpeed = rs.getInt("attack_speed");
@@ -77,7 +71,7 @@ public class CharStats {
             myHitChance = rs.getDouble("hit_chance");
             myHealChance = rs.getDouble("heal_chance");
             myBlockChance = rs.getDouble("block_chance");
-        } catch ( SQLException e ) {
+        } catch (final SQLException e) {
             e.printStackTrace();
             System.exit(1);
         }
