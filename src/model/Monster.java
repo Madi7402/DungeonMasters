@@ -4,7 +4,7 @@ package model;
  * A dungeon character that cannot be played by the player, spawns in the dungeon. Uses SQLite.
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
-public class Monster extends DungeonCharacter {
+public abstract class Monster extends DungeonCharacter {
     Monster() {
         super("Monster", 1); // TODO -JA: set monster name
     }
@@ -20,7 +20,8 @@ public class Monster extends DungeonCharacter {
         }
 
         if (theDamage >= getMyHealthPoints()) { // Dead, never heal
-            setMyHealthPoints(0); // TODO -JA: notify observers of death
+            setMyHealthPoints(0);
+            fireEvent(DEATH);
             return true;
         }
 

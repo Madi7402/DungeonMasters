@@ -1,12 +1,16 @@
 package model;
 
+import controller.PropertyChangeEnableFight;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Random;
 
 /**
  * An abstract class that represents an entity in the dungeon that can engage in combat.
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
-public abstract class DungeonCharacter {
+public abstract class DungeonCharacter implements PropertyChangeEnableFight {
     /**
      * Random source for our DungeonCharacter.
      */
@@ -28,12 +32,15 @@ public abstract class DungeonCharacter {
      * The amount of health points the DungeonCharacter has (<b>remaining</b>).
      */
     private int myHealthPoints;
+    /** Keep Track of our Observers and fire events. */
+    private final PropertyChangeSupport myPcs;
 
     DungeonCharacter(final String theName, final int theLevel) {
         myName = theName;
         myLevel = theLevel;
         myStats = new CharStats(this.getClass().getSimpleName().toLowerCase()); // TODO -JA: Currently SQL issue cases termination, catch/try here?
         myHealthPoints = myStats.startingHealth(); // TODO -JA: Do we just want to build this into CharStats?
+        myPcs = new PropertyChangeSupport(this);
     }
 
     private static void attackBehavior(final int theMinDamage, final int theMaxDamage) {
@@ -41,11 +48,15 @@ public abstract class DungeonCharacter {
         //           or otherwise be substitutable via a attackBehavior Factory
     }
 
-    // TODO -JA: Migrate these statistics setters/getters into dedicated stats object
+
     public String getMyName() {
         return myName;
     }
 
+    /**
+     * Get current level of Character.
+     * @return the level of the character
+     */
     public int getMyLevel() {
         return myLevel;
     }
@@ -59,7 +70,8 @@ public abstract class DungeonCharacter {
         if (theHealthPoints < 0) {
             throw new IllegalArgumentException("Health points must not be less than 0");
         }
-        this.myHealthPoints = theHealthPoints; // TODO -JA: notify observers of health change
+        this.myHealthPoints = theHealthPoints;
+        fireEvent(HEALTH_CHANGED);
     }
 
     /**
@@ -68,11 +80,14 @@ public abstract class DungeonCharacter {
      * @return true if the attack hit and was not blocked
      */
     public boolean attack(final DungeonCharacter theTarget) {
-        if (randomChance(myStats.hitChance())) { // Attack
-            // TODO -JA: notify observers that attack *hit*
-            return theTarget.takeDamage(randomValue(myStats.minDamage(), myStats.maxDamage()));
+        if (randomChance(myStats.hitChance())) {
+            fireEvent(ATTACK);
+            return theTarget.takeDamage(randomValue(myStats.minDamage(), myStats.maxDamage())); // Blocked if false
         }
-        return false; // TODO -JA: notify observers that attack *missed*
+
+        // Attack Missed
+        fireEvent(ATTACK_MISS);
+        return false;
     }
 
     /**
@@ -95,7 +110,9 @@ public abstract class DungeonCharacter {
         // TODO -JA: Should we be able to heal if we are dead (health == 0)?
 
         // TODO -JA: keep track of maximum health for the character and don't exceed that.
-        myHealthPoints += theHealth;
+        int newHealthPoints = myHealthPoints += theHealth;
+        fireEvent(HEALTH_CHANGED, myHealthPoints, newHealthPoints);
+        myHealthPoints = newHealthPoints;
         return true;
     }
 
@@ -130,5 +147,45 @@ public abstract class DungeonCharacter {
      */
     public int getMyHealthPoints() {
         return myHealthPoints;
+    }
+
+    /**
+     * Fire event to observers.
+     * @param theEvent the event from PropertyChangeEnableFight
+     */
+    protected void fireEvent(final String theEvent) {
+        myPcs.firePropertyChange(theEvent, null, true);
+    }
+
+    /**
+     * Fire event to observers with initial and ending value.
+     * @param theEvent the event from PropertyChangeEnableFight
+     * @param theStart the initial value
+     * @param theEnd the changed value
+     */
+    protected void fireEvent(final String theEvent, final int theStart, final int theEnd) {
+        myPcs.firePropertyChange(theEvent, theStart, theEnd);
+    }
+
+    @Override
+    public void addPropertyChangeListener(final PropertyChangeListener theListener) {
+        myPcs.addPropertyChangeListener(theListener);
+    }
+
+    @Override
+    public void addPropertyChangeListener(final String thePropertyName,
+                                          final PropertyChangeListener theListener) {
+        myPcs.addPropertyChangeListener(thePropertyName, theListener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(final PropertyChangeListener theListener) {
+        myPcs.removePropertyChangeListener(theListener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(final String thePropertyName,
+                                             final PropertyChangeListener theListener) {
+        myPcs.removePropertyChangeListener(thePropertyName, theListener);
     }
 }

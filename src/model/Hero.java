@@ -36,11 +36,13 @@ public abstract class Hero extends DungeonCharacter {
 
         // Hero has a chance to block an attack and not take damage
         if (randomChance(myStats.blockChance())) {
-            return false; // TODO -JA: notify observers the attack was *blocked*
+            fireEvent(ATTACK_BLOCK);
+            return false;
         }
 
         if (theDamage >= getMyHealthPoints()) {
-            setMyHealthPoints(0); // TODO -JA: notify observers of death
+            setMyHealthPoints(0);
+            fireEvent(DEATH);
         } else {
             setMyHealthPoints(getMyHealthPoints() - theDamage);
         }
