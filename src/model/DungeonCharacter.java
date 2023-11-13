@@ -4,13 +4,18 @@ import controller.PropertyChangeEnableFight;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * An abstract class that represents an entity in the dungeon that can engage in combat.
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
-public abstract class DungeonCharacter implements PropertyChangeEnableFight {
+public abstract class DungeonCharacter implements PropertyChangeEnableFight, Serializable {
+    /** UID for Serialization */
+    @Serial
+    private static final long serialVersionUID = 0L; // Update on class changes?
     /**
      * Random source for our DungeonCharacter.
      */
