@@ -16,3 +16,6 @@ For this iteration, the team worked on setup up, review, and implementing the mo
 
 ## Iteration 2
 For this iteration, the team worked on writing user stories and restructuring project tasks, learning to use JavaFX, and further development, implementation, and testing of classes for our project. A major issue was the need to rewrite our user stories to represent the user (or more specifically, player) perspective. Fortunately, we were able to nest many of the tasks produced last week under these new user stories. We don't yet have working software to present.
+
+## Iteration 3
+For this iteration, the team worked on designing the dungeon levels and layout, began to implement JavaFX, and completed the monster user story. A major issue was that two team members became ill with the flu, and so our progress was somewhat slower this week. We are pretty close to having working software to present.
