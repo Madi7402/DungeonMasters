@@ -1,6 +1,9 @@
 package model;
 
 import org.sqlite.SQLiteDataSource;
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +12,10 @@ import java.sql.Statement;
 /**
  * Contain various statistics and parameters for DungeonCharacters.
  */
-public class CharStats {
+public class CharStats implements Serializable {
+    /** UID for Serialization */
+    @Serial
+    private static final long serialVersionUID = 0L; // Update on class changes?
     /**
      * The initial health of the character.
      */
