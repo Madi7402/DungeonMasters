@@ -1,4 +1,4 @@
-package Tests;
+package tests;
 
 import model.Ogre;
 import model.Warrior;
@@ -16,7 +16,7 @@ public class WarriorTest {
     @Test
     public void toStringTest() {
         Warrior warrior = new Warrior("TestName");
-        assertEquals("Level 1 Character: model.Warrior Health: 100 Inventory: []", warrior.toString());
+        assertEquals("Level 1 Character: model.Warrior Health: 125 Inventory: []", warrior.toString());
     }
 
     @Test

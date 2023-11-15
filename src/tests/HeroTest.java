@@ -1,4 +1,4 @@
-package Tests;
+package tests;
 import model.Ogre;
 import model.Thief;
 import org.junit.jupiter.api.RepeatedTest;

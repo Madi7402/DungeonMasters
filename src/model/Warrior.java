@@ -8,7 +8,7 @@ public class Warrior extends Hero {
     /**
      * The Warrior's special skill.
      */
-    private static final SpecialSkill mySpecSkill = SpecialSkill.CRUSHING_BLOW;
+    private static final SpecialSkill SPECIAL_SKILL = SpecialSkill.CRUSHING_BLOW;
 
     /**
      * Construct a Warrior.
@@ -24,7 +24,7 @@ public class Warrior extends Hero {
      */
     @Override
     public boolean specialSkill(final DungeonCharacter theTarget) {
-        if (!randomChance(mySpecSkill.getChance())) {
+        if (!randomChance(SPECIAL_SKILL.getChance())) {
             return false;
         }
         theTarget.takeDamage(randomValue(75, 175)); // TODO -JA: replace Magic numbers?

@@ -1,12 +1,29 @@
 package model;
 
+import controller.PropertyChangeEnableFight;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * An abstract class that represents an entity in the dungeon that can engage in combat.
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
-public abstract class DungeonCharacter {
+public abstract class DungeonCharacter implements PropertyChangeEnableFight, Serializable {
+    /** UID for Serialization */
+    @Serial
+    private static final long serialVersionUID = 0L; // Update on class changes?
+    /**
+     * Random source for our DungeonCharacter.
+     */
+    private static final Random RANDOM_SOURCE = new Random();
+    /**
+     * The statistics of the DungeonCharacter.
+     */
+    protected CharStats myStats; // TODO -JA: Do we want this to be private?
     /**
      * The name provided to the DungeonCharacter.
      */
@@ -20,55 +37,15 @@ public abstract class DungeonCharacter {
      * The amount of health points the DungeonCharacter has (<b>remaining</b>).
      */
     private int myHealthPoints;
-    /**
-     * The attack speed of the DungeonCharacter.<hr/>
-     * In a fight: the character with the highest attack speed attacks first.
-     */
-    private int myAttackSpeed;
-    /**
-     * The probability that an attack will be successful in inflicting damage.
-     */
-    private double myHitChance;
-    /**
-     * The least amount of damage a successful attack will cause.
-     */
-    private int myMinDamage;
-    /**
-     * The greatest amount of damage a successful attack will cause.
-     */
-    private int myMaxDamage;
-    /**
-     * Minimum amount to heal (FOR MONSTER).
-     */
-    private int myMinHeal;
-    /**
-     * Maximum amount to heal (FOR MONSTER).
-     */
-    private int myMaxHeal;
-    /**
-     * Chance to heal (FOR MONSTER).
-     */
-    private double myHealChance;
-    /**
-     * Random source for our DungeonCharacter.
-     */
-    private static final Random RANDOM_SOURCE = new Random(); // TODO -JA: Probably should use a getter instead.
+    /** Keep Track of our Observers and fire events. */
+    private final PropertyChangeSupport myPcs;
 
     DungeonCharacter(final String theName, final int theLevel) {
         myName = theName;
         myLevel = theLevel;
-        // TODO -JA: Create a specification outlying appropriate values for DungeonCharacter
-        //           statistics and damage characteristics.
-
-        // TODO -JA: retrieve statistics from SQLite database for each particular child class
-        myHealthPoints = 100;
-        myAttackSpeed = 20;
-        myHitChance = 75.0;
-        myMinDamage = 25;
-        myMaxDamage = 35;
-        myMinHeal = 5;
-        myMaxHeal = 15;
-        myHealChance = 10;
+        myStats = new CharStats(this.getClass().getSimpleName().toLowerCase()); // TODO -JA: Currently SQL issue cases termination, catch/try here?
+        myHealthPoints = myStats.startingHealth(); // TODO -JA: Do we just want to build this into CharStats?
+        myPcs = new PropertyChangeSupport(this);
     }
 
     private static void attackBehavior(final int theMinDamage, final int theMaxDamage) {
@@ -76,49 +53,21 @@ public abstract class DungeonCharacter {
         //           or otherwise be substitutable via a attackBehavior Factory
     }
 
-    // TODO -JA: Migrate these statistics setters/getters into dedicated stats object
+
     public String getMyName() {
         return myName;
     }
 
+    /**
+     * Get current level of Character.
+     * @return the level of the character
+     */
     public int getMyLevel() {
         return myLevel;
     }
 
-    public int getMyHealthPoints() {
-        return myHealthPoints;
-    }
-
-    public int getMyAttackSpeed() {
-        return myAttackSpeed;
-    }
-
-    public double getMyHitChance() {
-        return myHitChance;
-    }
-
-    public int getMyMinDamage() {
-        return myMinDamage;
-    }
-
-    public int getMyMaxDamage() {
-        return myMaxDamage;
-    }
-
-    public int getMyMaxHeal() {
-        return myMaxHeal;
-    }
-
-    public int getMyMinHeal() {
-        return myMinHeal;
-    }
-
-    public double getMyHealChance() {
-        return myHealChance;
-    }
-
     /**
-     * Set myHealthPoints for this DungeonCharacter
+     * Set myHealthPoints for this DungeonCharacter.
      * @param theHealthPoints a value above >= 0 representing the character's health points
      * @throws IllegalArgumentException if theHealthPoints < 0
      */
@@ -126,7 +75,8 @@ public abstract class DungeonCharacter {
         if (theHealthPoints < 0) {
             throw new IllegalArgumentException("Health points must not be less than 0");
         }
-        this.myHealthPoints = theHealthPoints; // TODO -JA: notify observers of health change
+        this.myHealthPoints = theHealthPoints;
+        fireEvent(HEALTH_CHANGED);
     }
 
     /**
@@ -135,11 +85,14 @@ public abstract class DungeonCharacter {
      * @return true if the attack hit and was not blocked
      */
     public boolean attack(final DungeonCharacter theTarget) {
-        if (randomChance(getMyHitChance())) { // Attack
-            // TODO -JA: notify observers that attack *hit*
-            return theTarget.takeDamage(randomValue(getMyMinDamage(), getMyMaxDamage()));
+        if (randomChance(myStats.hitChance())) {
+            fireEvent(ATTACK);
+            return theTarget.takeDamage(randomValue(myStats.minDamage(), myStats.maxDamage())); // Blocked if false
         }
-        return false; // TODO -JA: notify observers that attack *missed*
+
+        // Attack Missed
+        fireEvent(ATTACK_MISS);
+        return false;
     }
 
     /**
@@ -162,7 +115,9 @@ public abstract class DungeonCharacter {
         // TODO -JA: Should we be able to heal if we are dead (health == 0)?
 
         // TODO -JA: keep track of maximum health for the character and don't exceed that.
-        myHealthPoints += theHealth;
+        int newHealthPoints = myHealthPoints += theHealth;
+        fireEvent(HEALTH_CHANGED, myHealthPoints, newHealthPoints);
+        myHealthPoints = newHealthPoints;
         return true;
     }
 
@@ -172,11 +127,11 @@ public abstract class DungeonCharacter {
      * @return true if probability was a success.
      */
     protected boolean randomChance(final double theChance) {
-        return RANDOM_SOURCE.nextDouble() <= theChance/100;
+        return RANDOM_SOURCE.nextDouble() <= theChance / 100;
     }
 
     /**
-     * Calculate the random damage within range for attack based on character Stats
+     * Calculate the random damage within range for attack based on character Stats.
      * @return amount of damage for attack
      */
     protected int randomValue(final int theMin, final int theMax) {
@@ -189,5 +144,53 @@ public abstract class DungeonCharacter {
      */
     protected Random getRandomSource() {
         return RANDOM_SOURCE; // TODO -JA: is this getter a good idea?
+    }
+
+    /**
+     * Get the current amount of health points of the character.
+     * @return number of health points remaining.
+     */
+    public int getMyHealthPoints() {
+        return myHealthPoints;
+    }
+
+    /**
+     * Fire event to observers.
+     * @param theEvent the event from PropertyChangeEnableFight
+     */
+    protected void fireEvent(final String theEvent) {
+        myPcs.firePropertyChange(theEvent, null, true);
+    }
+
+    /**
+     * Fire event to observers with initial and ending value.
+     * @param theEvent the event from PropertyChangeEnableFight
+     * @param theStart the initial value
+     * @param theEnd the changed value
+     */
+    protected void fireEvent(final String theEvent, final int theStart, final int theEnd) {
+        myPcs.firePropertyChange(theEvent, theStart, theEnd);
+    }
+
+    @Override
+    public void addPropertyChangeListener(final PropertyChangeListener theListener) {
+        myPcs.addPropertyChangeListener(theListener);
+    }
+
+    @Override
+    public void addPropertyChangeListener(final String thePropertyName,
+                                          final PropertyChangeListener theListener) {
+        myPcs.addPropertyChangeListener(thePropertyName, theListener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(final PropertyChangeListener theListener) {
+        myPcs.removePropertyChangeListener(theListener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(final String thePropertyName,
+                                             final PropertyChangeListener theListener) {
+        myPcs.removePropertyChangeListener(thePropertyName, theListener);
     }
 }

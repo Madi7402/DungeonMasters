@@ -13,10 +13,6 @@ public abstract class Hero extends DungeonCharacter {
      * List of items the Hero has collected.
      */
     private final List<Item> myInventory;
-    /**
-     * Probability of blocking a successful attack from a Monster.
-     */
-    private double myBlockChance;
 
     /**
      * Construct a Hero.
@@ -25,7 +21,6 @@ public abstract class Hero extends DungeonCharacter {
     Hero(final String theName) { // TODO -JA: Do we want to construct with a starting level?
         super(theName, 1);
         myInventory = new ArrayList<>();
-        myBlockChance = 25.0; // TODO -JA: determine reasonable values and read from SQLite DB
     }
 
     /**
@@ -40,12 +35,14 @@ public abstract class Hero extends DungeonCharacter {
         }
 
         // Hero has a chance to block an attack and not take damage
-        if (randomChance(myBlockChance)) {
-            return false; // TODO -JA: notify observers the attack was *blocked*
+        if (randomChance(myStats.blockChance())) {
+            fireEvent(ATTACK_BLOCK);
+            return false;
         }
 
         if (theDamage >= getMyHealthPoints()) {
-            setMyHealthPoints(0); // TODO -JA: notify observers of death
+            setMyHealthPoints(0);
+            fireEvent(DEATH);
         } else {
             setMyHealthPoints(getMyHealthPoints() - theDamage);
         }
@@ -57,7 +54,7 @@ public abstract class Hero extends DungeonCharacter {
      * The special skill our Heroes implement.
      * @return true if special Skill had an effect
      */
-    public abstract boolean specialSkill(final DungeonCharacter theTarget);
+    public abstract boolean specialSkill(DungeonCharacter theTarget);
 
     /**
      * Return various Hero stats as string.
