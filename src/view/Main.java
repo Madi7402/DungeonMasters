@@ -19,5 +19,4 @@ public class Main extends Application {
         theStage.setScene(new Scene(root));
         theStage.show();
     }
-
 }
