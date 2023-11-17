@@ -48,12 +48,6 @@ public abstract class DungeonCharacter implements PropertyChangeEnableFight, Ser
         myPcs = new PropertyChangeSupport(this);
     }
 
-    private static void attackBehavior(final int theMinDamage, final int theMaxDamage) {
-        // TODO -JA: Perhaps attack behavior should be configurable on a per-class basis
-        //           or otherwise be substitutable via a attackBehavior Factory
-    }
-
-
     public String getMyName() {
         return myName;
     }
