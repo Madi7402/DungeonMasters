@@ -15,6 +15,9 @@ public class Controller {
     private Scene myScene;
     private Parent myRoot;
 
+    private static int WINDOW_WIDTH = 800;
+    private static int WINDOW_HEIGHT = 500;
+
     public void newGameButton(ActionEvent event) throws IOException {
         System.out.println("New game button pressed");
         switchScene(event, "NewGameMenu.fxml");
@@ -27,7 +30,7 @@ public class Controller {
         System.out.println("Settings button pressed");
         switchScene(event, "Settings.fxml");
     }
-    public void creditsButton(){
+    public void creditsButton(){    //TODO Textarea
         System.out.println("Credits button pressed");
         //switchScene(event, <Insert FXML here>)
     }
@@ -35,7 +38,7 @@ public class Controller {
     public void switchScene(ActionEvent event, String sceneName) throws IOException {
         myRoot = FXMLLoader.load(getClass().getResource(sceneName));
         myStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        myScene = new Scene(myRoot);
+        myScene = new Scene(myRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
         myStage.setScene(myScene);
         myStage.show();
     }
