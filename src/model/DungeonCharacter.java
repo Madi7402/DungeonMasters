@@ -68,8 +68,8 @@ public abstract class DungeonCharacter implements PropertyChangeEnableFight, Ser
         if (theHealthPoints < 0) {
             throw new IllegalArgumentException("Health points must not be less than 0");
         }
+        fireEvent(HEALTH_CHANGED, myHealthPoints, theHealthPoints);
         this.myHealthPoints = theHealthPoints;
-        fireEvent(HEALTH_CHANGED);
     }
 
     /**
