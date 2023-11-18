@@ -28,7 +28,6 @@ public abstract class DungeonCharacter implements PropertyChangeEnableFight, Ser
      * The name provided to the DungeonCharacter.
      */
     private final String myName;
-
     /**
      * The experience level of the DungeonCharacter.
      */
@@ -43,7 +42,7 @@ public abstract class DungeonCharacter implements PropertyChangeEnableFight, Ser
     DungeonCharacter(final String theName, final int theLevel) {
         myName = theName;
         myLevel = theLevel;
-        myStats = new CharStats(this.getClass().getSimpleName().toLowerCase()); // TODO -JA: Currently SQL issue cases termination, catch/try here?
+        myStats = new CharStats(this.getClass().getSimpleName()); // TODO -JA: Currently SQL issue cases termination, catch/try here?
         myHealthPoints = myStats.startingHealth(); // TODO -JA: Do we just want to build this into CharStats?
         myPcs = new PropertyChangeSupport(this);
     }
