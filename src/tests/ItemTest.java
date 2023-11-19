@@ -9,7 +9,7 @@ public class ItemTest {
     @Test
     public void constructItemTest() {
         Item pillar = new Item(ItemType.PILLAR_ABSTRACTION);
-        assertEquals("Pillar of Abstraction: \"Stay Hidden.\"", pillar.toString());
+        assertEquals("Pillar of Abstraction", pillar.toString());
     }
 
     @Test
