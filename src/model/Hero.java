@@ -59,6 +59,7 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
             fireEvent(DEATH);
         } else {
             setMyHealthPoints(getMyHealthPoints() - theDamage);
+            fireEvent(TAKE_DAMAGE);
         }
 
         return true;
