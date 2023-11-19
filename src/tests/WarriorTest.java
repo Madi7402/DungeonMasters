@@ -16,7 +16,8 @@ public class WarriorTest {
     @Test
     public void toStringTest() {
         Warrior warrior = new Warrior("TestName");
-        assertEquals("Level 1 Character: model.Warrior Health: 125 Inventory: []", warrior.toString());
+        assertEquals("Name: TestName HP: 125 Healing Potions: 0 Vision Potions: 0 Inventory: []"
+                , warrior.toString());
     }
 
     @Test
