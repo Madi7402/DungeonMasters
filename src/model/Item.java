@@ -20,15 +20,21 @@ public class Item {
      * Text description of the Item.
      */
     private String myDesc;
+    /**
+     * The ItemType of the Item
+     */
+    private ItemType myType;
 
     /**
      * Create an Item given an ItemType.
-     * @param theItem the ItemType we are creating.
+     * @param theItemType the ItemType we are creating.
      */
-    public Item(final ItemType theItem) {
+    public Item(final ItemType theItemType) {
+        myType = theItemType;
+
         final SQLiteDataSource ds = new SQLiteDataSource(); // From example code
         ds.setUrl("jdbc:sqlite:database.sqlite.db");
-        final String query = "SELECT * FROM item where name == '" + theItem.toString().toLowerCase() + "'"; // TODO -JA: SQLi potential
+        final String query = "SELECT * FROM item where name == '" + theItemType.toString().toLowerCase() + "'"; // TODO -JA: SQLi potential
 
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement()) {
@@ -57,8 +63,16 @@ public class Item {
         return myDesc;
     }
 
+    /**
+     * Get the ItemType of the Item
+     * @return the ItemType associated with this Item
+     */
+    public ItemType getType() {
+        return myType;
+    }
+
     @Override
     public String toString() {
-        return myName + ": \"" + myDesc + "\"";
+        return myName;
     }
 }
