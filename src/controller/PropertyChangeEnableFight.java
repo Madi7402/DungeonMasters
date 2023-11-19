@@ -11,6 +11,6 @@ public interface PropertyChangeEnableFight extends PropertyChangeEnable {
     String ATTACK_BLOCK = "aBlock";
     /** The health of a character has been changed **/
     String HEALTH_CHANGED = "hChange";
-    /** The character took damage */
+    /** The character took damage **/
     String TAKE_DAMAGE = "aDamaged";
 }

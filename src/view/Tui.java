@@ -65,7 +65,7 @@ public class Tui implements PropertyChangeListener {
         switch (evt.getPropertyName()) {
             case DEATH -> System.out.println(name + " DIED!");
             case ATTACK -> System.out.println(name + " Attacked!");
-            case TAKE_DAMAGE -> System.out.println(name + "took damage!");
+            case TAKE_DAMAGE -> System.out.println(name + " took damage!");
             case HEALTH_CHANGED
                     -> System.out.println(name + "'s health changed from "
                     + evt.getOldValue() + " to " + evt.getNewValue());
