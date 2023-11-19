@@ -6,9 +6,10 @@ import java.beans.PropertyChangeListener;
 import java.io.*;
 
 import static controller.PropertyChangeEnableFight.*;
+import static controller.PropertyChangeEnableHero.INVENTORY_ACTION;
 
 public class Tui implements PropertyChangeListener {
-    public static void main(String[]theArgs) throws IOException, ClassNotFoundException {
+    public static void main(String[]theArgs) {
         Tui tui = new Tui();
         tui.fightSim();
 //        tui.saveLoadConcept();
@@ -54,24 +55,24 @@ public class Tui implements PropertyChangeListener {
             hero.attack(ogre);
             ogre.attack(hero);
         }
+        hero.giveItem(ItemType.PILLAR_ENCAPSULATION);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         DungeonCharacter source = (DungeonCharacter) evt.getSource();
-        if (DEATH.equals(evt.getPropertyName())) {
-            System.out.println(evt.getSource().getClass().getName() + " " + source.getMyName() + " DIED!");
-        } else if (ATTACK.equals(evt.getPropertyName())) {
-            System.out.println(evt.getSource().getClass().getName() + " " + source.getMyName() + " Attacked!");
-        } else if (HEALTH_CHANGED.equals(evt.getPropertyName())) {
-            System.out.println(evt.getSource().getClass().getName() + " " + source.getMyName() + " Health Changed!"
-                    + " changed health From: " + evt.getOldValue() + " to " + evt.getNewValue());
-        } else if (ATTACK_BLOCK.equals(evt.getPropertyName())) {
-            System.out.println(evt.getSource().getClass().getName() + " " + source.getMyName() + " Blocked the Attack!");
-        } else if (ATTACK_MISS.equals(evt.getPropertyName())) {
-            System.out.println(evt.getSource().getClass().getName() + " " + source.getMyName() + " Missed!");
-        } else {
-            System.out.println(evt.toString()); // TODO custom actions depending on event
+        String name = source.getMyName();
+        switch (evt.getPropertyName()) {
+            case DEATH -> System.out.println(name + " DIED!");
+            case ATTACK -> System.out.println(name + " Attacked!");
+            case TAKE_DAMAGE -> System.out.println(name + "took damage!");
+            case HEALTH_CHANGED
+                    -> System.out.println(name + "'s health changed from "
+                    + evt.getOldValue() + " to " + evt.getNewValue());
+            case ATTACK_BLOCK -> System.out.println(name + " blocked the attack.");
+            case ATTACK_MISS -> System.out.println(name + " missed!");
+            case INVENTORY_ACTION -> System.out.println("Hero Inventory Changed");
+            default -> System.err.println("Unhandled Event: " + evt.getPropertyName());
         }
     }
 }
