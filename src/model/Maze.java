@@ -3,18 +3,18 @@ package model;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeMap;
 
 public class Maze {
-    private Room[][][] rooms;
-    private int width;
-    private int height;
-    private static final int LEVELS = 4;  // Fixed number of levels
-
-
-    public Maze(int width, int height, int levels) {
+    private TreeMap<Coordinates, Room> rooms;
+    private int width = 5;
+    private int height = 5;
+    private static final int LEVELS = 4;  // Fixed number of levels - can move to game and pass from there
+                                            // game decides a.k.a. DungeonAdventure
+    public Maze(int levels, int width, int height) {
         this.width = width;
         this.height = height;
-        this.rooms = new Room[LEVELS][width][height];
+        this.rooms = new TreeMap<>();
     }
 
     private void initializeMaze() {
@@ -24,7 +24,7 @@ public class Maze {
                 for (int col = 0; col < height; col++) {
                     // Generate a random room and assign it to the maze
                     var coordinates = new Coordinates(level, row, col);
-                    rooms[level][row][col] = Room.generateRandomRoom(coordinates);
+                    rooms.put(coordinates, Room.generateRandomRoom(coordinates));
                 }
             }
         }
@@ -35,49 +35,46 @@ public class Maze {
 
         // Set entrance and exit for each level
         for (int level = 0; level < LEVELS; level++) {
-            int entranceRow, entranceCol, exitRow, exitCol;
+            Coordinates entrance, exit;
 
             if (level % 2 == 0) {
                 // Even levels: bottom-left entrance to top-right exit
-                entranceRow = 0;
-                entranceCol = height - 1;
-                exitRow = width - 1;
-                exitCol = 0;
+                entrance = new Coordinates(level, 0, height - 1);
+                exit = new Coordinates(level, width - 1, 0);
             } else {
                 // Odd levels: top-right entrance to bottom-left exit
-                entranceRow = width - 1;
-                entranceCol = 0;
-                exitRow = 0;
-                exitCol = height - 1;
+                entrance = new Coordinates(level, width - 1, 0);
+                exit = new Coordinates(level, 0, height - 1);
             }
 
             // delete any objects!!! (from the entrance and exit)
-
-            entranceCoordinates[level] = new Coordinates(level, entranceRow, entranceCol);
+            entranceCoordinates[level] = entrance;
 
             // Set entrance and exit
-            rooms[level][entranceRow][entranceCol].setPortal(Portal.ENTRANCE);
-            rooms[level][exitRow][exitCol].setPortal(Portal.EXIT);
+            rooms.get(entrance).setPortal(Portal.ENTRANCE);
+            rooms.get(exit).setPortal(Portal.EXIT);
         }
 
         return entranceCoordinates;
     }
 
-    public void generateMaze() {
+    public static Maze generateMaze(int levels, int width, int height) { // should this be public static or private and called from constructor, decide!
+        Maze maze = new Maze(levels, width, height);
+
         // Initialize maze with empty rooms for each level
-        initializeMaze();
+        maze.initializeMaze();
 
         // Set entrance and exit for each level
-        var entranceCoordinates = setEntranceAndExit();
+        var entranceCoordinates = maze.setEntranceAndExit();
 
         // Start maze generation from the entrance for each level
         for (var entrance : entranceCoordinates) {
-            generateFrom(entrance);
+            maze.generateFrom(entrance);
         }
+        return maze;
     }
 
     private void generateFrom(Coordinates coordinate) {
-        var level = coordinate.level();
 
         // Get a randomized list of possible directions (North, South, East, West)
         List<Direction> directions = getRandomizedDirections();
@@ -112,7 +109,7 @@ public class Maze {
 
     // Helper method to check if a room has been visited
     private boolean isVisited(Coordinates coordinate) {
-        return rooms[coordinate.level()][coordinate.row()][coordinate.column()].isVisited();
+        return rooms.get(coordinate).isVisited();
     }
 }
 
