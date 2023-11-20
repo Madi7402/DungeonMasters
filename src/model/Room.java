@@ -1,5 +1,6 @@
 package model;
 
+import java.util.EnumSet;
 import java.util.Random;
 
 /**
@@ -7,74 +8,64 @@ import java.util.Random;
  * @author ...
  */
 public class Room {
-    private boolean hasEntrance;
-    private boolean hasExit;
+    private Portal portal;
+    private EnumSet<Direction> doors;
     private boolean hasPillar; // keep here
     private boolean hasPit;
     private boolean hasHealingPotion;
     private boolean hasVisionPotion;
-    private boolean hasDoorToNorth;
-    private boolean hasDoorToSouth; //southDoor
-    private boolean hasDoorToEast;
-    private boolean hasDoorToWest;
     private boolean isVisited; // keep here
-    private int xCoordinate;
-    private int yCoordinate;
-    private int level;
+    private Coordinates coordinates; // x, y, and z (levels)
 
     public Room() {
+
     }
 
     // Constructor for an empty room
-    public Room(boolean hasEntrance, boolean hasExit, boolean hasPillar, boolean hasPit,
-                boolean hasHealingPotion, boolean hasVisionPotion, boolean hasDoorToNorth,
-                boolean hasDoorToSouth, boolean hasDoorToEast, boolean hasDoorToWest,
-                boolean isVisited, int xCoordinate, int yCoordinate, int level) {
-        this.hasEntrance = hasEntrance;
-        this.hasExit = hasExit;
-        this.hasPillar = hasPillar;
+    public Room(boolean hasPit, boolean hasHealingPotion, boolean hasVisionPotion,
+                EnumSet<Direction> doors, Coordinates coordinates) {
+        this.portal = Portal.NONE;
+        this.isVisited = false;
+        this.hasPillar = false;
         this.hasPit = hasPit;
         this.hasHealingPotion = hasHealingPotion;
         this.hasVisionPotion = hasVisionPotion;
-        this.hasDoorToNorth = hasDoorToNorth;
-        this.hasDoorToSouth = hasDoorToSouth;
-        this.hasDoorToEast = hasDoorToEast;
-        this.hasDoorToWest = hasDoorToWest;
-        this.isVisited = isVisited;
-        this.xCoordinate = xCoordinate;
-        this.yCoordinate = yCoordinate;
-        this.level = level;
+        this.doors = doors;
+        this.coordinates = coordinates;
     }
 
     // Generates a random room
-    public static Room generateRandomRoom() {
+    public static Room generateRandomRoom(Coordinates coordinates) {
         Random random = new Random();
-        boolean hasEntrance = false;
-        boolean hasExit = false;
-        boolean hasPillar = false;
+
         boolean hasPit = random.nextDouble() < 0.1;  // 10% chance for a pit
         boolean hasHealingPotion = random.nextDouble() < 0.1;  // 10% chance for a healing potion
         boolean hasVisionPotion = random.nextDouble() < 0.1;  // 10% chance for a vision potion
-        boolean hasDoorToNorth = random.nextDouble() < 0.5;
-        boolean hasDoorToSouth = random.nextDouble() < 0.5;
-        boolean hasDoorToEast = random.nextDouble() < 0.5;
-        boolean hasDoorToWest = random.nextDouble() < 0.5;
-        boolean isVisited = false;
-        int xCoordinate = 0;
-        int yCoordinate = 0;
-        int level = 0;
 
-        return new Room(hasEntrance, hasExit, hasPillar, hasPit, hasHealingPotion, hasVisionPotion,
-                hasDoorToNorth, hasDoorToSouth, hasDoorToEast, hasDoorToWest, isVisited, xCoordinate,
-                yCoordinate, level);
+        var doors = generateRandomDoors(random);
+
+        return new Room(hasPit, hasHealingPotion, hasVisionPotion, doors, coordinates);
     }
 
-    public void setHasEntrance(boolean hasEntrance) {
-        this.hasEntrance = hasEntrance;
+    private static EnumSet<Direction> generateRandomDoors(Random random) {
+        var doors = EnumSet.noneOf(Direction.class);
+        if (random.nextDouble() < 0.5) {
+            doors.add(Direction.NORTH);
+        }
+        if (random.nextDouble() < 0.5) {
+            doors.add(Direction.SOUTH);
+        }
+        if (random.nextDouble() < 0.5) {
+            doors.add(Direction.EAST);
+        }
+        if (random.nextDouble() < 0.5) {
+            doors.add(Direction.WEST);
+        }
+        return doors;
     }
 
-    public void setHasExit(boolean hasExit) {
-        this.hasExit = hasExit;
+    public void setPortal(Portal portal) {
+        this.portal = portal;
     }
 
     public boolean isVisited() {
@@ -88,7 +79,7 @@ public class Room {
     public boolean hasMultipleItems() {
         int itemCount = 0;
 
-        if (hasPit) {
+        if (hasPit) { // could maybe batch into enum set of items... TO DO ?
             itemCount++;
         }
         if (hasHealingPotion) {
@@ -110,14 +101,14 @@ public class Room {
         StringBuilder sb = new StringBuilder();
 
         // top line
-        if (hasDoorToNorth) {
+        if (doors.contains(Direction.NORTH)) {
             sb.append("*-*\n");
         } else {
             sb.append("***\n");
         }
 
         // middle line
-        if (hasDoorToWest) {
+        if (doors.contains(Direction.WEST)) {
             sb.append("|");
         } else {
             sb.append("*");
@@ -126,6 +117,8 @@ public class Room {
         if (hasMultipleItems()) {
             sb.append("M");
         } else if (hasPillar) { // one pillar type per level
+            var level = coordinates.level();
+
             if (level == 0) {
                 sb.append("A");
             } else if (level == 1) {
@@ -139,9 +132,9 @@ public class Room {
             }
         } else if (hasPit) {
             sb.append("X");
-        } else if (hasEntrance) {
+        } else if (portal.equals(Portal.ENTRANCE)) {
             sb.append("i");
-        } else if (hasExit) {
+        } else if (portal.equals(Portal.EXIT)) {
             sb.append("O");
         } else if (hasHealingPotion) {
             sb.append("H");
@@ -151,14 +144,14 @@ public class Room {
             sb.append(" ");
         }
 
-        if (hasDoorToEast) {
+        if (doors.contains(Direction.EAST)) {
             sb.append("|\n");
         } else {
             sb.append("*\n");
         }
 
         // bottom line
-        if (hasDoorToSouth) {
+        if (doors.contains(Direction.SOUTH)) {
             sb.append("*-*\n");
         } else {
             sb.append("***\n");
