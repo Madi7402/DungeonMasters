@@ -23,67 +23,73 @@ public class Maze {
             for (int row = 0; row < width; row++) {
                 for (int col = 0; col < height; col++) {
                     // Generate a random room and assign it to the maze
-                    rooms[level][row][col] = Room.generateRandomRoom();
+                    var coordinates = new Coordinates(level, row, col);
+                    rooms[level][row][col] = Room.generateRandomRoom(coordinates);
                 }
             }
         }
     }
 
-    private void setEntranceAndExit() {
+    private Coordinates[] setEntranceAndExit() {
+        var entranceCoordinates = new Coordinates[LEVELS];
+
         // Set entrance and exit for each level
         for (int level = 0; level < LEVELS; level++) {
-            int entranceX, entranceY, exitX, exitY;
+            int entranceRow, entranceCol, exitRow, exitCol;
 
             if (level % 2 == 0) {
                 // Even levels: bottom-left entrance to top-right exit
-                entranceX = 0;
-                entranceY = height - 1;
-                exitX = width - 1;
-                exitY = 0;
+                entranceRow = 0;
+                entranceCol = height - 1;
+                exitRow = width - 1;
+                exitCol = 0;
             } else {
                 // Odd levels: top-right entrance to bottom-left exit
-                entranceX = width - 1;
-                entranceY = 0;
-                exitX = 0;
-                exitY = height - 1;
+                entranceRow = width - 1;
+                entranceCol = 0;
+                exitRow = 0;
+                exitCol = height - 1;
             }
 
+            // delete any objects!!! (from the entrance and exit)
+
+            entranceCoordinates[level] = new Coordinates(level, entranceRow, entranceCol);
+
             // Set entrance and exit
-            rooms[level][entranceX][entranceY].setHasEntrance(true);
-            rooms[level][exitX][exitY].setHasExit(true);
+            rooms[level][entranceRow][entranceCol].setPortal(Portal.ENTRANCE);
+            rooms[level][exitRow][exitCol].setPortal(Portal.EXIT);
         }
+
+        return entranceCoordinates;
     }
 
     public void generateMaze() {
-        int entranceX = 0;
-        int entranceY = 0;
-
         // Initialize maze with empty rooms for each level
         initializeMaze();
 
         // Set entrance and exit for each level
-        setEntranceAndExit();
+        var entranceCoordinates = setEntranceAndExit();
 
         // Start maze generation from the entrance for each level
-        for (int level = 0; level < LEVELS; level++) {
-            generateFrom(entranceX, entranceY, level);
+        for (var entrance : entranceCoordinates) {
+            generateFrom(entrance);
         }
     }
 
-    private void generateFrom(int x, int y, int level) {
+    private void generateFrom(Coordinates coordinate) {
+        var level = coordinate.level();
 
         // Get a randomized list of possible directions (North, South, East, West)
         List<Direction> directions = getRandomizedDirections();
 
         // Iterate through each direction
         for (Direction direction : directions) {
-            int nextX = x + direction.getXOffset();
-            int nextY = y + direction.getYOffset();
+            var nextCoordinate = coordinate.generate(direction.getXOffset(), direction.getYOffset());
 
             // Check if the next room is within bounds and not visited
-            if (isValidRoom(nextX, nextY, level) && !isVisited(nextX, nextY, level)) {
+            if (isValidRoom(nextCoordinate) && !isVisited(nextCoordinate)) {
                 // Recursively generate the maze from the next room
-                generateFrom(nextX, nextY, level);
+                generateFrom(nextCoordinate); // TO DO
             }
         }
     }
@@ -96,13 +102,17 @@ public class Maze {
     }
 
     // Helper method to check if a room is within bounds
-    private boolean isValidRoom(int x, int y, int level) {
-        return x >= 0 && x < width && y >= 0 && y < height && level >= 0 && level < LEVELS;
+    private boolean isValidRoom(Coordinates coordinate) {
+        var row = coordinate.row();
+        var col = coordinate.column();
+        var level = coordinate.level();
+
+        return row >= 0 && row < width && col >= 0 && col < height && level >= 0 && level < LEVELS;
     }
 
     // Helper method to check if a room has been visited
-    private boolean isVisited(int x, int y, int level) {
-        return rooms[level][x][y].isVisited();
+    private boolean isVisited(Coordinates coordinate) {
+        return rooms[coordinate.level()][coordinate.row()][coordinate.column()].isVisited();
     }
 }
 
