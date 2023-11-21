@@ -26,7 +26,9 @@ public abstract class Monster extends DungeonCharacter {
         }
 
         // Monsters have a chance to heal after an attack that loses hit points, if they're alive.
+        fireEvent(TAKE_DAMAGE);
         setMyHealthPoints(getMyHealthPoints() - theDamage);
+
         if (randomChance(myStats.healChance())) { // Random chance to heal after taking damage
             heal(randomValue(myStats.minHeal(), myStats.maxHeal())); // TODO -JA: max healing to startHealth or a cap%
         }

@@ -13,7 +13,8 @@ public class ThiefTest {
     @Test
     public void toStringTest() {
         Thief thief = new Thief("TestName");
-        assertEquals("Level 1 Character: model.Thief Health: 75 Inventory: []", thief.toString());
+        assertEquals("Name: TestName HP: 75 Healing Potions: 0 Vision Potions: 0 Inventory: []",
+                thief.toString());
     }
 
     @Test
