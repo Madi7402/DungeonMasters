@@ -2,17 +2,26 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import controller.PropertyChangeEnableHero;
 
 /**
  * A dungeon character that can be played by the player. Only one can exist per dungeon.
  * Has special attacks.
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
-public abstract class Hero extends DungeonCharacter {
+public abstract class Hero extends DungeonCharacter implements PropertyChangeEnableHero {
     /**
      * List of items the Hero has collected.
      */
-    private final List<Item> myInventory;
+    private final List<Item> myInventory = new ArrayList<>();
+    /**
+     * The amount of Healing Potions in the Hero's inventory.
+     */
+    private int myHealingPotions = 0;
+    /**
+     * The amount of Healing Potions in the Hero's inventory.
+     */
+    private int myVisionPotions = 0;
 
     /**
      * Construct a Hero.
@@ -20,8 +29,13 @@ public abstract class Hero extends DungeonCharacter {
      */
     Hero(final String theName) { // TODO -JA: Do we want to construct with a starting level?
         super(theName, 1);
-        myInventory = new ArrayList<>();
     }
+
+    /**
+     * The special skill our Heroes implement.
+     * @return true if special Skill had an effect
+     */
+    public abstract boolean specialSkill(DungeonCharacter theTarget);
 
     /**
      * Reduce health by provided amount.
@@ -45,25 +59,51 @@ public abstract class Hero extends DungeonCharacter {
             fireEvent(DEATH);
         } else {
             setMyHealthPoints(getMyHealthPoints() - theDamage);
+            fireEvent(TAKE_DAMAGE);
         }
 
         return true;
     }
 
     /**
-     * The special skill our Heroes implement.
-     * @return true if special Skill had an effect
+     * Give the Hero an Item. (Cheat)
+     * @param theItemType the item to create and to the Hero's inventory
      */
-    public abstract boolean specialSkill(DungeonCharacter theTarget);
+    public void giveItem(final ItemType theItemType) {
+        switch (theItemType) { // Update Potion counts
+            case HEALING_POTION -> myHealingPotions++;
+            case VISION_POTION -> myVisionPotions++;
+        }
+        myInventory.add(new Item(theItemType));
+        fireEvent(INVENTORY_ACTION);
+    }
 
     /**
-     * Return various Hero stats as string.
-     * @return Level, Character Type, Health, and Inventory of Hero
+     * Add an Item into the Hero's inventory
+     * @param theItem the Item to add to the Hero's inventory (e.g. a picked up item)
+     */
+    public void getItem(final Item theItem) {
+        if (theItem == null) {
+            throw new RuntimeException("Hero tried to receive null Item");
+        }
+
+        switch (theItem.getType()) { // Update Potion counts
+            case HEALING_POTION -> myHealingPotions++;
+            case VISION_POTION -> myVisionPotions++;
+        }
+
+        myInventory.add(theItem);
+        fireEvent(INVENTORY_ACTION);
+    }
+
+    /**
+     * Return various Hero information as a String
+     * @return Name, Hit Points, Number of Healing Potions, Number of Vision Potions, Pillars
      */
     @Override
     public String toString() {
-        return "Level " + super.getMyLevel() + " Character: " + this.getClass().getName()
-                + " Health: " + super.getMyHealthPoints() + " Inventory: "
+        return "Name: " + getMyName() + " HP: " + getMyHealthPoints() + " Healing Potions: "
+                + myHealingPotions + " Vision Potions: " + myVisionPotions + " Inventory: "
                 + myInventory.toString();
     }
 }

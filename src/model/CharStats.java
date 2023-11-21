@@ -13,7 +13,7 @@ import java.sql.Statement;
  * Contain various statistics and parameters for DungeonCharacters.
  */
 public class CharStats implements Serializable {
-    /** UID for Serialization */
+    /** UID for Serialization. */
     @Serial
     private static final long serialVersionUID = 0L; // Update on class changes?
     /**
@@ -55,16 +55,21 @@ public class CharStats implements Serializable {
      */
     private double myBlockChance;
 
+    /**
+     * CharStats reads, and contains, various statics about DungeonCharacters provided by
+     * the SQLite Database.
+     * @param theClassName the simplified class name of the character (e.g. "Ogre")
+     */
     public CharStats(final String theClassName) {
         // TODO -JA: Create a specification outlying appropriate values for DungeonCharacter
         //           statistics and damage characteristics.
         final SQLiteDataSource ds = new SQLiteDataSource(); // From example code
         ds.setUrl("jdbc:sqlite:database.sqlite.db");
 
-        final String query = "SELECT * FROM character where name == '" + theClassName + "'"; // TODO -JA: SQLi potential
+        final String query = "SELECT * FROM character where name == '" + theClassName.toLowerCase() + "'"; // TODO -JA: SQLi potential
 
         try (Connection conn = ds.getConnection();
-             Statement stmt = conn.createStatement(); ) {
+             Statement stmt = conn.createStatement() ) {
 
             final ResultSet rs = stmt.executeQuery(query);
 
@@ -83,38 +88,74 @@ public class CharStats implements Serializable {
         }
     }
 
+    /**
+     * Get the Character's starting ("Maximum") heath.
+     * @return the starting health for the Character
+     */
     public int startingHealth() {
         return myStartingHealth;
     }
 
+    /**
+     * Get the Character's Attack Speed.
+     * @return the character's Attack Speed
+     */
     public int attackSpeed() {
         return myAttackSpeed;
     }
 
+    /**
+     * Get the Character's Hit Chance.
+     * @return the probability of the hit
+     */
     public double hitChance() {
         return myHitChance;
     }
 
+    /**
+     * Get the Character's Minimum Damage.
+     * @return the least amount of damage the character will deal in an attack
+     */
     public int minDamage() {
         return myMinDamage;
     }
 
+    /**
+     * Get the Character's Maximum Damage.
+     * @return the most amount of damage the character will deal in an attack
+     */
     public int maxDamage() {
         return myMaxDamage;
     }
 
+    /**
+     * Get the Character's Minimum Healing.
+     * @return the least amount of points the character will heal
+     */
     public int minHeal() {
         return myMinHeal;
     }
 
+    /**
+     * Get the Character's Maximum Healing.
+     * @return the most amount of points the character will heal
+     */
     public int maxHeal() {
         return myMaxHeal;
     }
 
+    /**
+     * Get the Character's Chance to Heal.
+     * @return the probably that the Character will heal
+     */
     public double healChance() {
         return myHealChance;
     }
 
+    /**
+     * Get the Character's Chance to Block.
+     * @return the probability that the character will block an attack
+     */
     public double blockChance() {
         return myBlockChance;
     }
