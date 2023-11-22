@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * An Enum of Directions (N S E W).
+ * @author Jonathan Abrams, Martha Emerson, Madison Pope
+ */
 public enum Direction {
     NORTH(0, -1), // Move north (up)
     SOUTH(0, 1),  // Move south (down)
@@ -9,6 +13,7 @@ public enum Direction {
     private final int xOffset;
     private final int yOffset;
 
+    // Direction (determined by x and y offsets)
     Direction(int xOffset, int yOffset) {
         this.xOffset = xOffset;
         this.yOffset = yOffset;

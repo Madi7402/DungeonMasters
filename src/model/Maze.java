@@ -5,18 +5,23 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
 
+/**
+ * A randomly generated, four-level Maze within a dungeon.
+ * @author Jonathan Abrams, Martha Emerson, Madison Pope
+ */
 public class Maze {
     private TreeMap<Coordinates, Room> rooms;
     private int width = 5;
     private int height = 5;
     private static final int LEVELS = 4;  // Fixed number of levels - can move to game and pass from there
-                                            // game decides a.k.a. DungeonAdventure
+                                          // game decides a.k.a. DungeonAdventure
     public Maze(int levels, int width, int height) {
         this.width = width;
         this.height = height;
         this.rooms = new TreeMap<>();
     }
 
+    // Fill the Maze full of Rooms
     private void initializeMaze() {
         // Loop through each level, row, and column to create rooms
         for (int level = 0; level < LEVELS; level++) {
@@ -30,10 +35,10 @@ public class Maze {
         }
     }
 
+    // Set the entrance and exit for each level of the Maze
     private Coordinates[] setEntranceAndExit() {
         var entranceCoordinates = new Coordinates[LEVELS];
 
-        // Set entrance and exit for each level
         for (int level = 0; level < LEVELS; level++) {
             Coordinates entrance, exit;
 
@@ -47,7 +52,7 @@ public class Maze {
                 exit = new Coordinates(level, 0, height - 1);
             }
 
-            // delete any objects!!! (from the entrance and exit)
+            // TO DO - delete any objects!!! (from the entrance and exit)
             entranceCoordinates[level] = entrance;
 
             // Set entrance and exit
@@ -58,8 +63,9 @@ public class Maze {
         return entranceCoordinates;
     }
 
-    public static Maze generateMaze(int levels, int width, int height) { // should this be public static or private and called from constructor, decide!
-        Maze maze = new Maze(levels, width, height);
+    // Generate the Maze for each level
+    public static Maze generateMaze(int levels, int width, int height) { // should this be public static, or private and called from constructor
+        Maze maze = new Maze(levels, width, height);                     // TO DO - decide!!
 
         // Initialize maze with empty rooms for each level
         maze.initializeMaze();
@@ -74,6 +80,7 @@ public class Maze {
         return maze;
     }
 
+    // Ensure that Maze is traversable from entrance to exit - IN PROGRESS
     private void generateFrom(Coordinates coordinate) {
 
         // Get a randomized list of possible directions (North, South, East, West)
