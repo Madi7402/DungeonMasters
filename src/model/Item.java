@@ -23,7 +23,7 @@ public class Item {
     /**
      * The ItemType of the Item
      */
-    private ItemType myType;
+    private final ItemType myType;
 
     /**
      * Create an Item given an ItemType.
