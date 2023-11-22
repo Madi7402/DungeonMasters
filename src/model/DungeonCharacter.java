@@ -40,8 +40,8 @@ public abstract class DungeonCharacter implements PropertyChangeEnableFight, Ser
     private final PropertyChangeSupport myPcs;
 
     DungeonCharacter(final String theName, final int theLevel) {
-        myName = theName;
-        myLevel = theLevel;
+        myName = theName;   // TODO -JA: validate inputs
+        myLevel = theLevel; // TODO -JA: validate inputs
         myStats = new CharStats(this.getClass().getSimpleName()); // TODO -JA: Currently SQL issue cases termination, catch/try here?
         myHealthPoints = myStats.startingHealth(); // TODO -JA: Do we just want to build this into CharStats?
         myPcs = new PropertyChangeSupport(this);

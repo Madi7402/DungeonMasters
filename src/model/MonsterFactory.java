@@ -1,7 +1,7 @@
 package model;
 
 /**
- * MonsterFactory crates a monster via  the createMonster for the given MonsterType.
+ * MonsterFactory crates a monster via the createMonster for the given MonsterType.
  */
 public class MonsterFactory {
     public Monster createMonster(final MonsterType theMonsterType) {
