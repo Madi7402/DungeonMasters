@@ -4,7 +4,7 @@ package model;
  * A dungeon character that cannot be played by the player, spawns in the dungeon. Uses SQLite.
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
-public class Monster extends DungeonCharacter {
+public abstract class Monster extends DungeonCharacter {
     Monster() {
         super("Monster", 1); // TODO -JA: set monster name
     }
@@ -20,14 +20,17 @@ public class Monster extends DungeonCharacter {
         }
 
         if (theDamage >= getMyHealthPoints()) { // Dead, never heal
-            setMyHealthPoints(0); // TODO -JA: notify observers of death
+            setMyHealthPoints(0);
+            fireEvent(DEATH);
             return true;
         }
 
         // Monsters have a chance to heal after an attack that loses hit points, if they're alive.
+        fireEvent(TAKE_DAMAGE);
         setMyHealthPoints(getMyHealthPoints() - theDamage);
-        if (randomChance(getMyHealChance())) { // Random chance to heal after taking damage when not dead
-            heal(randomValue(getMyMinHeal(), getMyMaxHeal())); // TODO -JA: max healing to maxHealthPoints or a cap
+
+        if (randomChance(myStats.healChance())) { // Random chance to heal after taking damage
+            heal(randomValue(myStats.minHeal(), myStats.maxHeal())); // TODO -JA: max healing to startHealth or a cap%
         }
 
         return true;
@@ -40,6 +43,6 @@ public class Monster extends DungeonCharacter {
     @Override
     public String toString() {
         return "Level " + super.getMyLevel() + " Character: " + this.getClass().getName()
-                + " Health: " + super.getMyHealthPoints() + " Heal Chance: " + super.getMyHealChance();
+                + " Health: " + super.getMyHealthPoints() + " Heal Chance: " + myStats.healChance();
     }
 }

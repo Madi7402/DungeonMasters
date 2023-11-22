@@ -1,4 +1,4 @@
-package Tests;
+package tests;
 import model.Ogre;
 import model.Priestess;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,8 @@ public class PriestessTest {
     @Test
     public void toStringTest() {
         Priestess priestess = new Priestess("TestName");
-        assertEquals("Level 1 Character: model.Priestess Health: 100 Inventory: []", priestess.toString());
+        assertEquals("Name: TestName HP: 75 Healing Potions: 0 Vision Potions: 0 Inventory: []"
+                , priestess.toString());
     }
 
     @Test
