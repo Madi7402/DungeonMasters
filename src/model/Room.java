@@ -4,8 +4,8 @@ import java.util.EnumSet;
 import java.util.Random;
 
 /**
- * A dungeon room within the maze that stores item information (...and monster and pillar info?)
- * @author ...
+ * A dungeon Room within the Maze that stores information about Items and Pillars.
+ * @author Jonathan Abrams, Martha Emerson, Madison Pope
  */
 public class Room {
     private Portal portal;
@@ -17,6 +17,7 @@ public class Room {
     private boolean isVisited; // keep here
     private Coordinates coordinates; // x, y, and z (levels)
 
+    // Default constructor
     public Room() {
 
     }
@@ -41,7 +42,7 @@ public class Room {
         boolean hasPit = random.nextDouble() < 0.1;  // 10% chance for a pit
         boolean hasHealingPotion = random.nextDouble() < 0.1;  // 10% chance for a healing potion
         boolean hasVisionPotion = random.nextDouble() < 0.1;  // 10% chance for a vision potion
-
+                                                            // TO DO - fix magic numbers
         var doors = generateRandomDoors(random);
 
         return new Room(hasPit, hasHealingPotion, hasVisionPotion, doors, coordinates);
@@ -119,7 +120,7 @@ public class Room {
         } else if (hasPillar) { // one pillar type per level
             var level = coordinates.level();
 
-            if (level == 0) {
+            if (level == 0) { // fix magic numbers
                 sb.append("A");
             } else if (level == 1) {
                 sb.append("E");
