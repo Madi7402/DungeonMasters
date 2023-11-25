@@ -7,21 +7,47 @@ import java.util.TreeMap;
 
 /**
  * A randomly generated, four-level Maze within a dungeon.
+ * The maze is composed of rooms, and each room has various attributes such as portals, items, and positions.
+ * The maze is created with a fixed number of levels, width, and height.
+ *
  * @author Jonathan Abrams, Martha Emerson, Madison Pope
  */
 public class Maze {
+    /**
+     * The collection of rooms in the maze, organized by their coordinates.
+     */
     private TreeMap<Coordinates, Room> rooms;
+    /**
+     * The width of the maze, representing the number of columns (or rooms).
+     */
     private int width = 5;
+    /**
+     * The height of the maze, representing the number of rows.
+     */
     private int height = 5;
+    /**
+     * The fixed number of levels in the maze.
+     */
     private static final int LEVELS = 4;  // Fixed number of levels - can move to game and pass from there
                                           // game decides a.k.a. DungeonAdventure
+    /**
+     * Constructs a maze with the specified number of levels, width, and height.
+     * Initializes the maze with an empty collection of rooms.
+     * @param levels The number of levels in the maze.
+     * @param width The width of the maze (number of columns).
+     * @param height The height of the maze (number of rows).
+     */
     public Maze(int levels, int width, int height) {
         this.width = width;
         this.height = height;
         this.rooms = new TreeMap<>();
     }
 
-    // Fill the Maze full of Rooms
+    /**
+     * Fills the maze with randomly generated rooms, creating a grid of rooms with specified levels, width, and height.
+     * Each room is assigned random attributes such as portals, items, and positions.
+     * The rooms are stored in a TreeMap organized by their coordinates.
+     */
     private void initializeMaze() {
         // Loop through each level, row, and column to create rooms
         for (int level = 0; level < LEVELS; level++) {
@@ -36,7 +62,13 @@ public class Maze {
     }
 
 
-    // Set the entrance and exit for each level of the Maze
+    /**
+     * Sets the entrance and exit portals for each level in the maze.
+     * The entrance and exit are positioned based on the level, creating a path through the maze.
+     * The coordinates of the entrance portals are returned.
+     * Also, sets the corresponding portal type in the room objects.
+     * @return An array containing the coordinates of the entrance portals.
+     */
     private Coordinates[] setEntranceAndExit() {
         var entranceCoordinates = new Coordinates[LEVELS];
 
@@ -64,7 +96,14 @@ public class Maze {
         return entranceCoordinates;
     }
 
-    // Generate the Maze for each level
+    /**
+     * Generates a maze with the specified number of levels, width, and height.
+     * Initializes and populates the maze, sets entrance and exit, and generates paths between rooms.
+     * @param levels The number of levels in the maze.
+     * @param width The width of the maze (number of columns).
+     * @param height The height of the maze (number of rows).
+     * @return A generated maze with rooms and connections.
+     */
     public static Maze generateMaze(int levels, int width, int height) { // should this be public static, or private and called from constructor
         Maze maze = new Maze(levels, width, height);                     // TO DO - decide!!
 
@@ -82,6 +121,11 @@ public class Maze {
     }
 
     // Ensure that Maze is traversable from entrance to exit - IN PROGRESS
+    /**
+     * Generates the maze starting from the specified coordinate.
+     * Recursively explores directions from the coordinate, creating connections between rooms.
+     * @param coordinate The starting coordinate for maze generation.
+     */
     private void generateFrom(Coordinates coordinate) {
 
         // Get a randomized list of possible directions (North, South, East, West)
@@ -99,14 +143,21 @@ public class Maze {
         }
     }
 
-    // Helper method to get a randomized list of directions
+    /**
+     * Retrieves a randomized list of directions (North, South, East, West).
+     * @return A randomized list of directions.
+     */
     private List<Direction> getRandomizedDirections() {
         List<Direction> directions = Arrays.asList(Direction.values());
         Collections.shuffle(directions);
         return directions;
     }
 
-    // Helper method to check if a room is within bounds
+    /**
+     * Checks if a room at the specified coordinate is within the bounds of the maze.
+     * @param coordinate The coordinates of the room.
+     * @return True if the room is within bounds; otherwise, false.
+     */
     private boolean isValidRoom(Coordinates coordinate) {
         var row = coordinate.row();
         var col = coordinate.column();
@@ -115,7 +166,11 @@ public class Maze {
         return row >= 0 && row < width && col >= 0 && col < height && level >= 0 && level < LEVELS;
     }
 
-    // Helper method to check if a room has been visited
+    /**
+     * Checks if a room at the specified coordinate has been visited.
+     * @param coordinate The coordinates of the room.
+     * @return True if the room has been visited; otherwise, false.
+     */
     private boolean isVisited(Coordinates coordinate) {
         return rooms.get(coordinate).isVisited();
     }
