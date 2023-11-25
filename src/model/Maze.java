@@ -35,6 +35,7 @@ public class Maze {
         }
     }
 
+
     // Set the entrance and exit for each level of the Maze
     private Coordinates[] setEntranceAndExit() {
         var entranceCoordinates = new Coordinates[LEVELS];
@@ -119,5 +120,3 @@ public class Maze {
         return rooms.get(coordinate).isVisited();
     }
 }
-
-

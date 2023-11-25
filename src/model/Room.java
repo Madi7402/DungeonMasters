@@ -50,6 +50,7 @@ public class Room {
 
     private static EnumSet<Direction> generateRandomDoors(Random random) {
         var doors = EnumSet.noneOf(Direction.class);
+
         if (random.nextDouble() < 0.5) {
             doors.add(Direction.NORTH);
         }
