@@ -10,8 +10,19 @@ import javafx.scene.media.MediaPlayer;
  * @author Jonathan Abrams, Martha Emerson, Madison Pope
  */
 public class SoundManager {
+    /**
+     * The MediaPlayer responsible for playing audio in the SoundManager.
+     */
     private MediaPlayer mediaPlayer;
+    /**
+     * The volume level for sound effects in the SoundManager.
+     * The default value is 0.5 (medium volume).
+     */
     private double soundVolume = 0.5; // sound volume (defaults to medium)
+    /**
+     * The volume level for background music in the SoundManager.
+     * The default value is 0.5 (medium volume).
+     */
     private double musicVolume = 0.5; // music volume (defaults to medium)
 
     /**
@@ -139,5 +150,4 @@ public class SoundManager {
         stopAllSounds();
         stopMusic();
     }
-
 }
