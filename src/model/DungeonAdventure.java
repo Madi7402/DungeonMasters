@@ -42,4 +42,12 @@ public class DungeonAdventure {
             throw new IllegalArgumentException("Error: Not a difficulty type");
         }
     }
+
+    /**
+     * Get the Dungeon
+     * @return the Dungeon
+     */
+    public Dungeon getMyDungeon() {
+        return myDungeon;
+    }
 }
