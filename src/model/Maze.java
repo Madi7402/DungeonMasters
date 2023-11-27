@@ -85,7 +85,7 @@ public class Maze {
                 exit = new Coordinates(level, 0, height - 1);
             }
 
-            // TO DO - delete any objects!!! (from the entrance and exit)
+            // TODO - delete any objects!!! (from the entrance and exit)
             entranceCoordinates[level] = entrance;
 
             // Set entrance and exit
@@ -105,7 +105,7 @@ public class Maze {
      * @return A generated maze with rooms and connections.
      */
     public static Maze generateMaze(int levels, int width, int height) { // should this be public static, or private and called from constructor
-        Maze maze = new Maze(levels, width, height);                     // TO DO - decide!!
+        Maze maze = new Maze(levels, width, height);                     // TODO - decide!!
 
         // Initialize maze with empty rooms for each level
         maze.initializeMaze();
@@ -138,7 +138,7 @@ public class Maze {
             // Check if the next room is within bounds and not visited
             if (isValidRoom(nextCoordinate) && !isVisited(nextCoordinate)) {
                 // Recursively generate the maze from the next room
-                generateFrom(nextCoordinate); // TO DO
+                generateFrom(nextCoordinate); // TODO
             }
         }
     }
