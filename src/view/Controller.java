@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -36,14 +35,12 @@ public class Controller {
         //switchScene(event, <Insert FXML here>)
     }
 
-    public Scene switchScene(ActionEvent event, String sceneName) throws IOException {
+    public void switchScene(ActionEvent event, String sceneName) throws IOException {
         myRoot = FXMLLoader.load(getClass().getResource(sceneName));
         myStage = (Stage)((Node)event.getSource()).getScene().getWindow();
         myScene = new Scene(myRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
         myStage.setScene(myScene);
         myStage.show();
-
-        return myScene;
     }
 
 }
