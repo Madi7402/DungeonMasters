@@ -27,7 +27,7 @@
                   </Text>
                </children>
             </TextFlow>
-            <ComboBox id="herotype" fx:id="herotype" layoutX="149.0" layoutY="71.0" prefWidth="150.0" promptText="Class" />
+            <ComboBox id="myHeroTypeCB" fx:id="myHeroTypeCB" layoutX="149.0" layoutY="71.0" prefWidth="150.0" promptText="Class" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="14.0" layoutY="301.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="119.0" prefWidth="337.0" style="-fx-background-color: red;">
