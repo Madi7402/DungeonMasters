@@ -24,10 +24,10 @@ public class Tui implements PropertyChangeListener {
             System.out.println(da.getMyDungeon().getMyCurrentRoom());
             String option = scanner.next();
             switch (option) {
-                case "l" -> da.getMyDungeon().goLeft();
-                case "r" -> da.getMyDungeon().goRight();
-                case "d" -> da.getMyDungeon().goDown();
-                case "u" -> da.getMyDungeon().goUp();
+                case "l" -> da.getMyDungeon().goDirection(Direction.WEST);
+                case "r" -> da.getMyDungeon().goDirection(Direction.EAST);
+                case "d" -> da.getMyDungeon().goDirection(Direction.SOUTH);
+                case "u" -> da.getMyDungeon().goDirection(Direction.NORTH);
                 default -> System.err.println("Unknown command");
             }
         }
