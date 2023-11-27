@@ -30,6 +30,24 @@ public class Maze {
      */
     private static final int LEVELS = 4;  // Fixed number of levels - can move to game and pass from there
                                           // game decides a.k.a. DungeonAdventure
+
+
+    // Test constructor for Maze development until maze generation is finished
+// TODO: TESTING CONSTRUCTOR REMOVE ME WHEN DONE
+    public Maze(boolean theTesting) {
+        for (int l = 0; l < LEVELS; l++) {
+            System.out.println("Gen Level: " + l);
+            for (int i = -1; i < width; i++) {
+                for (int j = -1; j < height; j++) {
+                    Coordinates coord = new Coordinates(l, j, i);
+                    Room genRoom = Room.generateRandomRoom(coord);
+                    rooms.put(coord, genRoom);
+                }
+            }
+        }
+        System.out.println();
+    }
+
     /**
      * Constructs a maze with the specified number of levels, width, and height.
      * Initializes the maze with an empty collection of rooms.
@@ -173,5 +191,14 @@ public class Maze {
      */
     private boolean isVisited(Coordinates coordinate) {
         return rooms.get(coordinate).isVisited();
+    }
+
+    /**
+     * Return the room at the provided coordinates
+     * @param theCoordinates the coordinates of the room to be provided.
+     * @return the room at the given coordinates
+     */
+    public Room getRoom(Coordinates theCoordinates) {
+        return rooms.get(theCoordinates);
     }
 }
