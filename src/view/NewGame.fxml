@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane layoutX="14.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="280.0" prefWidth="337.0" style="-fx-background-color: red;">
+         <children>
+            <Rectangle id="hero-image" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" layoutX="14.0" layoutY="39.0" stroke="BLACK" strokeType="INSIDE" width="123.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="39.0" />
+            <Text layoutX="36.0" layoutY="263.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Hero" AnchorPane.rightAnchor="241.61767578125" AnchorPane.topAnchor="250.0" />
+            <TextField layoutX="149.0" layoutY="41.0" promptText="Hero Name" AnchorPane.leftAnchor="149.0" AnchorPane.topAnchor="41.0" />
+            <Button layoutX="149.0" layoutY="207.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" text="Play" />
+            <TextFlow layoutX="-5.0" prefHeight="32.0" prefWidth="325.0" textAlignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hero Selection">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Text>
+               </children>
+            </TextFlow>
+            <ComboBox layoutX="149.0" layoutY="71.0" prefWidth="150.0" promptText="Class" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="14.0" layoutY="301.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="119.0" prefWidth="337.0" style="-fx-background-color: red;">
+         <children>
+            <TextFlow layoutX="-5.0" prefHeight="32.0" prefWidth="325.0" textAlignment="CENTER">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Map Options">
+                     <font>
+                        <Font size="25.0" />
+                     </font>
+                  </Text>
+               </children>
+            </TextFlow>
+            <Slider layoutX="99.0" layoutY="52.0" />
+            <Slider layoutX="99.0" layoutY="74.0" />
+            <Text layoutX="59.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Width" />
+            <Text layoutX="54.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Height" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

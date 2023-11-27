@@ -6,15 +6,29 @@ import java.util.List;
 import java.util.TreeMap;
 
 public class Maze {
-    private TreeMap<Coordinates, Room> rooms;
+    private TreeMap<Coordinates, Room> rooms = new TreeMap<>();
     private int width = 5;
     private int height = 5;
     private static final int LEVELS = 4;  // Fixed number of levels - can move to game and pass from there
                                             // game decides a.k.a. DungeonAdventure
+
+    public Maze(boolean theTesting) {
+        for (int l = 0; l < LEVELS; l++) {
+            System.out.println("Gen Level: " + l);
+            for (int i = -1; i < width; i++) {
+                for (int j = -1; j < height; j++) {
+                    Coordinates coord = new Coordinates(l, j, i);
+                    Room genRoom = Room.generateRandomRoom(coord);
+                    rooms.put(coord, genRoom);
+                }
+            }
+        }
+        System.out.println();
+    }
+
     public Maze(int levels, int width, int height) {
         this.width = width;
         this.height = height;
-        this.rooms = new TreeMap<>();
     }
 
     private void initializeMaze() {
@@ -110,6 +124,10 @@ public class Maze {
     // Helper method to check if a room has been visited
     private boolean isVisited(Coordinates coordinate) {
         return rooms.get(coordinate).isVisited();
+    }
+
+    public Room getRoom(Coordinates myCurrentCoordinates) {
+        return rooms.get(myCurrentCoordinates);
     }
 }
 
