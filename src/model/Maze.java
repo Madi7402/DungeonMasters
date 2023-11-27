@@ -16,7 +16,7 @@ public class Maze {
     /**
      * The collection of rooms in the maze, organized by their coordinates.
      */
-    private TreeMap<Coordinates, Room> rooms;
+    private TreeMap<Coordinates, Room> rooms = new TreeMap<>();
     /**
      * The width of the maze, representing the number of columns (or rooms).
      */
@@ -58,7 +58,6 @@ public class Maze {
     public Maze(int levels, int width, int height) {
         this.width = width;
         this.height = height;
-        this.rooms = new TreeMap<>();
     }
 
     /**
