@@ -8,8 +8,8 @@ import java.sql.*;
  */
 public class SQLite implements AutoCloseable {
     private final SQLiteDataSource myDataSource = new SQLiteDataSource();
-    private Connection myConnection;
-    private ResultSet myResults;
+    private final Connection myConnection;
+    private final ResultSet myResults;
 
     public SQLite(String theStatement) throws SQLException {
         myDataSource.setUrl("jdbc:sqlite:database.sqlite.db"); // TODO -JA: Make this a field? Constructor Parameter?
