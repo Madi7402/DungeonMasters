@@ -22,7 +22,7 @@ public class DungeonAdventure {
      * @param theDifficulty String difficulty name //TODO enums
      */
     public void newGame(String theDifficulty) { //TODO Do we want this to just deal with just difficulty or do we want to pass it with a default map?
-        Maze map = new Maze();  //TODO implement maze
+        Maze map = new Maze(4, 5, 5);  //TODO implement maze
         newGame(theDifficulty, map);
     }
 
