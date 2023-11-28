@@ -1,10 +1,12 @@
 # DungeonMasters
 ## By: Jonathan Abrams, Madison Pope, Martha Emerson
 
-## Library Setup
-[JavaFX SDK](https://gluonhq.com/products/javafx/) content of `lib` directory for your platform into `lib/javafx`
+## Library Setup (Intellij Project)
+[JavaFX SDK](https://gluonhq.com/products/javafx/) download SDK `lib/` rename to `javafx-sdk` 
+(e.g. you should have a `DungeonMasters/lib/javafx-sdk/lib` directory containing the JavaFX libs)
 
-`--module-path lib/javafx --add-modules javafx.controls,javafx.fxml` into VM Options of run configuration in IDEA
+`--module-path lib/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml` into VM Options of run configuration in IDEA
+or use the provided `Main` run configuration.
 
 ### Place these in root of project directory
 SQLiteDB Driver: https://github.com/xerial/sqlite-jdbc/releases/download/3.43.2.2/sqlite-jdbc-3.43.2.2.jar
