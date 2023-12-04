@@ -45,10 +45,8 @@ public class NewGameController {
     public void initialize() {
         // Select Hero Type
         myHeroTypeCB.setOnAction(actionEvent -> {
-            System.out.println("selected action " + actionEvent.toString());
             String query = "SELECT img FROM character where friendly_name = '" + myHeroTypeCB.getValue() + "'";
             try (SQLite db = new SQLite(query)) {
-                System.out.println("Querying: " + query);
                 ResultSet rs = db.getMyResults();
                 if (rs.next()) {
                     String imageName = rs.getString("img");
@@ -103,6 +101,5 @@ public class NewGameController {
             }
             myHeroNameDisplayText.setText(tf.getText());
         });
-
     }
 }
