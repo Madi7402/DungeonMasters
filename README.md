@@ -27,6 +27,3 @@ For this iteration, the team worked setting up GUI controls, and implementing th
 
 ## Iteration 5
 For this iteration, the team continued to learn JavaFX (including how to initialize data in Scenes), populated the Hero list for potential New Game scenes, and continued refactoring the various dungeon classes, including work on the maze algorithm (which should be fully functional by the end of this week). A major issue was that one team member became ill with covid, while another continues to recover from the flu. This, combined with the Thanksgiving holiday, meant slower progress this week.
-
-## Iteration 6
-For this iteration, the team continued working on gameplay and implementing the GUI, as well as troubleshooting the maze generation. A major issue was that one team member was very ill with covid, so was not able to work this week, and another team member also did not complete her hours due to illness. This meant slower progress for a second week in a row.
