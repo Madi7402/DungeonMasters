@@ -1,10 +1,12 @@
 # DungeonMasters
 ## By: Jonathan Abrams, Madison Pope, Martha Emerson
 
-## Library Setup
-[JavaFX SDK](https://gluonhq.com/products/javafx/) content of `lib` directory for your platform into `lib/javafx`
+## Library Setup (Intellij Project)
+[JavaFX SDK](https://gluonhq.com/products/javafx/) download SDK `lib/` rename to `javafx-sdk` 
+(e.g. you should have a `DungeonMasters/lib/javafx-sdk/lib` directory containing the JavaFX libs)
 
-`--module-path lib/javafx --add-modules javafx.controls,javafx.fxml` into VM Options of run configuration in IDEA
+`--module-path lib/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml` into VM Options of run configuration in IDEA
+or use the provided `Main` run configuration.
 
 ### Place these in root of project directory
 SQLiteDB Driver: https://github.com/xerial/sqlite-jdbc/releases/download/3.43.2.2/sqlite-jdbc-3.43.2.2.jar
@@ -25,4 +27,3 @@ For this iteration, the team worked setting up GUI controls, and implementing th
 
 ## Iteration 5
 For this iteration, the team continued to learn JavaFX (including how to initialize data in Scenes), populated the Hero list for potential New Game scenes, and continued refactoring the various dungeon classes, including work on the maze algorithm (which should be fully functional by the end of this week). A major issue was that one team member became ill with covid, while another continues to recover from the flu. This, combined with the Thanksgiving holiday, meant slower progress this week.
-

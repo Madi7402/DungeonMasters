@@ -1,13 +1,11 @@
 package model;
 
-import org.sqlite.SQLiteDataSource;
+import res.SQLite;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * Contain various statistics and parameters for DungeonCharacters.
@@ -63,16 +61,9 @@ public class CharStats implements Serializable {
     public CharStats(final String theClassName) {
         // TODO -JA: Create a specification outlying appropriate values for DungeonCharacter
         //           statistics and damage characteristics.
-        final SQLiteDataSource ds = new SQLiteDataSource(); // From example code
-        ds.setUrl("jdbc:sqlite:database.sqlite.db");
-
-        final String query = "SELECT * FROM character where name == '" + theClassName.toLowerCase() + "'"; // TODO -JA: SQLi potential
-
-        try (Connection conn = ds.getConnection();
-             Statement stmt = conn.createStatement() ) {
-
-            final ResultSet rs = stmt.executeQuery(query);
-
+        final String query = "SELECT * FROM character where name == '" + theClassName.toLowerCase() + "'";
+        try (SQLite db = new SQLite(query)) {
+            ResultSet rs = db.getMyResults();
             myStartingHealth = rs.getInt("health_points");
             myAttackSpeed = rs.getInt("attack_speed");
             myMinDamage = rs.getInt("min_damage");
