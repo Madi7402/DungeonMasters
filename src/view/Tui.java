@@ -4,6 +4,7 @@ import model.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.*;
+import java.util.Scanner;
 
 import static controller.PropertyChangeEnableFight.*;
 import static controller.PropertyChangeEnableHero.INVENTORY_ACTION;
@@ -11,8 +12,26 @@ import static controller.PropertyChangeEnableHero.INVENTORY_ACTION;
 public class Tui implements PropertyChangeListener {
     public static void main(String[]theArgs) {
         Tui tui = new Tui();
-        tui.fightSim();
+        tui.generateDungeon();
+//        tui.fightSim();
 //        tui.saveLoadConcept();
+    }
+
+    private void generateDungeon() {
+        DungeonAdventure da = new DungeonAdventure();
+        Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNext()) {
+            System.out.println(da.getMyDungeon().getMyCurrentRoom());
+            String option = scanner.next();
+            switch (option) {
+                case "l" -> da.getMyDungeon().goDirection(Direction.WEST);
+                case "r" -> da.getMyDungeon().goDirection(Direction.EAST);
+                case "d" -> da.getMyDungeon().goDirection(Direction.SOUTH);
+                case "u" -> da.getMyDungeon().goDirection(Direction.NORTH);
+                default -> System.err.println("Unknown command");
+            }
+        }
+
     }
 
     private void saveLoadConcept() throws IOException, ClassNotFoundException {

@@ -15,7 +15,11 @@ import java.util.Random;
 public abstract class DungeonCharacter implements PropertyChangeEnableFight, Serializable {
     /** UID for Serialization */
     @Serial
-    private static final long serialVersionUID = 0L; // Update on class changes?
+    private static final long serialVersionUID = 1L; // Update on class changes?
+    /**
+     * The maximum length of a Character's Name
+     */
+    public static final int MAX_NAME_LENGTH = 20;
     /**
      * Random source for our DungeonCharacter.
      */
@@ -40,8 +44,8 @@ public abstract class DungeonCharacter implements PropertyChangeEnableFight, Ser
     private final PropertyChangeSupport myPcs;
 
     DungeonCharacter(final String theName, final int theLevel) {
-        myName = theName;
-        myLevel = theLevel;
+        myName = theName;   // TODO -JA: validate inputs
+        myLevel = theLevel; // TODO -JA: validate inputs
         myStats = new CharStats(this.getClass().getSimpleName()); // TODO -JA: Currently SQL issue cases termination, catch/try here?
         myHealthPoints = myStats.startingHealth(); // TODO -JA: Do we just want to build this into CharStats?
         myPcs = new PropertyChangeSupport(this);
