@@ -20,4 +20,9 @@ public class Main extends Application {
         theStage.setResizable(false);
         theStage.show();
     }
+
+    //TODO: Finish controls on the setting menu (SQlite?)
+    //TODO: Link View with Model
+    //TODO: Controls
+
 }

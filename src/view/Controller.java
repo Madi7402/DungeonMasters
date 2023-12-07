@@ -18,21 +18,25 @@ public class Controller {
     public static int WINDOW_HEIGHT = 720;
 
     public void newGameButton(ActionEvent event) throws IOException {
-        System.out.println("New game button pressed");
+        //System.out.println("New game button pressed");
         switchScene(event, "NewGame.fxml");
     }
 
      public void loadGameButton(ActionEvent event) throws IOException {
-        System.out.println("Load game button pressed");
+        //System.out.println("Load game button pressed");
         switchScene(event, "LoadGameMenu.fxml");
     }
     public void settingsButton(ActionEvent event) throws IOException {
-        System.out.println("Settings button pressed");
+        //System.out.println("Settings button pressed");
         switchScene(event, "Settings.fxml");
     }
     public void creditsButton(){    //TODO Textarea
         System.out.println("Credits button pressed");
         //switchScene(event, <Insert FXML here>)
+    }
+
+    public void backToMenuButton(ActionEvent event) throws IOException {
+        switchScene(event, "StartMenu.fxml");
     }
 
     public void switchScene(ActionEvent event, String sceneName) throws IOException {
