@@ -24,5 +24,8 @@ public class Main extends Application {
     //TODO: Finish controls on the setting menu (SQlite?)
     //TODO: Link View with Model
     //TODO: Controls
+    //TODO: Tie text with data
+    //TODO: Add images to screens
+    //TODO: Hook up controllers
 
 }
