@@ -14,54 +14,32 @@ public class Tui implements PropertyChangeListener {
         Tui tui = new Tui();
         tui.generateDungeon();
 //        tui.fightSim();
-//        tui.saveLoadConcept();
     }
 
     private void generateDungeon() {
         DungeonAdventure da = new DungeonAdventure();
         Scanner scanner = new Scanner(System.in);
+        TuiControl control = new TuiControl(da.getMyDungeon());
         while (scanner.hasNext()) {
             System.out.println(da.getMyDungeon().getMyCurrentRoom());
             String option = scanner.next();
-            switch (option) {
-                case "l" -> da.getMyDungeon().goDirection(Direction.WEST);
-                case "r" -> da.getMyDungeon().goDirection(Direction.EAST);
-                case "d" -> da.getMyDungeon().goDirection(Direction.SOUTH);
-                case "u" -> da.getMyDungeon().goDirection(Direction.NORTH);
-                default -> System.err.println("Unknown command");
+            boolean isValidMove = switch (option) {
+                case "l" -> control.left();
+                case "r" -> control.right();
+                case "u" -> control.up();
+                case "d" -> control.down();
+                default -> false;
+            };
+
+            if (isValidMove) {
+                System.out.println("Moved to + "+ da.getMyDungeon().getMyCurrentCoordinates().row()
+                        + ", " + da.getMyDungeon().getMyCurrentCoordinates().column() + "\n"
+                        + da.getMyDungeon().getMyCurrentRoom());
+            } else {
+                System.out.println("invalid move");
             }
         }
 
-    }
-
-    private void saveLoadConcept() throws IOException, ClassNotFoundException {
-        Hero hero = new Thief("Billy");
-        System.out.println("Original hero: " + hero);
-        MonsterFactory mf = new MonsterFactory();
-        Monster ogre = mf.createMonster(MonsterType.OGRE);
-
-        ogre.addPropertyChangeListener(this);
-        hero.addPropertyChangeListener(this);
-
-        while (hero.getMyHealthPoints() >= 75) {
-            ogre.attack(hero);
-        }
-        System.out.println("Original hero: " + hero);
-
-        // Save
-        FileOutputStream outputFile = new FileOutputStream("savedhero.txt");
-        ObjectOutputStream outputObj = new ObjectOutputStream(outputFile);
-        outputObj.writeObject(hero);
-        outputObj.flush();
-        outputObj.close();
-
-        // Load
-        FileInputStream inputFile = new FileInputStream("savedhero.txt");
-        ObjectInputStream inputObj = new ObjectInputStream(inputFile);
-        Hero newhero = (Hero) inputObj.readObject();
-        inputObj.close();
-
-        System.out.println("New Hero: " + newhero.toString());
     }
 
     public void fightSim() {

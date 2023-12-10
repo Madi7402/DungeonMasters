@@ -19,11 +19,18 @@ public class Dungeon {
         return myCurrentRoom.toString();
     }
 
-    public void goDirection(Direction theDirection) {
+    public boolean goDirection(Direction theDirection) {
         Coordinates newCoord = new Coordinates(myCurrentCoordinates.level(), myCurrentCoordinates.row()+theDirection.getYOffset()
                 , myCurrentCoordinates.column()+theDirection.getXOffset());
         if (myMaze.getRoom(newCoord) != null) {
             myCurrentRoom = myMaze.getRoom(newCoord);
+            myCurrentCoordinates = newCoord;
+            return true;
         }
+        return false;
+    }
+
+    public Coordinates getMyCurrentCoordinates() {
+        return myCurrentCoordinates;
     }
 }
