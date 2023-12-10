@@ -49,7 +49,7 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextArea layoutX="314.0" layoutY="373.0" prefHeight="48.0" prefWidth="674.0" />
+            <TextArea layoutX="314.0" layoutY="316.0" prefHeight="105.0" prefWidth="674.0" />
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
@@ -74,30 +74,22 @@
                   </Button>
                </children>
             </VBox>
-            <VBox layoutX="509.0" layoutY="11.0" prefHeight="240.0" prefWidth="375.0">
+            <VBox layoutX="510.0" layoutY="19.0" prefHeight="240.0" prefWidth="375.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="378.0" text="Dodge">
+                  <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="392.0" text="Dodge">
                      <font>
                         <Font size="18.0" />
                      </font>
                      <VBox.margin>
-                        <Insets top="25.0" />
+                        <Insets top="35.0" />
                      </VBox.margin>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="379.0" text="Item">
+                  <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="392.0" text="Item">
                      <font>
                         <Font size="18.0" />
                      </font>
                      <VBox.margin>
-                        <Insets bottom="35.0" top="35.0" />
-                     </VBox.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="378.0" text="Flee">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets bottom="35.0" />
+                        <Insets top="40.0" />
                      </VBox.margin>
                   </Button>
                </children>
