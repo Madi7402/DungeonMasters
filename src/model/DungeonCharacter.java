@@ -31,7 +31,7 @@ public abstract class DungeonCharacter implements PropertyChangeEnableFight, Ser
     /**
      * The name provided to the DungeonCharacter.
      */
-    private final String myName;
+    private String myName;
     /**
      * The experience level of the DungeonCharacter.
      */
@@ -44,15 +44,30 @@ public abstract class DungeonCharacter implements PropertyChangeEnableFight, Ser
     private final PropertyChangeSupport myPcs;
 
     DungeonCharacter(final String theName, final int theLevel) {
-        myName = theName;   // TODO -JA: validate inputs
-        myLevel = theLevel; // TODO -JA: validate inputs
+        setMyName(theName);
+        setMyLevel(theLevel);
         myStats = new CharStats(this.getClass().getSimpleName()); // TODO -JA: Currently SQL issue cases termination, catch/try here?
         myHealthPoints = myStats.startingHealth(); // TODO -JA: Do we just want to build this into CharStats?
         myPcs = new PropertyChangeSupport(this);
     }
 
+    /**
+     * Get the name of the Character.
+     * @return the name of the Character
+     */
     public String getMyName() {
         return myName;
+    }
+
+    /**
+     * Set the name of the Character
+     * @throws IllegalArgumentException if length > MAX_NAME_LENGTH or null
+     */
+    public void setMyName(final String theName) {
+        if (theName == null || theName.length() > MAX_NAME_LENGTH) {
+            throw new IllegalArgumentException("Name must not be longer than " + MAX_NAME_LENGTH + " or null");
+        }
+        myName = theName;
     }
 
     /**
@@ -61,6 +76,17 @@ public abstract class DungeonCharacter implements PropertyChangeEnableFight, Ser
      */
     public int getMyLevel() {
         return myLevel;
+    }
+
+    /**
+     * Set current level of the Character.
+     * @throws IllegalArgumentException if level is < 1
+     */
+    public void setMyLevel(final int theLevel) {
+        if (theLevel < 1) {
+            throw new IllegalArgumentException("Level must be a positive integer");
+        }
+        myLevel = theLevel;
     }
 
     /**
