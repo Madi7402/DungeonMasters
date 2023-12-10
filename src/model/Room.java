@@ -2,6 +2,7 @@ package model;
 
 import java.util.EnumSet;
 import java.util.Random;
+import java.util.TreeMap;
 
 /**
  * Represents a dungeon room within the maze, storing information about items and pillars.
@@ -11,6 +12,7 @@ import java.util.Random;
  * @author Jonathan Abrams, Martha Emerson, Madison Pope
  */
 public class Room {
+    private final TreeMap<Direction, Room> neighbors = new TreeMap<>();
     /**
      * The portal type associated with the room.
      * It can be one of the following: NONE, ENTRANCE, or EXIT.
@@ -80,55 +82,16 @@ public class Room {
     }
 
     /**
-     * Generates a random room with random features.
-     *
-     * @param coordinates The coordinates for the generated room.
-     * @return A randomly generated room.
-     */
-    public static Room generateRandomRoom(Coordinates coordinates) {
-        Random random = new Random();
-
-        boolean hasPit = random.nextDouble() < 0.1;  // 10% chance for a pit
-        boolean hasHealingPotion = random.nextDouble() < 0.1;  // 10% chance for a healing potion
-        boolean hasVisionPotion = random.nextDouble() < 0.1;  // 10% chance for a vision potion
-                                                            // TO DO - fix magic numbers
-        var doors = generateRandomDoors(random);
-
-        return new Room(hasPit, hasHealingPotion, hasVisionPotion, doors, coordinates);
-    }
-
-    /**
-     * Generates a random set of doors (directions) for a room.
-     * The likelihood of having a door in each direction is determined by a random number generator.
-     *
-     * @param random The random number generator used for door generation.
-     * @return An EnumSet containing randomly generated doors.
-     */
-    private static EnumSet<Direction> generateRandomDoors(Random random) {
-        var doors = EnumSet.noneOf(Direction.class);
-
-        if (random.nextDouble() < 0.5) {
-            doors.add(Direction.NORTH);
-        }
-        if (random.nextDouble() < 0.5) {
-            doors.add(Direction.SOUTH);
-        }
-        if (random.nextDouble() < 0.5) {
-            doors.add(Direction.EAST);
-        }
-        if (random.nextDouble() < 0.5) {
-            doors.add(Direction.WEST);
-        }
-        return doors;
-    }
-
-    /**
      * Sets the portal type for the room.
      *
      * @param portal The portal type for the room.
      */
     public void setPortal(Portal portal) {
         this.portal = portal;
+    }
+
+    public Portal getPortal() {
+        return portal;
     }
 
     /**
@@ -149,6 +112,23 @@ public class Room {
         this.isVisited = isVisited;
     }
 
+    public boolean trySetNeighbor(Room neighbor, Direction direction) {
+        if (!doors.contains(direction)) {
+            return false;
+        }
+
+        if (!neighbor.coordinates.equals(coordinates.generate(direction))) {
+            return false; // should this throw??
+        }
+
+        if (!neighbor.doors.contains(direction.getOppositeDirection())) {
+            doors.remove(direction);
+            return false;
+        }
+
+        return true; // neighbor door matches yours
+    }
+
     /**
      * Checks if the room has multiple items (pits, potions, pillars).
      *
@@ -157,7 +137,7 @@ public class Room {
     public boolean hasMultipleItems() {
         int itemCount = 0;
 
-        if (hasPit) { // could maybe batch into enum set of items... TO DO ?
+        if (hasPit) {
             itemCount++;
         }
         if (hasHealingPotion) {

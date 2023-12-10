@@ -16,7 +16,7 @@ public class Maze {
     /**
      * The collection of rooms in the maze, organized by their coordinates.
      */
-    private TreeMap<Coordinates, Room> rooms = new TreeMap<>();
+    private final TreeMap<Coordinates, Room> rooms = new TreeMap<>();
     /**
      * The width of the maze, representing the number of columns (or rooms).
      */
@@ -32,32 +32,72 @@ public class Maze {
                                           // game decides a.k.a. DungeonAdventure
 
 
-    // Test constructor for Maze development until maze generation is finished
-// TODO: TESTING CONSTRUCTOR REMOVE ME WHEN DONE
-    public Maze(boolean theTesting) {
-        for (int l = 0; l < LEVELS; l++) {
-            System.out.println("Gen Level: " + l);
-            for (int i = -1; i < width; i++) {
-                for (int j = -1; j < height; j++) {
-                    Coordinates coord = new Coordinates(l, j, i);
-                    Room genRoom = Room.generateRandomRoom(coord);
-                    rooms.put(coord, genRoom);
-                }
-            }
-        }
-        System.out.println();
-    }
+//    // Test constructor for Maze development until maze generation is finished
+//// TODO: TESTING CONSTRUCTOR REMOVE ME WHEN DONE
+//    public Maze(boolean theTesting) {
+//        for (int l = 0; l < LEVELS; l++) {
+//            System.out.println("Gen Level: " + l);
+//            for (int i = -1; i < width; i++) {
+//                for (int j = -1; j < height; j++) {
+//                    Coordinates coord = new Coordinates(l, j, i);
+//                    Room genRoom = Room.generateRandomRoom(coord);
+//                    rooms.put(coord, genRoom);
+//                }
+//            }
+//        }
+//        System.out.println();
+//    }
 
     /**
      * Constructs a maze with the specified number of levels, width, and height.
      * Initializes the maze with an empty collection of rooms.
-     * @param levels The number of levels in the maze.
+     * @param roomFactory The factory that makes rooms.
      * @param width The width of the maze (number of columns).
      * @param height The height of the maze (number of rows).
      */
-    public Maze(int levels, int width, int height) {
+    public Maze(AbstractRoomFactory roomFactory, int width, int height) {
         this.width = width;
         this.height = height;
+        initializeMaze(roomFactory);
+    }
+
+    /**
+     * Initializes a maze with the specified number of levels, width, and height.
+     * Initializes and populates the maze, sets entrance and exit, and generates paths between rooms.
+     */
+    private void initializeMaze(AbstractRoomFactory roomFactory) {
+        // Initialize maze with empty rooms for each level
+        initializeMazeRooms(roomFactory);
+
+        // Set entrance and exit for each level
+        var entranceCoordinates = setEntranceAndExit();
+
+        var criteria = new ValidMazeCriteria();
+
+        // Start maze traversal from the entrance for each level
+        for (var entrance : entranceCoordinates) {
+            TraverseTo(entrance, criteria);
+        }
+    }
+
+    private class ValidMazeCriteria {
+        boolean isExitFound;
+        boolean hasDeadEnd;
+        public void setExitFound(boolean exitFound) {
+            isExitFound = exitFound;
+        }
+        public void setHasDeadEnd(boolean hasDeadEnd) {
+            this.hasDeadEnd = hasDeadEnd;
+        }
+        public boolean isValid() {
+            return (isExitFound && hasDeadEnd);
+        }
+        public boolean getExitFound() {
+            return isExitFound;
+        }
+        public boolean getDeadEnd() {
+            return hasDeadEnd;
+        }
     }
 
     /**
@@ -65,14 +105,13 @@ public class Maze {
      * Each room is assigned random attributes such as portals, items, and positions.
      * The rooms are stored in a TreeMap organized by their coordinates.
      */
-    private void initializeMaze() {
+    private void initializeMazeRooms(AbstractRoomFactory roomFactory) {
         // Loop through each level, row, and column to create rooms
         for (int level = 0; level < LEVELS; level++) {
             for (int row = 0; row < width; row++) {
                 for (int col = 0; col < height; col++) {
-                    // Generate a random room and assign it to the maze
                     var coordinates = new Coordinates(level, row, col);
-                    rooms.put(coordinates, Room.generateRandomRoom(coordinates));
+                    rooms.put(coordinates, roomFactory.createRoom(coordinates));
                 }
             }
         }
@@ -103,6 +142,7 @@ public class Maze {
             }
 
             // TODO - delete any objects!!! (from the entrance and exit)
+
             entranceCoordinates[level] = entrance;
 
             // Set entrance and exit
@@ -113,40 +153,20 @@ public class Maze {
         return entranceCoordinates;
     }
 
-    /**
-     * Generates a maze with the specified number of levels, width, and height.
-     * Initializes and populates the maze, sets entrance and exit, and generates paths between rooms.
-     * @param levels The number of levels in the maze.
-     * @param width The width of the maze (number of columns).
-     * @param height The height of the maze (number of rows).
-     * @return A generated maze with rooms and connections.
-     */
-    public static Maze generateMaze(int levels, int width, int height) { // should this be public static, or private and called from constructor
-        Maze maze = new Maze(levels, width, height);                     // TODO - decide!!
 
-        // Initialize maze with empty rooms for each level
-        maze.initializeMaze();
-
-        // Set entrance and exit for each level
-        var entranceCoordinates = maze.setEntranceAndExit();
-
-        // Start maze generation from the entrance for each level
-        for (var entrance : entranceCoordinates) {
-            maze.generateFrom(entrance);
-        }
-        return maze;
-    }
-
-    // Ensure that Maze is traversable from entrance to exit - IN PROGRESS
+    // Ensure that Maze is traversable from entrance to exit
     /**
      * Generates the maze starting from the specified coordinate.
      * Recursively explores directions from the coordinate, creating connections between rooms.
      * @param coordinate The starting coordinate for maze generation.
      */
-    private void generateFrom(Coordinates coordinate) {
+    private void TraverseTo(Coordinates coordinate, ValidMazeCriteria criteria) {
+        var room = rooms.get(coordinate);
 
-        // Get a randomized list of possible directions (North, South, East, West)
-        List<Direction> directions = getRandomizedDirections();
+        if (isCriteriaValid(criteria, room)) return;
+
+//        // Get a randomized list of possible directions (North, South, East, West)
+//        List<Direction> directions = getRandomizedDirections();
 
         // Iterate through each direction
         for (Direction direction : directions) {
@@ -155,9 +175,35 @@ public class Maze {
             // Check if the next room is within bounds and not visited
             if (isValidRoom(nextCoordinate) && !isVisited(nextCoordinate)) {
                 // Recursively generate the maze from the next room
-                generateFrom(nextCoordinate); // TODO
+                TraverseTo(nextCoordinate, criteria);
             }
         }
+    }
+
+    private List<Direction> connectRooms (Room room) {
+
+    }
+
+    private boolean isCriteriaValid (ValidMazeCriteria criteria, Room room) {
+
+        if (!criteria.getExitFound() && isExitRoom(room)) {
+            criteria.setExitFound(true);
+        }
+
+        if (!criteria.getDeadEnd() && isDeadEndRoom(room)) {
+            criteria.setHasDeadEnd(true);
+            room.setPillar(true); // TO DO - refactor
+        }
+
+        return criteria.isValid();
+    }
+
+    private boolean isDeadEndRoom(Room room) {
+        return (room.getPortal() == Portal.NONE && room.); // to do too // TO DO - check that only has one door!!
+    }
+
+    private boolean isExitRoom(Room room) {
+        return room.getPortal() == Portal.EXIT;
     }
 
     /**
