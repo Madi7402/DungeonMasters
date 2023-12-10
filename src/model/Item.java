@@ -2,6 +2,8 @@ package model;
 
 import org.sqlite.SQLiteDataSource;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +13,10 @@ import java.sql.Statement;
  * An item within the dungeon that can be used by the player. Uses SQLite.
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
-public class Item {
+public class Item implements Serializable {
+    /** UID for Serialization */
+    @Serial
+    private static final long serialVersionUID = 0L; // Update on class changes (!)
     /**
      * The Name (identifier) of the Item.
      */

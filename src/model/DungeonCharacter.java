@@ -15,7 +15,7 @@ import java.util.Random;
 public abstract class DungeonCharacter implements PropertyChangeEnableFight, Serializable {
     /** UID for Serialization */
     @Serial
-    private static final long serialVersionUID = 1L; // Update on class changes?
+    private static final long serialVersionUID = 1L; // Update on class changes (!)
     /**
      * The maximum length of a Character's Name
      */
