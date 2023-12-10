@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import controller.PropertyChangeEnableHero;
 
+import static model.ItemType.HEALING_POTION;
+import static model.ItemType.VISION_POTION;
+
 /**
  * A dungeon character that can be played by the player. Only one can exist per dungeon.
  * Has special attacks.
@@ -56,7 +59,7 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
 
         if (theDamage >= getMyHealthPoints()) {
             setMyHealthPoints(0);
-            fireEvent(DEATH);
+            fireEvent(DEATH); // TODO -JA: Perhaps fire events in setMyHealthPoints()?
         } else {
             fireEvent(TAKE_DAMAGE);
             setMyHealthPoints(getMyHealthPoints() - theDamage);
@@ -94,6 +97,48 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
 
         myInventory.add(theItem);
         fireEvent(INVENTORY_ACTION);
+    }
+
+    /**
+     * Use the item at the given index, must be separately removed
+     * @param theIndex the item at the hero's inventory index
+     * @return true if item was used
+     */
+    public boolean useItem(final int theIndex) {
+        if (theIndex > myInventory.size()-1 || theIndex < 0) {
+            throw new IllegalArgumentException("Item index out of bounds");
+        }
+        Item currentItem = myInventory.get(theIndex);
+        switch(currentItem.getType()) {
+            case HEALING_POTION -> {
+                return heal(currentItem.getMyHealthPoints());
+            }
+            case VISION_POTION -> {
+                fireEvent(VISION_POTION_USED); // Advise view to reveal relevant part of maze
+                return true;
+            }
+            default -> {
+                return false; // Other items, such as pillars, are NOT consumable
+            }
+        }
+    }
+
+
+    /**
+     * Remove the item at the given index from the Hero's inventory
+     * @param theIndex the item at the hero's inventory index
+     * @return true if item was removed
+     */
+    public boolean removeItem(final int theIndex) {
+        if (theIndex > myInventory.size()-1 || theIndex < 0) {
+            throw new IllegalArgumentException("Item index out of bounds");
+        }
+        Item currentItem = myInventory.get(theIndex);
+        if (currentItem.getType() == HEALING_POTION || currentItem.getType() == VISION_POTION) {
+            myInventory.remove(currentItem);
+            return true;
+        } // TODO -JA: Make this more flexible with additional potential items
+        return false; // Pillars are not removable
     }
 
     /**

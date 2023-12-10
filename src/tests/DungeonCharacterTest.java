@@ -2,6 +2,7 @@ package tests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import model.ItemType;
 import model.Priestess;
 import org.junit.jupiter.api.Test;
 
@@ -29,5 +30,16 @@ public class DungeonCharacterTest {
         priestess.setMyLevel(25);
         assertEquals(25, priestess.getMyLevel());
         assertThrows(IllegalArgumentException.class, () -> priestess.setMyLevel(-1));
+    }
+
+    @Test
+    public void healTest() { // TODO -JA: test failure
+        final Priestess priestess = new Priestess("TestName");
+        priestess.giveItem(ItemType.HEALING_POTION);
+        if (priestess.useItem(0)) {
+            priestess.removeItem(0);
+        }
+        // TODO -JA: don't allow to heal past initial max health points
+        assertEquals(100, priestess.getMyHealthPoints());
     }
 }
