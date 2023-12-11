@@ -27,16 +27,28 @@ public class Item implements Serializable {
      */
     private String myDesc; // final?
     /**
+     * The icon related to this Item
+     */
+    private String myIcon;
+    /**
+     * How many points a potion should heal.
+     */
+    private int myHealthPoints;
+    /**
+     * A stats multiplier for boosters.
+     */
+    private double myStatMultiplier;
+    /**
      * The ItemType of the Item
      */
     private final ItemType myType;
 
-    private final double myPercentageChance;
+    private double myPercentageChance;
     //** If it's unique, there's only one. Only Pillars are unique*/
     // myPercentageChance is ignored if it's unique.
-    private final boolean isUnique;
+    private boolean isUnique;
     //** Only items you can remove from the room are equipable. (Never pits.) */
-    private final boolean isEquipable;
+    private boolean isEquipable;
 
     public boolean isEquipable() {
         return isEquipable;
@@ -58,17 +70,16 @@ public class Item implements Serializable {
             myIcon = rs.getString("icon");
             myHealthPoints = rs.getInt("health_points");
             myStatMultiplier = rs.getDouble("stat_multiplier");
-            percentageChance = rs.getDouble("percentage_chance"); // TODO -ME: add to database
             // myPercentageChance needs to be validated that it's between 0 and 1 (inclusive)
-            unique = rs.getBoolean("is_unique"); // TODO -ME: add to database
-            equipable = rs.getBoolean("is_equipable"); // TODO -ME: add to database
+            myPercentageChance = rs.getDouble("percentage_chance");
+            isUnique = rs.getBoolean("is_unique");
+            isEquipable = rs.getBoolean("is_equipable");
         } catch (final SQLException e) {
             e.printStackTrace();
             System.exit(1);
         }
-        myPercentageChance = percentageChance;
-        isUnique = unique;
-        isEquipable = equipable;
+
+        // TODO -JA: declare fields here instead so they can be final
     }
 
     /**
