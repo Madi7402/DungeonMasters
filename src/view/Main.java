@@ -21,11 +21,18 @@ public class Main extends Application {
         theStage.show();
     }
 
-    //TODO: Finish controls on the setting menu (SQlite?)
-    //TODO: Link View with Model
-    //TODO: Controls
-    //TODO: Tie text with data
-    //TODO: Add images to screens
-    //TODO: Hook up controllers
+    /*
+    TODO:
+    -Set up control displays on setting screen
+    -Set up audio options on settings screen
+    -Set up Sqlite on load game
+    -Initialize combat
+    -Add art
+    -Set up pause menu
+    -New game
+    -TIE MODEL TO CONTROLLER IN GENERAL
+    -Figure out main game menu
+     */
+
 
 }
