@@ -3,7 +3,6 @@ import model.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.*;
 import java.util.Scanner;
 
 import static controller.PropertyChangeEnableFight.*;
@@ -17,7 +16,7 @@ public class Tui implements PropertyChangeListener {
     }
 
     private void generateDungeon() {
-        DungeonAdventure da = new DungeonAdventure();
+        DungeonAdventure da = new DungeonAdventure(new Thief("Test Thief"));
         Scanner scanner = new Scanner(System.in);
         TuiControl control = new TuiControl(da.getMyDungeon());
         while (scanner.hasNext()) {
