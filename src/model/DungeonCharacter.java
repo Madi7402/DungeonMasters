@@ -27,7 +27,7 @@ public abstract class DungeonCharacter implements PropertyChangeEnableFight, Ser
     /**
      * The statistics of the DungeonCharacter.
      */
-    protected CharStats myStats; // TODO -JA: Do we want this to be private?
+    protected CharStats myStats;
     /**
      * The name provided to the DungeonCharacter.
      */
@@ -46,7 +46,7 @@ public abstract class DungeonCharacter implements PropertyChangeEnableFight, Ser
     DungeonCharacter(final String theName, final int theLevel) {
         setMyName(theName);
         setMyLevel(theLevel);
-        myStats = new CharStats(this.getClass().getSimpleName()); // TODO -JA: Currently SQL issue cases termination, catch/try here?
+        myStats = new CharStats(this.getClass().getSimpleName());
         myHealthPoints = myStats.startingHealth(); // TODO -JA: Do we just want to build this into CharStats?
         myPcs = new PropertyChangeSupport(this);
     }
