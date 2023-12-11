@@ -17,7 +17,7 @@ import java.sql.Statement;
 public class Item implements Serializable {
     /** UID for Serialization */
     @Serial
-    private static final long serialVersionUID = 0L; // Update on class changes (!)
+    private static final long serialVersionUID = 1L; // Update on class changes (!)
     /**
      * The Name (identifier) of the Item.
      */
