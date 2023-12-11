@@ -38,4 +38,8 @@ public record Coordinates(int level, int row, int column) implements Comparable<
         }
         return row - o.row;
     }
+
+    public Coordinates generate(Direction direction) {
+        return generate(direction.getXOffset(), direction.getYOffset());
+    }
 }
