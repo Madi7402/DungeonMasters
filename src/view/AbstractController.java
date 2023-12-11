@@ -28,6 +28,7 @@ public abstract class AbstractController {
     public void backToMenuButton(ActionEvent event) throws IOException {
         switchScene(event, "StartMenu.fxml");
     }
+
     public void settingsButton(ActionEvent event) throws IOException {
         switchScene(event, "Settings.fxml");
     }

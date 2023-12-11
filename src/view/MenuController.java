@@ -3,7 +3,7 @@ package view;
 import javafx.event.ActionEvent;
 import java.io.IOException;
 
-public class MenuController extends AbstractController{
+public class MenuController extends AbstractController {
 
     public void newGameButton(ActionEvent event) throws IOException {
         switchScene(event, "NewGame.fxml");

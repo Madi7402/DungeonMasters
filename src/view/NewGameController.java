@@ -13,7 +13,7 @@ import res.SQLite;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class NewGameController {
+public class NewGameController extends MenuController {
 
     @FXML
     private ChoiceBox<String> myHeroTypeCB;
@@ -43,6 +43,16 @@ public class NewGameController {
     private ImageView myHeroImageView;
 
     public void initialize() {
+        initHeroSelect();
+        initHeroTextBox();
+        initSliders();
+        initPlayButton();
+    }
+
+    private void initPlayButton() {
+    }
+
+    private void initHeroSelect() {
         // Select Hero Type
         myHeroTypeCB.setOnAction(actionEvent -> {
             String query = "SELECT img FROM character where friendly_name = '" + myHeroTypeCB.getValue() + "'";
@@ -81,17 +91,9 @@ public class NewGameController {
             e.printStackTrace();
             System.exit(1);
         }
+    }
 
-        // Write slider value text
-        myMapWidthSlider.valueProperty().addListener(
-                (observable, oldVal, newVal) -> myWidthSliderValue.setText(newVal.intValue()+"")
-        );
-
-        // Write slider value text
-        myMapHeightSlider.valueProperty().addListener(
-                (o, oldVal, newVal) -> myHeightSliderValue.setText(newVal.intValue()+"")
-        );
-
+    private void initHeroTextBox() {
         // Display Hero name under Image and clamp to MAX_NAME_LENGTH
         myHeroNameTextField.setOnKeyTyped(keyEvent -> {
             TextField tf = myHeroNameTextField;
@@ -101,5 +103,17 @@ public class NewGameController {
             }
             myHeroNameDisplayText.setText(tf.getText());
         });
+    }
+
+    private void initSliders() {
+        // Write slider value text
+        myMapWidthSlider.valueProperty().addListener(
+                (observable, oldVal, newVal) -> myWidthSliderValue.setText(newVal.intValue()+"")
+        );
+
+        // Write slider value text
+        myMapHeightSlider.valueProperty().addListener(
+                (o, oldVal, newVal) -> myHeightSliderValue.setText(newVal.intValue()+"")
+        );
     }
 }
