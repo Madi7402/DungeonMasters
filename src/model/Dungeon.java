@@ -5,12 +5,13 @@ package model;
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
 public class Dungeon {
-    private Maze myMaze;
+    private final Maze myMaze;
     private Room myCurrentRoom;
     private Coordinates myCurrentCoordinates;
 
     public Dungeon() {
-        myMaze = new Maze(true); // TODO -JA: Replace with real map generation
+        RandomRoomFactory rf = new RandomRoomFactory();
+        myMaze = new Maze(rf, 4,4);
         myCurrentCoordinates = new Coordinates(0, 0, 0);
         myCurrentRoom = myMaze.getRoom(myCurrentCoordinates);
     }
