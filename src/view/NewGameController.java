@@ -9,7 +9,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import model.DungeonCharacter;
 import res.SQLite;
-
+import javafx.fxml.FXMLLoader;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -50,6 +51,19 @@ public class NewGameController extends MenuController {
     }
 
     private void initPlayButton() {
+        myPlayButton.setOnAction(actionEvent -> {
+            try {
+                FXMLLoader loader = switchScene(actionEvent, "Overworld.fxml");
+                OverworldController controller = loader.getController();
+                controller.setHeroImage(myHeroImageView.getImage());
+                controller.setHeroNameDisplayText(myHeroNameDisplayText.getText());
+                if (myHeroNameDisplayText.getText().equals("")) {
+                    controller.setHeroNameDisplayText("Unnamed Hero");
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     private void initHeroSelect() {
