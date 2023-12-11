@@ -78,7 +78,7 @@ public class Maze {
 
             // Start maze traversal from the entrance for each level
             if (!TraverseTo(entrance, criteria)) {
-                level--; // make sure that it reinitializes each level
+                level--; // if it fails, keep the regeneration on this same level
             }
         }
     }

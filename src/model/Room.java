@@ -251,10 +251,10 @@ public class Room {
         return equipableItems;
     }
 
-    // TO DO - get rid of all the Item setters (pillar, potion, pit)
+    // TO DO (Monday) - get rid of all the Item setters (pillar, potion, pit)
     // get rid of the related fields
     // keep has functions, check item tree instead of fields
-    // update toString to used these functions for the printing
+    // update toString to use these functions for the printing
     // map means one pit, one pillar, and one potion of each type
     // don't touch Portal!!!
     // and then update Maze to use Items instead of booleans
