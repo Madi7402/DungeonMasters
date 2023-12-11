@@ -23,15 +23,10 @@ public class Main extends Application {
 
     /*
     TODO:
-    -Set up control displays on setting screen
-    -Set up audio options on settings screen
-    -Set up Sqlite on load game
-    -Initialize combat
     -Add art
-    -Set up pause menu
-    -New game
     -TIE MODEL TO CONTROLLER IN GENERAL
     -Figure out main game menu
+    -Remove text area in load game
      */
 
 

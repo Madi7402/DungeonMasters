@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<SplitPane dividerPositions="0.6100278551532033" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<SplitPane dividerPositions="0.6100278551532033" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CombatMenuController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
@@ -38,13 +31,13 @@
                </fill>
             </Rectangle>
             <ImageView fitHeight="375.0" fitWidth="1230.0" layoutX="24.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
-            <ProgressBar layoutX="551.0" layoutY="48.0" prefWidth="200.0" progress="0.0" />
-            <Label alignment="TOP_CENTER" layoutX="551.0" layoutY="13.0" prefHeight="17.0" prefWidth="200.0" text="ENEMY NAME" textAlignment="CENTER" textFill="RED">
+            <ProgressBar fx:id="myEnemyHealthBar" layoutX="551.0" layoutY="48.0" prefWidth="200.0" progress="0.0" />
+            <Label fx:id="myEnemyName" alignment="TOP_CENTER" layoutX="551.0" layoutY="13.0" prefHeight="17.0" prefWidth="200.0" text="ENEMY NAME" textAlignment="CENTER" textFill="RED">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label layoutX="608.0" layoutY="66.0" text="Health/Health" textFill="RED">
+            <Label fx:id="myEnemyHealth" layoutX="608.0" layoutY="66.0" text="Health/Health" textFill="RED">
                <font>
                   <Font size="14.0" />
                </font>
@@ -94,9 +87,9 @@
                   </Button>
                </children>
             </VBox>
-            <ProgressBar layoutX="1002.0" layoutY="233.0" prefWidth="200.0" progress="0.0" />
-            <Label layoutX="1002.0" layoutY="206.0" text="(Hero Name)" />
-            <Label layoutX="1002.0" layoutY="255.0" text="Health/Health" />
+            <ProgressBar fx:id="myHeroHealthBar" layoutX="1002.0" layoutY="233.0" prefWidth="200.0" progress="0.0" />
+            <Label fx:id="myHeroName" layoutX="1002.0" layoutY="206.0" text="(Hero Name)" />
+            <Label fx:id="myHeroHealth" layoutX="1002.0" layoutY="255.0" text="Health/Health" />
          </children></AnchorPane>
   </items>
 </SplitPane>

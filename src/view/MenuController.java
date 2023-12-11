@@ -11,10 +11,8 @@ public class MenuController extends AbstractController{
      public void loadGameButton(ActionEvent event) throws IOException {
         switchScene(event, "LoadGameMenu.fxml");
     }
-    public void settingsButton(ActionEvent event) throws IOException {
-        switchScene(event, "Settings.fxml");
-    }
-    public void creditsButton(){    //TODO Textarea
+
+    public void creditsButton(){
         System.out.println("Credits button pressed");
     }
     
