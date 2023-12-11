@@ -10,8 +10,8 @@ public class Dungeon {
     private Coordinates myCurrentCoordinates;
 
     public Dungeon() {
-        RandomRoomFactory rf = new RandomRoomFactory();
-        myMaze = new Maze(rf, 4,4);
+//        RandomRoomFactory rf = new RandomRoomFactory(); // TODO -JA: Use real maze
+        myMaze = new Maze(true); // TODO -JA: Use real maze for constructing dungeon
         myCurrentCoordinates = new Coordinates(0, 0, 0);
         myCurrentRoom = myMaze.getRoom(myCurrentCoordinates);
     }

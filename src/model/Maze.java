@@ -32,21 +32,22 @@ public class Maze {
                                           // game decides a.k.a. DungeonAdventure
 
 
-//    // Test constructor for Maze development until maze generation is finished
-//// TODO: TESTING CONSTRUCTOR REMOVE ME WHEN DONE
-//    public Maze(boolean theTesting) {
-//        for (int l = 0; l < LEVELS; l++) {
-//            System.out.println("Gen Level: " + l);
-//            for (int i = -1; i < width; i++) {
-//                for (int j = -1; j < height; j++) {
-//                    Coordinates coord = new Coordinates(l, j, i);
-//                    Room genRoom = Room.generateRandomRoom(coord);
-//                    rooms.put(coord, genRoom);
-//                }
-//            }
-//        }
-//        System.out.println();
-//    }
+    // Test constructor for Maze development until maze generation is finished
+// TODO: TESTING CONSTRUCTOR REMOVE ME WHEN DONE
+    public Maze(boolean theTesting) {
+        for (int l = 0; l < LEVELS; l++) {
+            System.out.println("Gen Level: " + l);
+            RandomRoomFactory rf = new RandomRoomFactory();
+            for (int i = -1; i < width; i++) {
+                for (int j = -1; j < height; j++) {
+                    Coordinates coord = new Coordinates(l, j, i);
+                    Room genRoom = rf.createRoom(coord);
+                    rooms.put(coord, genRoom);
+                }
+            }
+        }
+        System.out.println();
+    }
 
     /**
      * Constructs a maze with the specified number of levels, width, and height.
@@ -66,7 +67,6 @@ public class Maze {
      * Initializes and populates the maze, sets entrance and exit, and generates paths between rooms.
      */
     private void initializeMaze(AbstractRoomFactory roomFactory) {
-
         for (int level = 0; level < LEVELS; level++) {
             // Initialize maze with empty rooms for each level
             initializeMazeRooms(roomFactory, level);
@@ -77,7 +77,7 @@ public class Maze {
             var criteria = new ValidMazeCriteria();
 
             // Start maze traversal from the entrance for each level
-            if (!TraverseTo(entrance, criteria)) {
+            if (!TraverseTo(entrance, criteria)) { // TODO -ME: This currently gets in an infinite loop
                 level--; // if it fails, keep the regeneration on this same level
             }
         }
