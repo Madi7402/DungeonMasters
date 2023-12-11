@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import model.DungeonCharacter;
+import model.*;
 import res.SQLite;
 import javafx.fxml.FXMLLoader;
 import java.io.IOException;
@@ -52,18 +52,36 @@ public class NewGameController extends MenuController {
 
     private void initPlayButton() {
         myPlayButton.setOnAction(actionEvent -> {
+            DungeonAdventure da = createAdventure();
+            if (da == null) {
+                // TODO -JA: Indicate that DungeonAdventure creation failed.
+                return;
+            }
             try {
                 FXMLLoader loader = switchScene(actionEvent, "Overworld.fxml");
                 OverworldController controller = loader.getController();
+                controller.setAdventure(da);
                 controller.setHeroImage(myHeroImageView.getImage());
                 controller.setHeroNameDisplayText(myHeroNameDisplayText.getText());
-                if (myHeroNameDisplayText.getText().equals("")) {
+                if (myHeroNameDisplayText.getText().isEmpty()) {
                     controller.setHeroNameDisplayText("Unnamed Hero");
                 }
+                createAdventure();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    private DungeonAdventure createAdventure() {
+        // TODO -JA: get map size
+        String name = myHeroNameDisplayText.getText();
+        return switch(myHeroTypeCB.getValue()) {
+            case "Thief" -> new DungeonAdventure(new Thief(name));
+            case "Priestess" -> new DungeonAdventure(new Priestess(name));
+            case "Warrior" -> new DungeonAdventure(new Warrior(name));
+            default -> null;
+        };
     }
 
     private void initHeroSelect() {
@@ -100,7 +118,7 @@ public class NewGameController extends MenuController {
                 myHeroTypeCB.getItems().add(rs.getString("friendly_name"));
             }
 
-            myHeroTypeCB.setValue(myHeroTypeCB.getItems().get(0));
+            myHeroTypeCB.setValue(myHeroTypeCB.getItems().getFirst());
         } catch (final SQLException e) {
             e.printStackTrace();
             System.exit(1);

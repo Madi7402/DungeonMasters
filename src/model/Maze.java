@@ -36,7 +36,7 @@ public class Maze {
 // TODO: TESTING CONSTRUCTOR REMOVE ME WHEN DONE
     public Maze(boolean theTesting) {
         for (int l = 0; l < LEVELS; l++) {
-            System.out.println("Gen Level: " + l);
+            System.err.println("Gen Level: " + l);
             RandomRoomFactory rf = new RandomRoomFactory();
             for (int i = -1; i < width; i++) {
                 for (int j = -1; j < height; j++) {
