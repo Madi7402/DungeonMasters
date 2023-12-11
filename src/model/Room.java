@@ -1,8 +1,9 @@
 package model;
 
+import java.util.Collection;
 import java.util.EnumSet;
-import java.util.Random;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /**
  * Represents a dungeon room within the maze, storing information about items and pillars.
@@ -13,6 +14,7 @@ import java.util.TreeMap;
  */
 public class Room {
     private final TreeMap<Direction, Room> neighbors = new TreeMap<>();
+    private final TreeMap<ItemType, Item> items = new TreeMap<>();
     /**
      * The portal type associated with the room.
      * It can be one of the following: NONE, ENTRANCE, or EXIT.
@@ -27,22 +29,22 @@ public class Room {
      * Indicates whether the room has a pillar.
      * A pillar is a special item that...
      */
-    private boolean hasPillar; // keep here
+    private boolean hasPillar; // will go away, only need method
     /**
      * Indicates whether the room has a pit.
      * A pit is a dangerous element that...
      */
-    private boolean hasPit;
+    private boolean hasPit; // will go away, only need method
     /**
      * Indicates whether the room has a healing potion.
      * A healing potion is an item that...
      */
-    private boolean hasHealingPotion;
+    private boolean hasHealingPotion; // will go away, only need method
     /**
      * Indicates whether the room has a vision potion.
      * A vision potion is an item that...
      */
-    private boolean hasVisionPotion;
+    private boolean hasVisionPotion; // will go away, only need method
     /**
      * Indicates whether the room has been visited by the backtracking algorithm.
      */
@@ -221,4 +223,39 @@ public class Room {
 
         return sb.toString();
     }
+
+    public Coordinates getCoordinate() {
+        return this.coordinates;
+    }
+
+    public Collection<Room> getNeighbors() {
+        return this.neighbors.values();
+    }
+
+    public void setPillar(boolean hasPillar) {
+        this.hasPillar = hasPillar; // might need to add Item instead TO DO !!!
+    }
+
+    // use this in place of set pit, set pillar, etc. for anything that's an item
+    public void addItem(Item item) {
+        items.put(item.getType(), item);
+    }
+
+    // removes all the equipable Items from the room and returns them
+    public Collection<Item> takeEquipableItems() {
+        var equipableItems = items.values().stream().filter(Item::isEquipable).toList();
+
+        for (var equipableItem : equipableItems) {
+            items.remove(equipableItem.getType());
+        }
+        return equipableItems;
+    }
+
+    // TO DO - get rid of all the Item setters (pillar, potion, pit)
+    // get rid of the related fields
+    // keep has functions, check item tree instead of fields
+    // update toString to used these functions for the printing
+    // map means one pit, one pillar, and one potion of each type
+    // don't touch Portal!!!
+    // and then update Maze to use Items instead of booleans
 }

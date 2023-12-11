@@ -32,6 +32,10 @@ public class Item {
     //** Only items you can remove from the room are equipable. (Never pits.) */
     private final boolean isEquipable;
 
+    public boolean isEquipable() {
+        return isEquipable;
+    }
+
     /**
      * Create an Item given an ItemType.
      * @param theItemType the ItemType we are creating.
