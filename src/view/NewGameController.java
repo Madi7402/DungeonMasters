@@ -118,7 +118,7 @@ public class NewGameController extends MenuController {
                 myHeroTypeCB.getItems().add(rs.getString("friendly_name"));
             }
 
-            myHeroTypeCB.setValue(myHeroTypeCB.getItems().getFirst());
+            myHeroTypeCB.setValue(myHeroTypeCB.getItems().get(0));
         } catch (final SQLException e) {
             e.printStackTrace();
             System.exit(1);
