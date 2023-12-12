@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
+import model.DungeonAdventure;
 import model.DungeonCharacter;
 
 import java.beans.PropertyChangeEvent;
@@ -30,6 +31,7 @@ public class CombatMenuController extends AbstractController {
     private ProgressBar myHeroHealthBar;
     @FXML
     private TextArea myTextLogs;
+    private DungeonAdventure myDungeonAdventure;
     public void initialize(){
         initNames(myHeroName);
         initNames(myEnemyName);
@@ -62,6 +64,10 @@ public class CombatMenuController extends AbstractController {
 
     public void initArt(ImageView theImageView){
 
+    }
+
+    public void setDungeon(DungeonAdventure theDungeon){
+        myDungeonAdventure = theDungeon;
     }
 
     public void propertyChange(PropertyChangeEvent evt) {   //TODO Make these situations update everything needed
