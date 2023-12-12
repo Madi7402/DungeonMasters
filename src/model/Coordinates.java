@@ -1,5 +1,8 @@
 package model;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Represents a set of coordinates in a 3D space, specifying a level, row, and column.
  * Coordinates are immutable and can be generated based on an offset from the current coordinates.
@@ -7,7 +10,9 @@ package model;
  *
  * @author Jonathan Abrams, Martha Emerson, Madison Pope
  */
-public record Coordinates(int level, int row, int column) implements Comparable<Coordinates> {
+public record Coordinates(int level, int row, int column) implements Comparable<Coordinates>, Serializable {
+    @Serial
+    private static final long serialVersionUID = 0L; // Update on class changes (!)
     /**
      * Generates new coordinates based on the specified row and column offsets.
      *

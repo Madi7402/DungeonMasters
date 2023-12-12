@@ -4,12 +4,16 @@ import controller.PropertyChange;
 import controller.PropertyChangeEnableDungeon;
 
 import java.beans.PropertyChangeSupport;
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * Creates the maze of rooms within the dungeon.
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
-public class Dungeon extends PropertyChange implements PropertyChangeEnableDungeon {
+public class Dungeon extends PropertyChange implements PropertyChangeEnableDungeon, Serializable {
+    @Serial
+    private static final long serialVersionUID = 0L; // Update on class changes (!)
     private final Maze myMaze;
     private Room myCurrentRoom;
     private Coordinates myCurrentCoordinates;
@@ -39,7 +43,7 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
     public boolean goDirection(Direction theDirection) {
         Coordinates newCoord = new Coordinates(myCurrentCoordinates.level(), myCurrentCoordinates.row()+theDirection.getYOffset()
                 , myCurrentCoordinates.column()+theDirection.getXOffset());
-        if (myMaze.getRoom(newCoord) != null) {
+        if (myMaze.getRoom(newCoord) != null && myCurrentRoom.getDoors().contains(theDirection)) {
             myCurrentRoom = myMaze.getRoom(newCoord);
             myCurrentRoom.setIsVisited(true);
             myCurrentCoordinates = newCoord;

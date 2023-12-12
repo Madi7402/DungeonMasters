@@ -1,12 +1,16 @@
 package model;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Creates the dungeon with a difficulty and map.
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
-public class DungeonAdventure {
+public class DungeonAdventure implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 0L; // Update on class changes (!)
     /**
      * Saves Dungeon info
      */

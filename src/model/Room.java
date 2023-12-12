@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.TreeMap;
@@ -12,7 +14,9 @@ import java.util.stream.Collectors;
  *
  * @author Jonathan Abrams, Martha Emerson, Madison Pope
  */
-public class Room {
+public class Room implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 0L; // Update on class changes (!)
     private final TreeMap<Direction, Room> neighbors = new TreeMap<>();
     private final TreeMap<ItemType, Item> items = new TreeMap<>();
     /**
