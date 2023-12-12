@@ -10,6 +10,10 @@ public class LoadGameController {
     private TableView mySaveTable;
 
     public void initialzie(){
+        initSaveTable();
+    }
+
+    public void initSaveTable(){
 
     }
 
