@@ -14,6 +14,7 @@ public class Dungeon {
         myMaze = new Maze(true); // TODO -JA: Use real maze for constructing dungeon
         myCurrentCoordinates = new Coordinates(0, 0, 0);
         myCurrentRoom = myMaze.getRoom(myCurrentCoordinates);
+        myCurrentRoom.setIsVisited(true);
     }
 
     public Room getMyCurrentRoom() {
@@ -25,6 +26,7 @@ public class Dungeon {
                 , myCurrentCoordinates.column()+theDirection.getXOffset());
         if (myMaze.getRoom(newCoord) != null) {
             myCurrentRoom = myMaze.getRoom(newCoord);
+            myCurrentRoom.setIsVisited(true);
             myCurrentCoordinates = newCoord;
             return true;
         }

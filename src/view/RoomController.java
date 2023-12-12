@@ -1,6 +1,7 @@
 package view;
 
 import javafx.fxml.FXML;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
 import model.Direction;
 import model.Room;
@@ -15,6 +16,8 @@ public class RoomController {
     @FXML
     private Rectangle mySouthDoor;
 
+    @FXML
+    private AnchorPane myAnchorPane;
     private Room myRoom;
 
     public void initialize() {
@@ -30,6 +33,10 @@ public class RoomController {
                 case SOUTH -> mySouthDoor.setVisible(true);
                 default -> System.err.println("unknown direction in setRoom (Room Controller)");
             }
+        }
+
+        if (theRoom.isVisited()) {
+            myAnchorPane.setVisible(true);
         }
     }
 }
