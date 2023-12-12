@@ -140,7 +140,8 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
 
         // TODO -JA: keep track of maximum health for the character and don't exceed that.
         int newHealthPoints = myHealthPoints += theHealth;
-        fireEvent(HEALTH_CHANGED, myHealthPoints, newHealthPoints);
+        fireEvent(HEALTH_CHANGED); // TODO: EXTRA EVENT because Overworld Controller can't see change...
+        fireEvent(HEALTH_CHANGED, myHealthPoints, newHealthPoints); // TODO -JA: Why can't OverWorld see this event?
         myHealthPoints = newHealthPoints;
         return true;
     }

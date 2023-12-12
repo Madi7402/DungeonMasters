@@ -2,10 +2,7 @@ package model;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * A randomly generated, four-level Maze within a dungeon.
@@ -265,7 +262,30 @@ public class Maze implements Serializable {
                 theCoordinates.column()+theDirection.getXOffset()));
     }
 
-    public TreeMap<Coordinates, Room> getRooms() {
-        return rooms;
+    private void setRoomsVisible(final List<Coordinates> theCoordinates) {
+        for (Coordinates coord : theCoordinates ) {
+            if (isValidRoom(coord)) {
+                getRoom(coord).setIsVisited(true);
+            }
+        }
     }
+
+    /**
+     * Set the surrounding rooms to visible.
+     * @param theCoordinates the center point of the rooms
+     * @param radius how far to reach (i.e. 1 is the 8 rooms surrounding the center point
+     */
+    public void setSurroundingRoomsVisible(final Coordinates theCoordinates, final int radius) {
+        List<Coordinates> coordinatesList = new ArrayList<>();
+        for (int xOffset = -radius; xOffset <= radius; xOffset++) {
+            for (int yOffset = -radius; yOffset <= radius; yOffset++) {
+                if (xOffset == 0 && yOffset == 0) {
+                    continue;
+                }
+                coordinatesList.add(theCoordinates.generate(xOffset, yOffset));
+            }
+        }
+        setRoomsVisible(coordinatesList);
+    }
+
 }
