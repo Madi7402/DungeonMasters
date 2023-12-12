@@ -4,6 +4,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 public abstract class PropertyChange implements PropertyChangeEnable {
+    private final PropertyChangeSupport myPcs = new PropertyChangeSupport(this);
     /**
      * Fire event to observers.
      * @param theEvent the event from PropertyChangeEnableFight
@@ -21,7 +22,7 @@ public abstract class PropertyChange implements PropertyChangeEnable {
     protected void fireEvent(final String theEvent, final int theStart, final int theEnd) {
         myPcs.firePropertyChange(theEvent, theStart, theEnd);
     }
-    private PropertyChangeSupport myPcs = new PropertyChangeSupport(this);
+
     @Override
     public void addPropertyChangeListener(final PropertyChangeListener theListener) {
         myPcs.addPropertyChangeListener(theListener);

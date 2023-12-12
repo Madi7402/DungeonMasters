@@ -135,7 +135,6 @@ public class OverworldController extends MenuController implements PropertyChang
         myDungeonAdventure.getMyDungeon().addPropertyChangeListener(HIT_PIT, this);
         myDungeonAdventure.getMyHero().addPropertyChangeListener(INVENTORY_ACTION, this);
         myDungeonAdventure.getMyHero().addPropertyChangeListener(HEALTH_CHANGED, this);
-        myDungeonAdventure.getMyHero().addPropertyChangeListener(this);
         // TODO JA: Get icon for HERO from myDungeonAdventure rather than stealing from NewGame
         myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
         myHeroCharStatsText.setText(myDungeonAdventure.getMyHero().getStatsString());
@@ -160,7 +159,7 @@ public class OverworldController extends MenuController implements PropertyChang
         myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
         myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
 
-
+        updateInventoryList();
 
 
         myInventoryListView.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
@@ -268,6 +267,7 @@ public class OverworldController extends MenuController implements PropertyChang
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.err.println(evt.getPropertyName() + " Fired");
         switch (evt.getPropertyName()) {
             case NAVIGATED -> {
                 try {
@@ -283,13 +283,10 @@ public class OverworldController extends MenuController implements PropertyChang
             case HIT_PIT -> {
                 myDamageAnimation.play();
             }
-//            case HEALTH_CHANGED -> {
-//                myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
-//                System.out.println("Health change");
-//            }
-            case HEALTH_CHANGED
-                    -> System.out.println("health changed from "
-                    + evt.getOldValue() + " to " + evt.getNewValue());
+            case HEALTH_CHANGED -> {
+                myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
+                System.out.println("Health change");
+            }
             case INVENTORY_ACTION -> updateInventoryList();
             default -> System.err.println("Received unknown event " + evt.getPropertyName());
         }
