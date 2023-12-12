@@ -1,5 +1,6 @@
 package model;
 
+import controller.PropertyChange;
 import controller.PropertyChangeEnableFight;
 
 import java.beans.PropertyChangeListener;
@@ -12,7 +13,7 @@ import java.util.Random;
  * An abstract class that represents an entity in the dungeon that can engage in combat.
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
-public abstract class DungeonCharacter implements PropertyChangeEnableFight, Serializable {
+public abstract class DungeonCharacter extends PropertyChange implements PropertyChangeEnableFight, Serializable {
     /** UID for Serialization */
     @Serial
     private static final long serialVersionUID = 1L; // Update on class changes (!)
@@ -175,45 +176,5 @@ public abstract class DungeonCharacter implements PropertyChangeEnableFight, Ser
      */
     public int getMyHealthPoints() {
         return myHealthPoints;
-    }
-
-    /**
-     * Fire event to observers.
-     * @param theEvent the event from PropertyChangeEnableFight
-     */
-    protected void fireEvent(final String theEvent) {
-        myPcs.firePropertyChange(theEvent, null, true);
-    }
-
-    /**
-     * Fire event to observers with initial and ending value.
-     * @param theEvent the event from PropertyChangeEnableFight
-     * @param theStart the initial value
-     * @param theEnd the changed value
-     */
-    protected void fireEvent(final String theEvent, final int theStart, final int theEnd) {
-        myPcs.firePropertyChange(theEvent, theStart, theEnd);
-    }
-
-    @Override
-    public void addPropertyChangeListener(final PropertyChangeListener theListener) {
-        myPcs.addPropertyChangeListener(theListener);
-    }
-
-    @Override
-    public void addPropertyChangeListener(final String thePropertyName,
-                                          final PropertyChangeListener theListener) {
-        myPcs.addPropertyChangeListener(thePropertyName, theListener);
-    }
-
-    @Override
-    public void removePropertyChangeListener(final PropertyChangeListener theListener) {
-        myPcs.removePropertyChangeListener(theListener);
-    }
-
-    @Override
-    public void removePropertyChangeListener(final String thePropertyName,
-                                             final PropertyChangeListener theListener) {
-        myPcs.removePropertyChangeListener(thePropertyName, theListener);
     }
 }

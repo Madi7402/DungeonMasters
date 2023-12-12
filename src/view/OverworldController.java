@@ -1,5 +1,6 @@
 package view;
 
+import controller.PropertyChangeEnableDungeon;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,10 +11,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import model.*;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.Objects;
 
-public class OverworldController extends MenuController {
+public class OverworldController extends MenuController implements PropertyChangeListener {
     @FXML
     private ImageView myHeroImageView;
 
@@ -49,72 +52,32 @@ public class OverworldController extends MenuController {
 
 
     private DungeonAdventure myDungeonAdventure;
+    private OverworldControls myOverworldControls;
 
     public void initialize() {
         myUpButton.setOnAction(actionEvent -> {
-            if (myDungeonAdventure != null) {
-                myDungeonAdventure.getMyDungeon().goDirection(Direction.NORTH);
-                try {
-                    loadRoom(myDungeonAdventure.getMyDungeon().getMyCurrentRoom(), myCurrentRoom);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                try {
-                    getAdjacentRooms();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            if (myOverworldControls != null) {
+                myOverworldControls.up();
             }
         });
 
         myDownButton.setOnAction(actionEvent -> {
-            if (myDungeonAdventure != null) {
-                myDungeonAdventure.getMyDungeon().goDirection(Direction.SOUTH);
-                try {
-                    loadRoom(myDungeonAdventure.getMyDungeon().getMyCurrentRoom(), myCurrentRoom);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                try {
-                    getAdjacentRooms();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            if (myOverworldControls != null) {
+                myOverworldControls.down();
             }
         });
 
         myLeftButton.setOnAction(actionEvent -> {
-            if (myDungeonAdventure != null) {
-                myDungeonAdventure.getMyDungeon().goDirection(Direction.WEST);
-                try {
-                    loadRoom(myDungeonAdventure.getMyDungeon().getMyCurrentRoom(), myCurrentRoom);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                try {
-                    getAdjacentRooms();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            if (myOverworldControls != null) {
+                myOverworldControls.left();
             }
         });
 
         myRightButton.setOnAction(actionEvent -> {
-            if (myDungeonAdventure != null) {
-                myDungeonAdventure.getMyDungeon().goDirection(Direction.EAST);
-                try {
-                    loadRoom(myDungeonAdventure.getMyDungeon().getMyCurrentRoom(), myCurrentRoom);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                try {
-                    getAdjacentRooms();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            if (myOverworldControls != null) {
+                myOverworldControls.right();
             }
         });
-
     }
 
     public void setHeroImage(final Image theImage) {
@@ -127,9 +90,16 @@ public class OverworldController extends MenuController {
 
     public void setAdventure(DungeonAdventure theDungeonAdventure) throws IOException {
         myDungeonAdventure = theDungeonAdventure;
+        myOverworldControls = new OverworldControls(myDungeonAdventure.getMyDungeon());
+        myDungeonAdventure.getMyDungeon().addPropertyChangeListener(PropertyChangeEnableDungeon.NAVIGATED, this);
+        updateRoomGrid();
+    }
 
-        loadRoom(myDungeonAdventure.getMyDungeon().getMyCurrentRoom(), myCurrentRoom);
-        getAdjacentRooms();
+    public void updateRoomGrid() throws IOException {
+        if (myDungeonAdventure != null) {
+            loadRoom(myDungeonAdventure.getMyDungeon().getMyCurrentRoom(), myCurrentRoom);
+            getAdjacentRooms();
+        }
     }
 
     public void getAdjacentRooms() throws IOException {
@@ -205,5 +175,18 @@ public class OverworldController extends MenuController {
         theSubScene.setRoot(fxmlRoot);
         RoomController rc = loader.getController();
         rc.setRoom(theRoom);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals(PropertyChangeEnableDungeon.NAVIGATED)) {
+            try {
+                updateRoomGrid();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            System.err.println("Received unknown event " + evt.getPropertyName());
+        }
     }
 }
