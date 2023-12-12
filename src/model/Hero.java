@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import controller.PropertyChangeEnableFight;
 import controller.PropertyChangeEnableHero;
 
 import static model.ItemType.HEALING_POTION;
@@ -12,7 +14,7 @@ import static model.ItemType.VISION_POTION;
  * Has special attacks.
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
-public abstract class Hero extends DungeonCharacter implements PropertyChangeEnableHero {
+public abstract class Hero extends DungeonCharacter implements PropertyChangeEnableHero, PropertyChangeEnableFight {
     /**
      * List of items the Hero has collected.
      */
@@ -101,7 +103,7 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
 
     /**
      * Use the item at the given index, must be separately removed
-     * @param theIndex the item at the hero's inventory index
+     * @param theIndex the index of the item in the hero's inventory
      * @return true if item was used
      */
     public boolean useItem(final int theIndex) {
@@ -123,6 +125,16 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
         }
     }
 
+    /**
+     * Use the provided Item from the inventory, must be separately removed.
+     * @param theItem the Item to use
+     * @return true if the item was used
+     */
+    public boolean useItem(final Item theItem) {
+        if (theItem == null) { return false; }
+        return useItem(myInventory.indexOf(theItem));
+    }
+
 
     /**
      * Remove the item at the given index from the Hero's inventory
@@ -139,6 +151,22 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
             return true;
         } // TODO -JA: Make this more flexible with additional potential items
         return false; // Pillars are not removable
+    }
+
+    /**
+     * Get list of statistics from CharStats
+     * @return toString of Character Stats
+     */
+    public String getStatsString() {
+        return myStats.toString();
+    }
+
+    /**
+     * Return the Hero's Inventory
+     * @return the Hero's Inventory as a List
+     */
+    public List<Item> getInventory() {
+        return myInventory;
     }
 
     /**
