@@ -28,6 +28,7 @@ import java.util.Objects;
 import static controller.PropertyChangeEnableDungeon.*;
 import static controller.PropertyChangeEnableFight.HEALTH_CHANGED;
 import static controller.PropertyChangeEnableHero.INVENTORY_ACTION;
+import static controller.PropertyChangeEnableHero.VISION_POTION_USED;
 
 public class OverworldController extends MenuController implements PropertyChangeListener {
     @FXML
@@ -135,6 +136,7 @@ public class OverworldController extends MenuController implements PropertyChang
         myDungeonAdventure.getMyDungeon().addPropertyChangeListener(HIT_PIT, this);
         myDungeonAdventure.getMyHero().addPropertyChangeListener(INVENTORY_ACTION, this);
         myDungeonAdventure.getMyHero().addPropertyChangeListener(HEALTH_CHANGED, this);
+        myDungeonAdventure.getMyHero().addPropertyChangeListener(VISION_POTION_USED, this);
         // TODO JA: Get icon for HERO from myDungeonAdventure rather than stealing from NewGame
         myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
         myHeroCharStatsText.setText(myDungeonAdventure.getMyHero().getStatsString());
@@ -264,6 +266,14 @@ public class OverworldController extends MenuController implements PropertyChang
             }
             case HEALTH_CHANGED -> {
                 myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
+            }
+            case VISION_POTION_USED -> {
+                myDungeonAdventure.getMyDungeon().getMyMaze().setSurroundingRoomsVisible(myDungeonAdventure.getMyDungeon().getMyCurrentCoordinates(), 1);
+                try {
+                    updateRoomGrid();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
             case INVENTORY_ACTION -> updateInventoryList();
             default -> System.err.println("Received unknown event " + evt.getPropertyName());
