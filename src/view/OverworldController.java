@@ -1,7 +1,12 @@
 package view;
 
 import controller.OverworldControls;
-import controller.PropertyChangeEnableDungeon;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,6 +21,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.Objects;
+
+import static controller.PropertyChangeEnableDungeon.HIT_PIT;
+import static controller.PropertyChangeEnableDungeon.NAVIGATED;
 
 public class OverworldController extends MenuController implements PropertyChangeListener {
     @FXML
@@ -50,12 +58,16 @@ public class OverworldController extends MenuController implements PropertyChang
     private Button myLeftButton;
     @FXML
     private Button myRightButton;
-
-
+    @FXML
+    private FlowPane myFlowPane;
+    @FXML
+    private Circle myCircle;
+    private Timeline myDamageAnimation;
     private DungeonAdventure myDungeonAdventure;
     private OverworldControls myOverworldControls;
 
     public void initialize() {
+        setupAnimations();
         myUpButton.setOnAction(actionEvent -> {
             if (myOverworldControls != null) {
                 myOverworldControls.up();
@@ -81,6 +93,17 @@ public class OverworldController extends MenuController implements PropertyChang
         });
     }
 
+    private void setupAnimations() {
+        // Start the animation with timeline.play();
+        myDamageAnimation = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(myCurrentRoom.translateXProperty(), 0.0)),
+                new KeyFrame(Duration.millis(50), new KeyValue(myCurrentRoom.translateXProperty(), 10.0)),
+                new KeyFrame(Duration.millis(100), new KeyValue(myCurrentRoom.translateXProperty(), -10.0)),
+                new KeyFrame(Duration.millis(120), new KeyValue(myCurrentRoom.translateXProperty(), 0.0))
+        );
+        myDamageAnimation.setCycleCount(5);
+    }
+
     public void setHeroImage(final Image theImage) {
         myHeroImageView.setImage(Objects.requireNonNull(theImage));
     }
@@ -92,7 +115,8 @@ public class OverworldController extends MenuController implements PropertyChang
     public void setAdventure(DungeonAdventure theDungeonAdventure) throws IOException {
         myDungeonAdventure = theDungeonAdventure;
         myOverworldControls = new OverworldControls(myDungeonAdventure.getMyDungeon());
-        myDungeonAdventure.getMyDungeon().addPropertyChangeListener(PropertyChangeEnableDungeon.NAVIGATED, this);
+        myDungeonAdventure.getMyDungeon().addPropertyChangeListener(NAVIGATED, this);
+        myDungeonAdventure.getMyDungeon().addPropertyChangeListener(HIT_PIT, this);
         updateRoomGrid();
     }
 
@@ -180,14 +204,16 @@ public class OverworldController extends MenuController implements PropertyChang
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(PropertyChangeEnableDungeon.NAVIGATED)) {
-            try {
-                updateRoomGrid();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        switch (evt.getPropertyName()) {
+            case NAVIGATED -> {
+                try {
+                    updateRoomGrid();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        } else {
-            System.err.println("Received unknown event " + evt.getPropertyName());
+            case HIT_PIT -> myDamageAnimation.play();
+            default -> System.err.println("Received unknown event " + evt.getPropertyName());
         }
     }
 }
