@@ -22,8 +22,7 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.Objects;
 
-import static controller.PropertyChangeEnableDungeon.HIT_PIT;
-import static controller.PropertyChangeEnableDungeon.NAVIGATED;
+import static controller.PropertyChangeEnableDungeon.*;
 
 public class OverworldController extends MenuController implements PropertyChangeListener {
     @FXML
@@ -116,6 +115,7 @@ public class OverworldController extends MenuController implements PropertyChang
         myDungeonAdventure = theDungeonAdventure;
         myOverworldControls = new OverworldControls(myDungeonAdventure.getMyDungeon());
         myDungeonAdventure.getMyDungeon().addPropertyChangeListener(NAVIGATED, this);
+        myDungeonAdventure.getMyDungeon().addPropertyChangeListener(NAV_FAIL, this);
         myDungeonAdventure.getMyDungeon().addPropertyChangeListener(HIT_PIT, this);
         updateRoomGrid();
     }
@@ -211,6 +211,10 @@ public class OverworldController extends MenuController implements PropertyChang
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+            }
+            case  NAV_FAIL -> {
+                System.err.println("Failed to navigate, no doors?");
+                // TODO -JA: Play failure sound or animate direction that failed
             }
             case HIT_PIT -> myDamageAnimation.play();
             default -> System.err.println("Received unknown event " + evt.getPropertyName());

@@ -50,6 +50,7 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
             fireEvent(NAVIGATED);
             return true;
         }
+        fireEvent(NAV_FAIL);
         return false;
     }
 
