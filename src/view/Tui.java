@@ -3,8 +3,7 @@ import model.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.Scanner;
 
 import static controller.PropertyChangeEnableFight.*;
@@ -14,7 +13,43 @@ public class Tui implements PropertyChangeListener {
     public static void main(String[]theArgs) {
         Tui tui = new Tui();
         tui.generateDungeon();
+        tui.loadDungeonAdventure();
 //        tui.fightSim();
+    }
+
+    private void loadDungeonAdventure() {
+        DungeonAdventure da = null;
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("output.dat"))) {
+            da = (DungeonAdventure) ois.readObject();
+            System.out.println("Object has been deserialized");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println(da.getMyDungeon().getMyCurrentRoom());
+        System.out.println(da.getMyHero().toString());
+        Scanner scanner = new Scanner(System.in);
+        TuiControl control = new TuiControl(da.getMyDungeon());
+        while (scanner.hasNext()) {
+            System.out.println(da.getMyDungeon().getMyCurrentRoom());
+            String option = scanner.next();
+            boolean isValidMove = switch (option) {
+                case "l" -> control.left();
+                case "r" -> control.right();
+                case "u" -> control.up();
+                case "d" -> control.down();
+                default -> false;
+            };
+
+            if (isValidMove) {
+                System.out.println("Moved to + "+ da.getMyDungeon().getMyCurrentCoordinates().row()
+                        + ", " + da.getMyDungeon().getMyCurrentCoordinates().column() + "\n"
+                        + da.getMyDungeon().getMyCurrentRoom());
+            } else {
+                System.out.println("invalid move");
+                break;
+            }
+
+        }
     }
 
     private void generateDungeon() {
