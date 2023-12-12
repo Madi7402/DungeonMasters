@@ -246,7 +246,20 @@ public class Maze {
      * @param theCoordinates the coordinates of the room to be provided.
      * @return the room at the given coordinates
      */
-    public Room getRoom(Coordinates theCoordinates) {
+    public Room getRoom(final Coordinates theCoordinates) {
         return rooms.get(theCoordinates);
+    }
+
+    public Room getRoom(final Coordinates theCoordinates, final Direction theDirection) {
+        if (theCoordinates == null) {
+            return null;
+        }
+        return rooms.get(new Coordinates(theCoordinates.level(),
+                theCoordinates.row()+theDirection.getYOffset(),
+                theCoordinates.column()+theDirection.getXOffset()));
+    }
+
+    public TreeMap<Coordinates, Room> getRooms() {
+        return rooms;
     }
 }

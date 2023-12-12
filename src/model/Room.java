@@ -251,6 +251,10 @@ public class Room {
         return equipableItems;
     }
 
+    public EnumSet<Direction> getDoors() {
+        return doors;
+    }
+
     // TO DO (Monday) - get rid of all the Item setters (pillar, potion, pit)
     // get rid of the related fields
     // keep has functions, check item tree instead of fields

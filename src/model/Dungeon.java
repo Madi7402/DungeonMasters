@@ -16,8 +16,8 @@ public class Dungeon {
         myCurrentRoom = myMaze.getRoom(myCurrentCoordinates);
     }
 
-    public String getMyCurrentRoom() {
-        return myCurrentRoom.toString();
+    public Room getMyCurrentRoom() {
+        return myCurrentRoom;
     }
 
     public boolean goDirection(Direction theDirection) {
@@ -29,6 +29,10 @@ public class Dungeon {
             return true;
         }
         return false;
+    }
+
+    public Maze getMyMaze() {
+        return myMaze;
     }
 
     public Coordinates getMyCurrentCoordinates() {
