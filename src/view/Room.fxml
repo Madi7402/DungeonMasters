@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.RoomController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#282828" height="240.0" layoutX="-3.0" stroke="BLACK" strokeType="INSIDE" width="320.0" />
+      <Rectangle fx:id="myLeftWall" arcHeight="5.0" arcWidth="5.0" fill="#757575" height="240.0" layoutX="-3.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#757575" height="10.0" layoutY="230.0" stroke="BLACK" strokeType="INSIDE" width="320.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#757575" height="10.0" stroke="BLACK" strokeType="INSIDE" width="320.0" />
+      <Rectangle fx:id="myRightWall" arcHeight="5.0" arcWidth="5.0" fill="#757575" height="240.0" layoutX="310.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
+      <Rectangle fx:id="mySouthDoor" arcHeight="5.0" arcWidth="5.0" height="10.0" layoutX="135.0" layoutY="230.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="50.0" />
+      <Rectangle fx:id="myNorthDoor" arcHeight="5.0" arcWidth="5.0" height="10.0" layoutX="135.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="50.0" />
+      <Rectangle fx:id="myWestDoor" arcHeight="5.0" arcWidth="5.0" height="50.0" layoutX="-3.0" layoutY="95.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="10.0" />
+      <Rectangle fx:id="myEastDoor" arcHeight="5.0" arcWidth="5.0" height="50.0" layoutX="310.0" layoutY="95.0" stroke="BLACK" strokeType="INSIDE" visible="false" width="10.0" />
+   </children>
+</AnchorPane>
