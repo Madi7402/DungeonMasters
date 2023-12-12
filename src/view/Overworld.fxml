@@ -3,6 +3,7 @@
 <?import javafx.scene.SubScene?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
@@ -105,13 +106,28 @@
                                                 <Text fx:id="myHeroNameDisplayText" strokeType="OUTSIDE" strokeWidth="0.0" />
                                              </children>
                                           </TextFlow>
+                                          <TextFlow fx:id="myHeroHealthFlow" layoutX="7.0" layoutY="159.0" prefHeight="16.0" prefWidth="127.0">
+                                             <children>
+                                                <Text fx:id="myHeroCharStatsText" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                             </children>
+                                          </TextFlow>
+                                          <TextFlow layoutX="141.0" layoutY="5.0" prefHeight="130.0" prefWidth="165.0">
+                                             <children>
+                                                <Text fx:id="myHeroHealthText" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                             </children>
+                                          </TextFlow>
                                        </children>
                                     </AnchorPane>
                               </content>
                             </TitledPane>
                             <TitledPane animated="false" text="Inventory">
                               <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <ListView fx:id="myInventoryListView" prefHeight="251.0" prefWidth="312.0" />
+                                          <Button fx:id="myInventoryUseButton" layoutY="251.0" mnemonicParsing="false" text="Use Item" />
+                                          <Button fx:id="myInventoryInfoButton" layoutX="220.0" layoutY="251.0" mnemonicParsing="false" text="Information" />
+                                       </children></AnchorPane>
                               </content>
                             </TitledPane>
                             <TitledPane animated="false" text="Objectives">

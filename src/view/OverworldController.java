@@ -4,6 +4,9 @@ import controller.OverworldControls;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
@@ -23,6 +26,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static controller.PropertyChangeEnableDungeon.*;
+import static controller.PropertyChangeEnableFight.HEALTH_CHANGED;
+import static controller.PropertyChangeEnableHero.INVENTORY_ACTION;
 
 public class OverworldController extends MenuController implements PropertyChangeListener {
     @FXML
@@ -61,6 +66,17 @@ public class OverworldController extends MenuController implements PropertyChang
     private FlowPane myFlowPane;
     @FXML
     private Circle myCircle;
+
+    @FXML
+    private Text myHeroHealthText;
+
+    @FXML
+    private Text myHeroCharStatsText;
+    @FXML
+    private ListView<Item> myInventoryListView;
+
+    @FXML
+    private Button myInventoryUseButton;
     private Timeline myDamageAnimation;
     private DungeonAdventure myDungeonAdventure;
     private OverworldControls myOverworldControls;
@@ -117,7 +133,55 @@ public class OverworldController extends MenuController implements PropertyChang
         myDungeonAdventure.getMyDungeon().addPropertyChangeListener(NAVIGATED, this);
         myDungeonAdventure.getMyDungeon().addPropertyChangeListener(NAV_FAIL, this);
         myDungeonAdventure.getMyDungeon().addPropertyChangeListener(HIT_PIT, this);
+        myDungeonAdventure.getMyHero().addPropertyChangeListener(INVENTORY_ACTION, this);
+        myDungeonAdventure.getMyHero().addPropertyChangeListener(HEALTH_CHANGED, this);
+        myDungeonAdventure.getMyHero().addPropertyChangeListener(this);
+        // TODO JA: Get icon for HERO from myDungeonAdventure rather than stealing from NewGame
+        myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
+        myHeroCharStatsText.setText(myDungeonAdventure.getMyHero().getStatsString());
+
+        //TODO JA: remove these hacks
+        myDungeonAdventure.getMyHero().giveItem(ItemType.VISION_POTION);
+
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+
+
+
+
+        myInventoryListView.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.intValue() >= 0) {
+                System.out.println("Selected Index: " + newValue.intValue());
+            } else {
+                System.out.println("No item selected");
+            }
+        });
+
+        myInventoryUseButton.setOnAction(actionEvent -> {
+            System.out.println(myInventoryListView.getSelectionModel().getSelectedItem());
+            myDungeonAdventure.getMyHero().useItem(myInventoryListView.getSelectionModel().getSelectedItem());
+            System.err.println(myDungeonAdventure.getMyHero());
+        });
         updateRoomGrid();
+    }
+
+    private void updateInventoryList() {
+        ObservableList<Item> items = FXCollections.observableArrayList(myDungeonAdventure.getMyHero().getInventory());
+        myInventoryListView.setItems(items); // TODO -JA: Add tooltips?
     }
 
     public void updateRoomGrid() throws IOException {
@@ -216,8 +280,20 @@ public class OverworldController extends MenuController implements PropertyChang
                 System.err.println("Failed to navigate, no doors?");
                 // TODO -JA: Play failure sound or animate direction that failed
             }
-            case HIT_PIT -> myDamageAnimation.play();
+            case HIT_PIT -> {
+                myDamageAnimation.play();
+            }
+//            case HEALTH_CHANGED -> {
+//                myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
+//                System.out.println("Health change");
+//            }
+            case HEALTH_CHANGED
+                    -> System.out.println("health changed from "
+                    + evt.getOldValue() + " to " + evt.getNewValue());
+            case INVENTORY_ACTION -> updateInventoryList();
             default -> System.err.println("Received unknown event " + evt.getPropertyName());
         }
     }
+
+
 }
