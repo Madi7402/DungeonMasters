@@ -3,7 +3,7 @@ package controller;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class PropertyChange implements PropertyChangeEnable {
+public abstract class PropertyChange implements PropertyChangeEnable {
     /**
      * Fire event to observers.
      * @param theEvent the event from PropertyChangeEnableFight

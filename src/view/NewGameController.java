@@ -66,7 +66,6 @@ public class NewGameController extends MenuController {
                 if (myHeroNameDisplayText.getText().isEmpty()) {
                     controller.setHeroNameDisplayText("Unnamed Hero");
                 }
-                createAdventure();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -40,15 +40,15 @@ public class Maze {
         for (int l = 0; l < LEVELS; l++) {
             System.err.println("Gen Level: " + l);
             RandomRoomFactory rf = new RandomRoomFactory();
-            for (int i = -1; i < width; i++) {
-                for (int j = -1; j < height; j++) {
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
                     Coordinates coord = new Coordinates(l, j, i);
                     Room genRoom = rf.createRoom(coord);
                     rooms.put(coord, genRoom);
                 }
             }
         }
-        System.out.println();
+        System.err.println();
     }
 
     /**
