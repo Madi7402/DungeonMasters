@@ -141,26 +141,7 @@ public class OverworldController extends MenuController implements PropertyChang
 
         //TODO JA: remove these hacks
         myDungeonAdventure.getMyHero().giveItem(ItemType.VISION_POTION);
-
         myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-
-        updateInventoryList();
-
 
         myInventoryListView.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.intValue() >= 0) {
@@ -173,7 +154,6 @@ public class OverworldController extends MenuController implements PropertyChang
         myInventoryUseButton.setOnAction(actionEvent -> {
             System.out.println(myInventoryListView.getSelectionModel().getSelectedItem());
             myDungeonAdventure.getMyHero().useItem(myInventoryListView.getSelectionModel().getSelectedItem());
-            System.err.println(myDungeonAdventure.getMyHero());
         });
         updateRoomGrid();
     }
@@ -267,7 +247,6 @@ public class OverworldController extends MenuController implements PropertyChang
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.err.println(evt.getPropertyName() + " Fired");
         switch (evt.getPropertyName()) {
             case NAVIGATED -> {
                 try {
@@ -285,7 +264,6 @@ public class OverworldController extends MenuController implements PropertyChang
             }
             case HEALTH_CHANGED -> {
                 myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
-                System.out.println("Health change");
             }
             case INVENTORY_ACTION -> updateInventoryList();
             default -> System.err.println("Received unknown event " + evt.getPropertyName());
