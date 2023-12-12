@@ -23,7 +23,6 @@ public class RoomController {
 
     public void setRoom(final Room theRoom) {
         for (Direction direction : theRoom.getDoors()) {
-            System.out.println(direction);
             switch (direction) {
                 case NORTH -> myNorthDoor.setVisible(true);
                 case WEST -> myWestDoor.setVisible(true);

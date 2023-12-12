@@ -205,6 +205,5 @@ public class OverworldController extends MenuController {
         theSubScene.setRoot(fxmlRoot);
         RoomController rc = loader.getController();
         rc.setRoom(theRoom);
-        System.out.println(theRoom);
     }
 }
