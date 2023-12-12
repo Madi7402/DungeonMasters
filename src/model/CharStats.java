@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class CharStats implements Serializable {
     /** UID for Serialization. */
     @Serial
-    private static final long serialVersionUID = 0L; // Update on class changes?
+    private static final long serialVersionUID = 1L; // Update on class changes?
     /**
      * The initial health of the character.
      */
@@ -149,5 +149,14 @@ public class CharStats implements Serializable {
      */
     public double blockChance() {
         return myBlockChance;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Max Health: " + myStartingHealth + "\n");
+        sb.append("Attack Speed: " + myAttackSpeed + "\n");
+        sb.append("Hit Chance: " + myHitChance);
+        return sb.toString();
     }
 }
