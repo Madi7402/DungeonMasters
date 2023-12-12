@@ -103,7 +103,7 @@ public class OverworldController extends MenuController implements PropertyChang
         }
     }
 
-    public void getAdjacentRooms() throws IOException {
+    public void getAdjacentRooms() throws IOException { // I don't want to talk about this
         Coordinates myCurrentCoordinates = myDungeonAdventure.getMyDungeon().getMyCurrentRoom().getCoordinate();
         Maze maze = myDungeonAdventure.getMyDungeon().getMyMaze();
         Room north = maze.getRoom(myCurrentCoordinates, Direction.NORTH);

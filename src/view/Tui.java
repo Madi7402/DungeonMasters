@@ -3,6 +3,8 @@ import model.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 
 import static controller.PropertyChangeEnableFight.*;
@@ -36,7 +38,18 @@ public class Tui implements PropertyChangeListener {
                         + da.getMyDungeon().getMyCurrentRoom());
             } else {
                 System.out.println("invalid move");
+                break;
             }
+        }
+        // Define the file path where you want to save the object
+        String filePath = "output.dat";
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            // Write the object to the file
+            oos.writeObject(da);
+            System.out.println("Object has been written to " + filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
