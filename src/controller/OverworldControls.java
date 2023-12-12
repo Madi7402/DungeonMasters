@@ -1,4 +1,4 @@
-package view;
+package controller;
 
 import model.Direction;
 import model.Dungeon;

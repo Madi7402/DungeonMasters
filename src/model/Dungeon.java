@@ -17,10 +17,17 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
     private final PropertyChangeSupport myPcs;
 
     public Dungeon() {
+        this(10,10);
+    }
+
+    public Dungeon(final int theWidth, final int theHeight) {
+        if (theWidth < 4 || theHeight < 4) {
+            throw new IllegalArgumentException("Map must be at least 4x4");
+        }
         myPcs = new PropertyChangeSupport(this);
 //        RandomRoomFactory rf = new RandomRoomFactory(); // TODO -JA: Use real maze
-        myMaze = new Maze(true); // TODO -JA: Use real maze for constructing dungeon
-        myCurrentCoordinates = new Coordinates(0, 0, 0);
+        myMaze = new Maze(true, theWidth, theHeight); // TODO -JA: Use real maze for constructing dungeon
+        myCurrentCoordinates = new Coordinates(0, 0, 0); // TODO -JA: is this really the entrance?
         myCurrentRoom = myMaze.getRoom(myCurrentCoordinates);
         myCurrentRoom.setIsVisited(true);
     }

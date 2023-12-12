@@ -74,12 +74,13 @@ public class NewGameController extends MenuController {
     }
 
     private DungeonAdventure createAdventure() {
-        // TODO -JA: get map size
+        int mapWidth = (int) myMapWidthSlider.getValue();
+        int mapHeight = (int) myMapHeightSlider.getValue();
         String name = myHeroNameDisplayText.getText();
         return switch(myHeroTypeCB.getValue()) {
-            case "Thief" -> new DungeonAdventure(new Thief(name));
-            case "Priestess" -> new DungeonAdventure(new Priestess(name));
-            case "Warrior" -> new DungeonAdventure(new Warrior(name));
+            case "Thief" -> new DungeonAdventure(new Thief(name), mapWidth, mapHeight);
+            case "Priestess" -> new DungeonAdventure(new Priestess(name), mapWidth, mapHeight);
+            case "Warrior" -> new DungeonAdventure(new Warrior(name), mapWidth, mapHeight);
             default -> null;
         };
     }

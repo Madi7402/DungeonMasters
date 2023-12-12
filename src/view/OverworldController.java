@@ -1,5 +1,6 @@
 package view;
 
+import controller.OverworldControls;
 import controller.PropertyChangeEnableDungeon;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

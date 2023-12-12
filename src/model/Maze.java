@@ -34,7 +34,9 @@ public class Maze {
 
     // Test constructor for Maze development until maze generation is finished
 // TODO: TESTING CONSTRUCTOR REMOVE ME WHEN DONE
-    public Maze(boolean theTesting) {
+    public Maze(boolean theTesting, int theWidth, int theHeight) {
+        width = theWidth;
+        height = theHeight;
         for (int l = 0; l < LEVELS; l++) {
             System.err.println("Gen Level: " + l);
             RandomRoomFactory rf = new RandomRoomFactory();

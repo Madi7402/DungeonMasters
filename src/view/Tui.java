@@ -16,7 +16,7 @@ public class Tui implements PropertyChangeListener {
     }
 
     private void generateDungeon() {
-        DungeonAdventure da = new DungeonAdventure(new Thief("Test Thief"));
+        DungeonAdventure da = new DungeonAdventure(new Thief("Test Thief"), 10, 10);
         Scanner scanner = new Scanner(System.in);
         TuiControl control = new TuiControl(da.getMyDungeon());
         while (scanner.hasNext()) {

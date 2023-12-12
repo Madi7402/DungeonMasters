@@ -21,8 +21,8 @@ public class DungeonAdventure {
         myHero = new Thief("Default Hero");
     }
 
-    public DungeonAdventure(final Hero theHero) { // TODO -JA: Adjust generated maze size
-        myDungeon = new Dungeon();
+    public DungeonAdventure(final Hero theHero, final int theMapWidth, final int theMapHeight) {
+        myDungeon = new Dungeon(theMapWidth, theMapHeight);
         myHero = Objects.requireNonNull(theHero);
     }
 
