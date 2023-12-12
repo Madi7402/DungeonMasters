@@ -2,7 +2,7 @@
   <configuration default="false" name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="view.Main" />
     <module name="DungeonMasters" />
-    <option name="VM_PARAMETERS" value="--module-path lib/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml" />
+    <option name="VM_PARAMETERS" value="--module-path javafx-sdk/lib --add-modules javafx.controls,javafx.fxml" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="controller.*" />

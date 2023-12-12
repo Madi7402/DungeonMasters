@@ -1,6 +1,7 @@
 package view;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -34,6 +35,10 @@ public abstract class AbstractController {
 
     public void settingsButton(ActionEvent event) throws IOException {
         switchScene(event, "Settings.fxml");
+    }
+
+    public Stage getMyStage(){
+        return myStage;
     }
 
 }

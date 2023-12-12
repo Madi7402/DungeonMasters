@@ -1,6 +1,19 @@
 package view;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableView;
+
 public class LoadGameController {
-    //Load in game saves (SQlite)
-    //Allow game start
+
+    @FXML
+    private TableView mySaveTable;
+
+    public void initialzie(){
+
+    }
+
+    public void loadAdventure(ActionEvent event){
+
+    }
 }
