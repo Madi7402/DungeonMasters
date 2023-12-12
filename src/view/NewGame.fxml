@@ -46,12 +46,12 @@
                   </Text>
                </children>
             </TextFlow>
-            <Slider fx:id="myMapWidthSlider" layoutX="99.0" layoutY="52.0" min="4.0" value="4.0" />
-            <Slider fx:id="myMapHeightSlider" layoutX="99.0" layoutY="74.0" min="4.0" value="4.0" />
+            <Slider fx:id="myMapWidthSlider" layoutX="99.0" layoutY="52.0" max="50.0" min="10.0" value="4.0" />
+            <Slider fx:id="myMapHeightSlider" layoutX="99.0" layoutY="74.0" max="50.0" min="10.0" value="4.0" />
             <Text layoutX="59.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Width" />
             <Text layoutX="54.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Height" />
-            <Text fx:id="myWidthSliderValue" layoutX="239.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" />
-            <Text fx:id="myHeightSliderValue" layoutX="239.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" />
+            <Text fx:id="myWidthSliderValue" layoutX="239.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" />
+            <Text fx:id="myHeightSliderValue" layoutX="239.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" />
          </children>
       </AnchorPane>
       <Button layoutX="14.0" layoutY="674.0" mnemonicParsing="false" onAction="#backToMenuButton" prefHeight="32.0" prefWidth="337.0" text="Back" />
