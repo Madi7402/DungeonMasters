@@ -37,8 +37,4 @@ public abstract class AbstractController {
         switchScene(event, "Settings.fxml");
     }
 
-    public Stage getMyStage(){
-        return myStage;
-    }
-
 }

@@ -6,6 +6,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.shape.Circle;
@@ -22,7 +23,9 @@ import model.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Objects;
 
 import static controller.PropertyChangeEnableDungeon.*;
@@ -30,7 +33,7 @@ import static controller.PropertyChangeEnableFight.HEALTH_CHANGED;
 import static controller.PropertyChangeEnableHero.INVENTORY_ACTION;
 import static controller.PropertyChangeEnableHero.VISION_POTION_USED;
 
-public class OverworldController extends MenuController implements PropertyChangeListener {
+public class OverworldController extends AbstractController implements PropertyChangeListener {
     @FXML
     private ImageView myHeroImageView;
 
@@ -279,6 +282,26 @@ public class OverworldController extends MenuController implements PropertyChang
             default -> System.err.println("Received unknown event " + evt.getPropertyName());
         }
     }
+
+    public DungeonAdventure getMyDungeonAdventure(){
+        return myDungeonAdventure;
+    }
+
+    public void saveButton(){
+        String filePath = "Save Files/" + getMyDungeonAdventure().getMyHero().getMyName() + ".dat";
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            // Write the object to the file
+            oos.writeObject(myDungeonAdventure);
+            System.out.println("Object has been written to " + filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+//    public void pauseButton(ActionEvent event) throws IOException {
+//        PauseMenuController.setDungeonAdventure(myDungeonAdventure);
+//        switchScene(event, "PauseMenu.fxml");
+//    }
 
 
 }
