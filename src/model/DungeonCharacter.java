@@ -68,7 +68,11 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
         if (theName == null || theName.length() > MAX_NAME_LENGTH) {
             throw new IllegalArgumentException("Name must not be longer than " + MAX_NAME_LENGTH + " or null");
         }
-        myName = theName;
+
+        if (theName.isEmpty())
+            myName = "Unnamed " + getClass().getSimpleName();
+        else
+            myName = theName;
     }
 
     /**

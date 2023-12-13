@@ -61,11 +61,7 @@ public class NewGameController extends MenuController {
                 FXMLLoader loader = switchScene(actionEvent, "Overworld.fxml");
                 OverworldController controller = loader.getController();
                 controller.setAdventure(da);
-                controller.setHeroImage(myHeroImageView.getImage());
-                controller.setHeroNameDisplayText(myHeroNameDisplayText.getText());
-                if (myHeroNameDisplayText.getText().isEmpty()) {
-                    controller.setHeroNameDisplayText("Unnamed Hero");
-                }
+                controller.setHeroImage(myHeroImageView.getImage()); // TODO - JA: Get this in Overworld Controller Instead from DA
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
