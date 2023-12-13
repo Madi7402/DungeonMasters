@@ -44,8 +44,10 @@ public class Maze {
     }
 
     /**
-     * Initializes a maze with the specified number of levels, width, and height.
-     * Initializes and populates the maze, sets entrance and exit, and generates paths between rooms.
+     * Initializes the maze with rooms, entrance and exit portals, and ensures traversability across levels.
+     * Iterates through each level, initializing rooms, setting portals, and validating the maze.
+     *
+     * @param roomFactory The factory that makes rooms.
      */
     private void initializeMaze(AbstractRoomFactory roomFactory) {
 
@@ -65,13 +67,28 @@ public class Maze {
         }
     }
 
+    /**
+     * A helper class to validate maze criteria during the traversal process.
+     * Criteria include finding the exit and detecting dead-end rooms.
+     */
     private class ValidMazeCriteria {
         boolean isExitFound;
         boolean hasDeadEnd;
+        /**
+         * Checks if the maze traversal meets the specified criteria.
+         *
+         * @return True if the criteria are met; otherwise, false.
+         */
         public boolean isValid() {
             return (isExitFound && hasDeadEnd);
         }
 
+        /**
+         * Validates the specified room against the criteria.
+         * Marks dead-end rooms with pillars and identifies the exit room.
+         *
+         * @param room The room to be validated.
+         */
         private void validateRoom(Room room) {
 
             if (!isExitFound && isExitRoom(room)) {    //maybe these are the problem...
@@ -86,9 +103,11 @@ public class Maze {
     }
 
     /**
-     * Fills the maze with randomly generated rooms, creating a grid of rooms with specified levels, width, and height.
-     * Each room is assigned random attributes such as portals, items, and positions.
-     * The rooms are stored in a TreeMap organized by their coordinates.
+     * Initializes the maze with rooms for a specific level.
+     * Populates the maze by creating rooms at each coordinate for the given level.
+     *
+     * @param roomFactory The factory that makes rooms.
+     * @param level       The level for which rooms are to be initialized.
      */
     private void initializeMazeRooms(AbstractRoomFactory roomFactory, int level) {
         // Loop through each level, row, and column to create rooms
@@ -101,13 +120,13 @@ public class Maze {
     }
     // TODO - test to make sure this works on reentry
 
-
     /**
      * Sets the entrance and exit portals for each level in the maze.
      * The entrance and exit are positioned based on the level, creating a path through the maze.
-     * The coordinates of the entrance portals are returned.
      * Also, sets the corresponding portal type in the room objects.
-     * @return An array containing the coordinates of the entrance portals.
+     *
+     * @param level The level for which entrance and exit portals are to be set.
+     * @return The coordinates of the entrance portal.
      */
     private Coordinates setEntranceAndExit(int level) { // sets them per level
         Coordinates entrance, exit;
@@ -132,12 +151,14 @@ public class Maze {
         return entrance;
     }
 
-
-    // Ensure that Maze is traversable from entrance to exit
+                // Ensure that Maze is traversable from entrance to exit
     /**
-     * Generates the maze starting from the specified coordinate.
-     * Recursively explores directions from the coordinate, creating connections between rooms.
+     * Recursively generates the maze starting from the specified coordinate.
+     * Explores directions from the coordinate, creates connections between rooms, and validates maze criteria.
+     *
      * @param coordinate The starting coordinate for maze generation.
+     * @param criteria   The criteria used to validate the maze during traversal.
+     * @return True if traversal is successful according to the specified criteria; otherwise, false.
      */
     private boolean TraverseTo(Coordinates coordinate, ValidMazeCriteria criteria) {
         if (!isValidRoom(coordinate)) {
@@ -171,20 +192,36 @@ public class Maze {
         return false;
     }
 
-    // if all rooms are visited, return true // if 1+ is not visited, return false
+    /**
+     * Checks if traversal of the maze is complete by verifying if all rooms have been visited.
+     *
+     * @return True if all rooms are visited; otherwise, false.
+     */
     private boolean isTraversalComplete() {
         boolean complete = myRooms.values().stream().allMatch(Room::isVisited);
         System.out.println("Traversal Complete: " + complete); // TODO - remove debugging when done
-        return complete;
-    }
+        return complete;        // if all rooms are visited, return true
+    }                           // if 1+ is not visited, return false
 
-    // all 4 directions
+    /**
+     * Connects the given room to its neighboring rooms in all four directions.
+     * For each direction, the method attempts to establish a connection between the room and its neighbor.
+     *
+     * @param room The room for which connections are to be established.
+     */
     private void connectRooms(Room room) {
-        for (var direction : Direction.values()) {
+        for (var direction : Direction.values()) { // all 4 directions
             connectRooms(room, direction);
         }
     }
 
+    /**
+     * Connects the given room to its neighbor in the specified direction.
+     * If a neighboring room exists in the specified direction, a connection is established.
+     *
+     * @param room      The room for which a connection is to be established.
+     * @param direction The direction in which the connection is to be established.
+     */
     private void connectRooms(Room room, Direction direction) {
         var coordinate = room.getCoordinate();
         var neighborCoordinate = coordinate.generate(direction);
@@ -194,10 +231,23 @@ public class Maze {
         }
     }
 
+    /**
+     * Checks if the provided room is a dead-end room.
+     * A dead-end room has no portal and only one neighbor.
+     *
+     * @param room The room to be checked.
+     * @return True if the room is a dead-end; otherwise, false.
+     */
     private boolean isDeadEndRoom(Room room) {
         return (room.getMyPortal() == Portal.NONE && room.getNeighbors().size() == 1);
     }
 
+    /**
+     * Checks if the provided room is an exit room.
+     *
+     * @param room The room to be checked.
+     * @return True if the room is an exit room; otherwise, false.
+     */
     private boolean isExitRoom(Room room) {
         return room.getMyPortal() == Portal.EXIT;
     }

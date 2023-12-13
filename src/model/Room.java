@@ -12,7 +12,17 @@ import java.util.TreeMap;
  * @author Jonathan Abrams, Martha Emerson, Madison Pope
  */
 public class Room {
+    /**
+     * A mapping of directions to neighboring rooms.
+     * This TreeMap represents the connections to adjacent rooms in different directions.
+     * The keys are Direction enum values, and the values are corresponding neighboring Room objects.
+     */
     private final TreeMap<Direction, Room> myNeighbors = new TreeMap<>();
+    /**
+     * A mapping of item types to items present in the room.
+     * This TreeMap represents the items located in the room, where keys are ItemType enum values,
+     * and values are corresponding Item objects.
+     */
     private final TreeMap<ItemType, Item> myItems = new TreeMap<>();
     /**
      * The portal type associated with the room.
@@ -91,6 +101,11 @@ public class Room {
         this.myPortal = myPortal;
     }
 
+    /**
+     * Retrieves the portal type associated with the room.
+     *
+     * @return The portal type of the room.
+     */
     public Portal getMyPortal() {
         return myPortal;
     }
@@ -113,6 +128,13 @@ public class Room {
         this.isVisited = isVisited;
     }
 
+    /**
+     * Attempts to set a neighbor in a specified direction.
+     *
+     * @param neighbor   The neighboring room.
+     * @param direction  The direction of the neighbor.
+     * @return True if the neighbor was successfully set, false otherwise.
+     */
     public boolean trySetNeighbor(Room neighbor, Direction direction) {
         if (!myDoors.contains(direction)) {
             return false;
@@ -223,24 +245,49 @@ public class Room {
         return sb.toString();
     }
 
+    /**
+     * Retrieves the coordinate of a room in the maze.
+     *
+     * @return The coordinate of the room.
+     */
     public Coordinates getCoordinate() {
         return this.myCoordinates;
     }
 
+    /**
+     * Retrieves the neighbors of the room.
+     *
+     * @return A collection of neighboring rooms.
+     */
     public Collection<Room> getNeighbors() {
         return this.myNeighbors.values();
     }
 
+    /**
+     * Sets the presence of a pillar in the room.
+     *
+     * @param hasPillar True if the room has a pillar, false otherwise.
+     */
     public void setPillar(boolean hasPillar) {
         this.hasPillar = hasPillar; // might need to add Item instead TO DO !!!
     }
 
-    // use this in place of set pit, set pillar, etc. for anything that's an item
+
+    /**
+     * Adds an item to the room.
+     *
+     * @param item The item to be added.
+     */
     public void addItem(Item item) {
         myItems.put(item.getType(), item);
     }
+        // use this in place of set pit, set pillar, etc. for anything that's an item
 
-    // removes all the equipable Items from the room and returns them
+    /**
+     * Removes all equipable items from the room and returns them.
+     *
+     * @return A collection of equipable items.
+     */
     public Collection<Item> takeEquipableItems() {
         var equipableItems = myItems.values().stream().filter(Item::isEquipable).toList();
 

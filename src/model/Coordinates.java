@@ -39,6 +39,12 @@ public record Coordinates(int level, int row, int column) implements Comparable<
         return row - o.row;
     }
 
+    /**
+     * Generates new coordinates based on the specified direction.
+     *
+     * @param direction The direction indicating the row and column offsets.
+     * @return A new set of coordinates with adjusted row and column values.
+     */
     public Coordinates generate(Direction direction) {
         return generate(direction.getXOffset(), direction.getYOffset());
     }
