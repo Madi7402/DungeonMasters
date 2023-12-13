@@ -124,20 +124,24 @@ public class OverworldController extends MenuController implements PropertyChang
         myHeroImageView.setImage(Objects.requireNonNull(theImage));
     }
 
-    public void setHeroNameDisplayText(String theText) {
-        myHeroNameDisplayText.setText(theText);
-    }
-
     public void setAdventure(DungeonAdventure theDungeonAdventure) throws IOException {
         myDungeonAdventure = theDungeonAdventure;
+        Dungeon dungeon = theDungeonAdventure.getMyDungeon();
+        Hero hero = theDungeonAdventure.getMyHero();
+
         myOverworldControls = new OverworldControls(myDungeonAdventure.getMyDungeon());
-        myDungeonAdventure.getMyDungeon().addPropertyChangeListener(NAVIGATED, this);
-        myDungeonAdventure.getMyDungeon().addPropertyChangeListener(NAV_FAIL, this);
-        myDungeonAdventure.getMyDungeon().addPropertyChangeListener(HIT_PIT, this);
-        myDungeonAdventure.getMyHero().addPropertyChangeListener(INVENTORY_ACTION, this);
-        myDungeonAdventure.getMyHero().addPropertyChangeListener(HEALTH_CHANGED, this);
-        myDungeonAdventure.getMyHero().addPropertyChangeListener(VISION_POTION_USED, this);
+
+        // Add event listeners
+        dungeon.addPropertyChangeListener(NAVIGATED, this);
+        dungeon.addPropertyChangeListener(NAV_FAIL, this);
+        dungeon.addPropertyChangeListener(HIT_PIT, this);
+
+        hero.addPropertyChangeListener(INVENTORY_ACTION, this);
+        hero.addPropertyChangeListener(HEALTH_CHANGED, this);
+        hero.addPropertyChangeListener(VISION_POTION_USED, this);
+
         // TODO JA: Get icon for HERO from myDungeonAdventure rather than stealing from NewGame
+        myHeroNameDisplayText.setText(hero.getMyName());
         myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
         myHeroCharStatsText.setText(myDungeonAdventure.getMyHero().getStatsString());
 
@@ -257,16 +261,10 @@ public class OverworldController extends MenuController implements PropertyChang
                     throw new RuntimeException(e);
                 }
             }
-            case  NAV_FAIL -> {
-                System.err.println("Failed to navigate, no doors?");
-                // TODO -JA: Play failure sound or animate direction that failed
-            }
-            case HIT_PIT -> {
-                myDamageAnimation.play();
-            }
-            case HEALTH_CHANGED -> {
+            case NAV_FAIL -> System.err.println("Failed to navigate, no doors? Edge of map?"); // TODO -JA: Play failure sound or animate direction that failed
+            case HIT_PIT -> myDamageAnimation.play();
+            case HEALTH_CHANGED ->
                 myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
-            }
             case VISION_POTION_USED -> {
                 myDungeonAdventure.getMyDungeon().getMyMaze().setSurroundingRoomsVisible(myDungeonAdventure.getMyDungeon().getMyCurrentCoordinates(), 1);
                 try {
