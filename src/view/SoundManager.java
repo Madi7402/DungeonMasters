@@ -38,10 +38,10 @@ public class SoundManager {
     /**
      * Plays a sound effect with the specified file name.
      *
-     * @param soundFileName The file name of the sound effect.
+     * @param theSoundFileName The file name of the sound effect.
      */
-    public void playSound(String soundFileName) {
-        Media sound = new Media(getClass().getResource(soundFileName).toString());
+    public void playSound(final String theSoundFileName) {
+        Media sound = new Media(getClass().getResource(theSoundFileName).toString());
         MediaPlayer soundPlayer = new MediaPlayer(sound);
         soundPlayer.setVolume(mySoundVolume);
         soundPlayer.play();
@@ -50,10 +50,10 @@ public class SoundManager {
     /**
      * Sets the volume for sound effects.
      *
-     * @param volume The volume level (0.0 to 1.0).
+     * @param theVolume The volume level (0.0 to 1.0).
      */
-    public void setMySoundVolume(double volume) {
-        this.mySoundVolume = volume;
+    public void setMySoundVolume(final double theVolume) {
+        this.mySoundVolume = theVolume;
     }
 
     /**
@@ -75,10 +75,10 @@ public class SoundManager {
     /**
      * Plays background music with the specified file name.
      *
-     * @param musicFileName The file name of the background music.
+     * @param theMusicFileName The file name of the background music.
      */
-    public void playMusic(String musicFileName) {
-        Media music = new Media(getClass().getResource(musicFileName).toString());
+    public void playMusic(final String theMusicFileName) {
+        Media music = new Media(getClass().getResource(theMusicFileName).toString());
         myMediaPlayer = new MediaPlayer(music);
         myMediaPlayer.setVolume(myMusicVolume);
         myMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Background music can repeat forever
@@ -97,10 +97,10 @@ public class SoundManager {
     /**
      * Sets the volume for background music.
      *
-     * @param volume The volume level (0.0 to 1.0).
+     * @param theVolume The volume level (0.0 to 1.0).
      */
-    public void setMyMusicVolume(double volume) {
-        this.myMusicVolume = volume;
+    public void setMyMusicVolume(final double theVolume) {
+        this.myMusicVolume = theVolume;
         if (myMediaPlayer != null) {
             myMediaPlayer.setVolume(myMusicVolume);
         }

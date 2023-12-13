@@ -7,10 +7,10 @@ package model;
 public abstract class AbstractRoomFactory {
 
     /**
-     * Creates a room with specific characteristics based on the given coordinates.
+     * Creates a room with specific characteristics based on the given theCoordinates.
      *
-     * @param coordinates The coordinates of the room to be created.
+     * @param theCoordinates The theCoordinates of the room to be created.
      * @return The created room.
      */
-    protected abstract Room createRoom(Coordinates coordinates);
+    protected abstract Room createRoom(final Coordinates theCoordinates);
 }

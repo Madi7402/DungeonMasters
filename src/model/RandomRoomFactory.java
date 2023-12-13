@@ -22,11 +22,11 @@ public class RandomRoomFactory extends AbstractRoomFactory {
     /**
      * Generates a random room with random features.
      *
-     * @param coordinates The coordinates for the generated room.
+     * @param theCoordinates The coordinates for the generated room.
      * @return A randomly generated room.
      */
     // using
-    public Room createRoom(Coordinates coordinates) {
+    public Room createRoom(final Coordinates theCoordinates) {
         Random random = new Random();
 
         boolean hasPit = random.nextDouble() < PIT_PERCENTAGE;
@@ -35,29 +35,29 @@ public class RandomRoomFactory extends AbstractRoomFactory {
 
         var doors = generateRandomDoors(random);
 
-        return new Room(hasPit, hasHealingPotion, hasVisionPotion, doors, coordinates);
+        return new Room(hasPit, hasHealingPotion, hasVisionPotion, doors, theCoordinates);
     }
 
     /**
      * Generates a random set of doors (directions) for a room.
      * The likelihood of having a door in each direction is determined by a random number generator.
      *
-     * @param random The random number generator used for door generation.
+     * @param theRandom The random number generator used for door generation.
      * @return An EnumSet containing randomly generated doors.
      */
-    private EnumSet<Direction> generateRandomDoors(Random random) {
+    private EnumSet<Direction> generateRandomDoors(final Random theRandom) {
         var doors = EnumSet.noneOf(Direction.class);
 
-        if (random.nextDouble() < NORTH_DOOR_PERCENTAGE) {
+        if (theRandom.nextDouble() < NORTH_DOOR_PERCENTAGE) {
             doors.add(Direction.NORTH);
         }
-        if (random.nextDouble() < SOUTH_DOOR_PERCENTAGE) {
+        if (theRandom.nextDouble() < SOUTH_DOOR_PERCENTAGE) {
             doors.add(Direction.SOUTH);
         }
-        if (random.nextDouble() < EAST_DOOR_PERCENTAGE) {
+        if (theRandom.nextDouble() < EAST_DOOR_PERCENTAGE) {
             doors.add(Direction.EAST);
         }
-        if (random.nextDouble() < WEST_DOOR_PERCENTAGE) {
+        if (theRandom.nextDouble() < WEST_DOOR_PERCENTAGE) {
             doors.add(Direction.WEST);
         }
         return doors;

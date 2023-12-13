@@ -77,28 +77,28 @@ public class Room {
      * @param hasPit            Whether the room has a pit.
      * @param hasHealingPotion Whether the room has a healing potion.
      * @param hasVisionPotion   Whether the room has a vision potion.
-     * @param myDoors             The doors in various directions.
-     * @param coordinates       The coordinates of the room.
+     * @param theDoors             The doors in various directions.
+     * @param theCoordinates       The coordinates of the room.
      */
-    public Room(boolean hasPit, boolean hasHealingPotion, boolean hasVisionPotion,
-                EnumSet<Direction> myDoors, Coordinates coordinates) {
+    public Room(final boolean hasPit, final boolean hasHealingPotion, final boolean hasVisionPotion,
+                final EnumSet<Direction> theDoors, final Coordinates theCoordinates) {
         this.myPortal = Portal.NONE;
         this.isVisited = false;
         this.hasPillar = false;
         this.hasPit = hasPit;
         this.hasHealingPotion = hasHealingPotion;
         this.hasVisionPotion = hasVisionPotion;
-        this.myDoors = myDoors;
-        this.myCoordinates = coordinates;
+        this.myDoors = theDoors;
+        this.myCoordinates = theCoordinates;
     }
 
     /**
      * Sets the portal type for the room.
      *
-     * @param myPortal The portal type for the room.
+     * @param thePortal The portal type for the room.
      */
-    public void setMyPortal(Portal myPortal) {
-        this.myPortal = myPortal;
+    public void setMyPortal(final Portal thePortal) {
+        this.myPortal = thePortal;
     }
 
     /**
@@ -122,30 +122,30 @@ public class Room {
     /**
      * Sets the visitation status of the room.
      *
-     * @param isVisited The visitation status to set.
+     * @param theIsVisited The visitation status to set.
      */
-    public void setIsVisited(boolean isVisited) {
-        this.isVisited = isVisited;
+    public void setIsVisited(final boolean theIsVisited) {
+        this.isVisited = theIsVisited;
     }
 
     /**
      * Attempts to set a neighbor in a specified direction.
      *
-     * @param neighbor   The neighboring room.
-     * @param direction  The direction of the neighbor.
+     * @param theNeighbor   The neighboring room.
+     * @param theDirection  The direction of the neighbor.
      * @return True if the neighbor was successfully set, false otherwise.
      */
-    public boolean trySetNeighbor(Room neighbor, Direction direction) {
-        if (!myDoors.contains(direction)) {
+    public boolean trySetNeighbor(final Room theNeighbor, final Direction theDirection) {
+        if (!myDoors.contains(theDirection)) {
             return false;
         }
 
-        if (!neighbor.myCoordinates.equals(myCoordinates.generate(direction))) {
+        if (!theNeighbor.myCoordinates.equals(myCoordinates.generate(theDirection))) {
             return false; // should this throw??
         }
 
-        if (!neighbor.myDoors.contains(direction.getOppositeDirection())) {
-            myDoors.remove(direction);
+        if (!theNeighbor.myDoors.contains(theDirection.getOppositeDirection())) {
+            myDoors.remove(theDirection);
             return false;
         }
 
@@ -266,20 +266,20 @@ public class Room {
     /**
      * Sets the presence of a pillar in the room.
      *
-     * @param hasPillar True if the room has a pillar, false otherwise.
+     * @param theHasPillar True if the room has a pillar, false otherwise.
      */
-    public void setPillar(boolean hasPillar) {
-        this.hasPillar = hasPillar; // might need to add Item instead TO DO !!!
+    public void setPillar(final boolean theHasPillar) {
+        this.hasPillar = theHasPillar; // might need to add Item instead TO DO !!!
     }
 
 
     /**
      * Adds an item to the room.
      *
-     * @param item The item to be added.
+     * @param theItem The item to be added.
      */
-    public void addItem(Item item) {
-        myItems.put(item.getType(), item);
+    public void addItem(final Item theItem) {
+        myItems.put(theItem.getType(), theItem);
     }
         // use this in place of set pit, set pillar, etc. for anything that's an item
 
