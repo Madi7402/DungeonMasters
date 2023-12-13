@@ -37,7 +37,7 @@
                   </LinearGradient>
                </fill>
             </Rectangle>
-            <ImageView fitHeight="375.0" fitWidth="1230.0" layoutX="24.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="myMonsterImageView" fitHeight="285.0" fitWidth="298.0" layoutX="24.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
             <ProgressBar fx:id="myEnemyHealthBar" layoutX="551.0" layoutY="48.0" prefWidth="200.0" progress="0.0" />
             <Label fx:id="myEnemyName" alignment="TOP_CENTER" layoutX="551.0" layoutY="13.0" prefHeight="17.0" prefWidth="200.0" text="ENEMY NAME" textAlignment="CENTER" textFill="RED">
                <font>
@@ -53,7 +53,7 @@
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
-            <ImageView fitHeight="181.0" fitWidth="276.0" layoutX="964.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="myHeroImageView" fitHeight="181.0" fitWidth="276.0" layoutX="964.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" />
             <VBox layoutX="55.0" layoutY="19.0" prefHeight="240.0" prefWidth="375.0">
                <children>
                   <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="392.0" text="Attack">
@@ -97,7 +97,7 @@
             <ProgressBar fx:id="myHeroHealthBar" layoutX="1002.0" layoutY="233.0" prefWidth="200.0" progress="0.0" />
             <Label fx:id="myHeroName" layoutX="1002.0" layoutY="206.0" text="(Hero Name)" />
             <Label fx:id="myHeroHealth" layoutX="1002.0" layoutY="255.0" text="Health/Health" />
-            <Button fx:id="myReturnButton" layoutX="1002.0" layoutY="86.0" mnemonicParsing="false" text="Return to Overworld" />
+            <Button fx:id="myReturnButton" layoutX="838.0" layoutY="243.0" mnemonicParsing="false" text="Return to Overworld" />
          </children></AnchorPane>
   </items>
 </SplitPane>
