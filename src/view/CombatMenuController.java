@@ -2,6 +2,8 @@ package view;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
@@ -11,6 +13,7 @@ import model.DungeonCharacter;
 
 import java.beans.PropertyChangeEvent;
 import java.io.IOException;
+import java.util.Objects;
 
 import static controller.PropertyChangeEnableFight.*;
 import static controller.PropertyChangeEnableFight.ATTACK_MISS;
@@ -30,6 +33,8 @@ public class CombatMenuController extends AbstractController {
     @FXML
     private ProgressBar myHeroHealthBar;
     @FXML
+    private Button myReturnButton;
+    @FXML
     private TextArea myTextLogs;
     private DungeonAdventure myDungeonAdventure;
     public void initialize(){
@@ -39,15 +44,29 @@ public class CombatMenuController extends AbstractController {
         initHealth(myEnemyHealth);
         initHealthBar(myHeroHealthBar);
         initHealthBar(myEnemyHealthBar);
+        myReturnButton.setOnAction(event -> {
+            try {
+                victory(event);
+            } catch (IOException e) {
+                // Handle the IOException, e.g., log it or show an error message
+                e.printStackTrace();
+            }
+        });
         //initArt();
         //initArt();
+    }
+
+    public void setMyDungeonAdventure(final DungeonAdventure theDungeonAdventure) {
+        myDungeonAdventure = Objects.requireNonNull(theDungeonAdventure);
     }
 
     public void gameOver(ActionEvent event) throws IOException {
         switchScene(event, "GameOver.FXML");
     }
     public void victory(ActionEvent event) throws IOException {
-        switchScene(event, "VictoryScreen");
+        FXMLLoader loader = switchScene(event, "Overworld.fxml");
+        OverworldController controller = loader.getController();
+        controller.setAdventure(myDungeonAdventure);
     }
 
     public void initNames(Label theNameLabel){
@@ -66,10 +85,6 @@ public class CombatMenuController extends AbstractController {
 
     }
 
-    public void setDungeon(DungeonAdventure theDungeon){
-        myDungeonAdventure = theDungeon;
-    }
-
     public void propertyChange(PropertyChangeEvent evt) {   //TODO Make these situations update everything needed
         DungeonCharacter source = (DungeonCharacter) evt.getSource();
         String name = source.getMyName();
@@ -85,6 +100,10 @@ public class CombatMenuController extends AbstractController {
             case INVENTORY_ACTION -> myTextLogs.appendText("\n" + "Hero Inventory Changed");
             default -> System.err.println("Unhandled Event: " + evt.getPropertyName());
         }
+    }
+
+    public void setAdventure(final DungeonAdventure theDungeon) {
+        myDungeonAdventure = theDungeon;
     }
 
 

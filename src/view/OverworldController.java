@@ -83,6 +83,9 @@ public class OverworldController extends AbstractController implements PropertyC
     @FXML
     private Button myInventoryInfoButton;
 
+    @FXML
+    private Button myFightButton;
+
     private Timeline myDamageAnimation;
     private DungeonAdventure myDungeonAdventure;
     private OverworldControls myOverworldControls;
@@ -110,6 +113,16 @@ public class OverworldController extends AbstractController implements PropertyC
         myRightButton.setOnAction(actionEvent -> {
             if (myOverworldControls != null) {
                 myOverworldControls.right();
+            }
+        });
+
+        myFightButton.setOnAction(actionEvent -> {
+            try {
+                FXMLLoader loader = switchScene(actionEvent, "CombatMenu.fxml");
+                CombatMenuController controller = loader.getController();
+                controller.setAdventure(myDungeonAdventure);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
     }

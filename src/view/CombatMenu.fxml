@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.6100278551532033" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CombatMenuController">
+<SplitPane dividerPositions="0.6100278551532033" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.CombatMenuController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
@@ -97,6 +97,7 @@
             <ProgressBar fx:id="myHeroHealthBar" layoutX="1002.0" layoutY="233.0" prefWidth="200.0" progress="0.0" />
             <Label fx:id="myHeroName" layoutX="1002.0" layoutY="206.0" text="(Hero Name)" />
             <Label fx:id="myHeroHealth" layoutX="1002.0" layoutY="255.0" text="Health/Health" />
+            <Button fx:id="myReturnButton" layoutX="1002.0" layoutY="86.0" mnemonicParsing="false" text="Return to Overworld" />
          </children></AnchorPane>
   </items>
 </SplitPane>
