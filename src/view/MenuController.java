@@ -44,7 +44,6 @@ public class MenuController extends AbstractController {
         Scene scene = new Scene(vbox);
         creditStage.setScene(scene);
         creditStage.showAndWait();
-
     }
     
 }
