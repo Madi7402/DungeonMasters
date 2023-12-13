@@ -116,9 +116,9 @@ public class OverworldController extends AbstractController implements PropertyC
 
         myDieButton.setOnAction(actionEvent -> {
             try {
-                switchScene(actionEvent, "GameOver.fxml");
+                gameOver(actionEvent);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Could not load game over from OverworldController");
             }
         });
 
@@ -319,9 +319,7 @@ public class OverworldController extends AbstractController implements PropertyC
                 }
             }
 
-            case DEATH -> {
-                myDieButton.fire();
-            }
+            case DEATH -> myDieButton.fire();
             case INVENTORY_ACTION -> updateInventoryList();
             default -> System.err.println("Received unknown event " + evt.getPropertyName());
         }
