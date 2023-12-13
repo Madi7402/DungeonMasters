@@ -30,6 +30,7 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
         }
         myPcs = new PropertyChangeSupport(this);
 //        RandomRoomFactory rf = new RandomRoomFactory(); // TODO -JA: Use real maze
+//        myMaze = new Maze(rf, theWidth, theHeight);
         myMaze = new Maze(true, theWidth, theHeight); // TODO -JA: Use real maze for constructing dungeon
         myCurrentCoordinates = new Coordinates(0, 0, 0); // TODO -JA: is this really the entrance?
         myCurrentRoom = myMaze.getRoom(myCurrentCoordinates);

@@ -1,9 +1,6 @@
 package model;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * A randomly generated, four-level Maze within a dungeon.
@@ -29,6 +26,25 @@ public class Maze {
      * The fixed number of levels in the maze.
      */
     private static final int LEVELS = 4;  // TODO -ME move to game (DungeonAdventure) and pass from there
+
+    // Test constructor for Maze development until maze generation is finished
+// TODO: TESTING CONSTRUCTOR REMOVE ME WHEN DONE
+    public Maze(boolean theTesting, int theWidth, int theHeight) {
+        myWidth = theWidth;
+        myHeight = theHeight;
+        for (int l = 0; l < LEVELS; l++) {
+            System.err.println("Gen Level: " + l);
+            RandomRoomFactory rf = new RandomRoomFactory();
+            for (int i = 0; i < myWidth; i++) {
+                for (int j = 0; j < myHeight; j++) {
+                    Coordinates coord = new Coordinates(l, j, i);
+                    Room genRoom = rf.createRoom(coord);
+                    myRooms.put(coord, genRoom);
+                }
+            }
+        }
+        System.err.println();
+    }
 
     /**
      * Constructs a maze with the specified number of levels, width, and height.
@@ -293,5 +309,41 @@ public class Maze {
      */
     public Room getRoom(final Coordinates theCoordinates) {
         return myRooms.get(theCoordinates);
+    }
+
+    public Room getRoom(final Coordinates theCoordinates, final Direction theDirection) {
+        if (theCoordinates == null) {
+            return null;
+        }
+        return myRooms.get(new Coordinates(theCoordinates.level(),
+                theCoordinates.row()+theDirection.getYOffset(),
+                theCoordinates.column()+theDirection.getXOffset()));
+    }
+
+
+    private void setRoomsVisible(final List<Coordinates> theCoordinates) {
+        for (Coordinates coord : theCoordinates ) {
+            if (isValidRoom(coord)) {
+                getRoom(coord).setIsVisited(true);
+            }
+        }
+    }
+
+    /**
+     * Set the surrounding rooms to visible.
+     * @param theCoordinates the center point of the rooms
+     * @param radius how far to reach (i.e. 1 is the 8 rooms surrounding the center point
+     */
+    public void setSurroundingRoomsVisible(final Coordinates theCoordinates, final int radius) {
+        List<Coordinates> coordinatesList = new ArrayList<>();
+        for (int xOffset = -radius; xOffset <= radius; xOffset++) {
+            for (int yOffset = -radius; yOffset <= radius; yOffset++) {
+                if (xOffset == 0 && yOffset == 0) {
+                    continue;
+                }
+                coordinatesList.add(theCoordinates.generate(xOffset, yOffset));
+            }
+        }
+        setRoomsVisible(coordinatesList);
     }
 }
