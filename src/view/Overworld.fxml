@@ -146,6 +146,7 @@
                               <Button layoutX="118.0" layoutY="316.0" mnemonicParsing="false" onAction="#saveButton" prefHeight="25.0" prefWidth="78.0" text="Save" />
                               <Button fx:id="myFightButton" layoutX="108.0" layoutY="276.0" mnemonicParsing="false" text="Fight me IRL" />
                               <Button fx:id="myPitButton" layoutX="141.0" layoutY="244.0" mnemonicParsing="false" text="Pit" />
+                              <Button fx:id="myDieButton" layoutX="274.0" layoutY="2.0" mnemonicParsing="false" opacity="0.0" text="Die" visible="false" />
                            </children>
                         </AnchorPane>
                     </items>

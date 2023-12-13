@@ -28,8 +28,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 import static controller.PropertyChangeEnableDungeon.*;
-import static controller.PropertyChangeEnableFight.HEALTH_CHANGED;
-import static controller.PropertyChangeEnableFight.HEALTH_UPDATE;
+import static controller.PropertyChangeEnableFight.*;
 import static controller.PropertyChangeEnableHero.INVENTORY_ACTION;
 import static controller.PropertyChangeEnableHero.VISION_POTION_USED;
 
@@ -93,6 +92,8 @@ public class OverworldController extends AbstractController implements PropertyC
 
     @FXML
     private Button myPitButton;
+    @FXML
+    private Button myDieButton;
 
     private Timeline myDamageAnimation;
     private DungeonAdventure myDungeonAdventure;
@@ -110,6 +111,14 @@ public class OverworldController extends AbstractController implements PropertyC
         myDownButton.setOnAction(actionEvent -> {
             if (myOverworldControls != null) {
                 myOverworldControls.down();
+            }
+        });
+
+        myDieButton.setOnAction(actionEvent -> {
+            try {
+                switchScene(actionEvent, "GameOver.fxml");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         });
 
@@ -309,6 +318,10 @@ public class OverworldController extends AbstractController implements PropertyC
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+            }
+
+            case DEATH -> {
+                myDieButton.fire();
             }
             case INVENTORY_ACTION -> updateInventoryList();
             default -> System.err.println("Received unknown event " + evt.getPropertyName());
