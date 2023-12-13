@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -9,7 +11,9 @@ import java.util.*;
  *
  * @author Jonathan Abrams, Martha Emerson, Madison Pope
  */
-public class Maze {
+public class Maze implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 0L; // Update on class changes (!)
     /**
      * The collection of rooms in the maze, organized by their coordinates.
      */
