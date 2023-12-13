@@ -61,7 +61,6 @@ public class NewGameController extends AbstractController {
                 FXMLLoader loader = switchScene(actionEvent, "Overworld.fxml");
                 OverworldController controller = loader.getController();
                 controller.setAdventure(da);
-                controller.setHeroImage(myHeroImageView.getImage()); // TODO - JA: Get this in Overworld Controller Instead from DA
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

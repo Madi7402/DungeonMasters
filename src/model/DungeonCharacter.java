@@ -2,11 +2,14 @@ package model;
 
 import controller.PropertyChange;
 import controller.PropertyChangeEnableFight;
+import javafx.scene.image.Image;
+import res.SQLite;
 
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serial;
 import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Random;
 
 /**
@@ -34,6 +37,10 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
      */
     private String myName;
     /**
+     * The Image path for the Character
+     */
+    private String myImagePath;
+    /**
      * The experience level of the DungeonCharacter.
      */
     private int myLevel;
@@ -50,6 +57,14 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
         myStats = new CharStats(this.getClass().getSimpleName());
         myHealthPoints = myStats.startingHealth(); // TODO -JA: Do we just want to build this into CharStats?
         myPcs = new PropertyChangeSupport(this);
+        final String imgQuery = "SELECT img FROM character where name == '" + this.getClass().getSimpleName().toLowerCase() + "'";
+        System.out.println(imgQuery);
+        try (SQLite db = new SQLite(imgQuery)) {
+            ResultSet rs = db.getMyResults();
+            myImagePath = rs.getString("img");
+        } catch (SQLException e) {
+            System.out.println();
+        }
     }
 
     /**
@@ -58,6 +73,20 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
      */
     public String getMyName() {
         return myName;
+    }
+
+    /**
+     * Return the character's image
+     * @return Image or null if null
+     */
+    public Image getMyImage() {
+        try {
+            return new Image("img/" + myImagePath);
+        } catch(Exception e) {
+            // We do what we must because we can
+            System.err.println(getClass().getSimpleName() + "img was null!");
+        }
+        return null;
     }
 
     /**

@@ -16,7 +16,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import model.*;
@@ -26,7 +25,6 @@ import java.beans.PropertyChangeListener;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.Objects;
 
 import static controller.PropertyChangeEnableDungeon.*;
 import static controller.PropertyChangeEnableFight.HEALTH_CHANGED;
@@ -127,10 +125,6 @@ public class OverworldController extends AbstractController implements PropertyC
         myDamageAnimation.setCycleCount(5);
     }
 
-    public void setHeroImage(final Image theImage) {
-        myHeroImageView.setImage(Objects.requireNonNull(theImage));
-    }
-
     public void setAdventure(DungeonAdventure theDungeonAdventure) throws IOException {
         myDungeonAdventure = theDungeonAdventure;
         Dungeon dungeon = theDungeonAdventure.getMyDungeon();
@@ -151,10 +145,13 @@ public class OverworldController extends AbstractController implements PropertyC
         myHeroNameDisplayText.setText(hero.getMyName());
         myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
         myHeroCharStatsText.setText(myDungeonAdventure.getMyHero().getStatsString());
+        myHeroImageView.setImage(hero.getMyImage());
 
         //TODO JA: remove these hacks
-        myDungeonAdventure.getMyHero().giveItem(ItemType.VISION_POTION);
-        myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        if (hero.getInventory().isEmpty()) {
+            myDungeonAdventure.getMyHero().giveItem(ItemType.VISION_POTION);
+            myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        }
 
         myInventoryListView.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.intValue() >= 0) {
