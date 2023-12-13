@@ -44,7 +44,7 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
     public boolean goDirection(Direction theDirection) {
         Coordinates newCoord = new Coordinates(myCurrentCoordinates.level(), myCurrentCoordinates.row()+theDirection.getYOffset()
                 , myCurrentCoordinates.column()+theDirection.getXOffset());
-        if (myMaze.getRoom(newCoord) != null && myCurrentRoom.getDoors().contains(theDirection)) {
+        if (myMaze.getRoom(newCoord) != null) { // && myCurrentRoom.getDoors().contains(theDirection)) { // TODO ENABLE DOOR CHECKS
             myCurrentRoom = myMaze.getRoom(newCoord);
             myCurrentRoom.setIsVisited(true);
             myCurrentCoordinates = newCoord;

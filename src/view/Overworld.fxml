@@ -90,7 +90,7 @@
                <children>
                   <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="718.0" prefWidth="316.0">
                     <items>
-                        <Accordion prefHeight="720.0" prefWidth="296.0">
+                        <Accordion fx:id="myAccordion" prefHeight="720.0" prefWidth="296.0">
                           <panes>
                             <TitledPane animated="false" text="Hero">
                               <content>

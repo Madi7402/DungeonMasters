@@ -6,6 +6,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
@@ -86,12 +87,16 @@ public class OverworldController extends AbstractController implements PropertyC
     @FXML
     private Button myFightButton;
 
+    @FXML
+    private Accordion myAccordion;
+
     private Timeline myDamageAnimation;
     private DungeonAdventure myDungeonAdventure;
     private OverworldControls myOverworldControls;
 
     public void initialize() {
         setupAnimations();
+        myAccordion.setExpandedPane(myAccordion.getPanes().get(0));
         myUpButton.setOnAction(actionEvent -> {
             if (myOverworldControls != null) {
                 myOverworldControls.up();
@@ -165,6 +170,8 @@ public class OverworldController extends AbstractController implements PropertyC
             myDungeonAdventure.getMyHero().giveItem(ItemType.VISION_POTION);
             myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
         }
+
+        updateInventoryList();
 
         myInventoryListView.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.intValue() >= 0) {
