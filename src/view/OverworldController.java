@@ -6,15 +6,16 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.shape.Circle;
-import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.SubScene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -22,7 +23,9 @@ import model.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Objects;
 
 import static controller.PropertyChangeEnableDungeon.*;
@@ -30,7 +33,7 @@ import static controller.PropertyChangeEnableFight.HEALTH_CHANGED;
 import static controller.PropertyChangeEnableHero.INVENTORY_ACTION;
 import static controller.PropertyChangeEnableHero.VISION_POTION_USED;
 
-public class OverworldController extends MenuController implements PropertyChangeListener {
+public class OverworldController extends AbstractController implements PropertyChangeListener {
     @FXML
     private ImageView myHeroImageView;
 
@@ -81,6 +84,7 @@ public class OverworldController extends MenuController implements PropertyChang
 
     @FXML
     private Button myInventoryInfoButton;
+
     private Timeline myDamageAnimation;
     private DungeonAdventure myDungeonAdventure;
     private OverworldControls myOverworldControls;
@@ -160,12 +164,10 @@ public class OverworldController extends MenuController implements PropertyChang
             }
         });
 
-
         myInventoryUseButton.setOnAction(actionEvent -> {
             System.out.println(myInventoryListView.getSelectionModel().getSelectedItem());
             myDungeonAdventure.getMyHero().useItem(myInventoryListView.getSelectionModel().getSelectedItem());
         });
-
         myInventoryInfoButton.setOnAction(actionEvent -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, myInventoryListView.getSelectionModel().getSelectedItem().getDescription());
             alert.setHeaderText(myInventoryListView.getSelectionModel().getSelectedItem().getName());
@@ -291,5 +293,20 @@ public class OverworldController extends MenuController implements PropertyChang
         }
     }
 
+    public DungeonAdventure getMyDungeonAdventure(){
+        return myDungeonAdventure;
+    }
+
+    public void saveButton(){
+        String filePath = "Save Files/" + getMyDungeonAdventure().getMyHero().getMyName() + ".dat";
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            // Write the object to the file
+            oos.writeObject(myDungeonAdventure);
+            System.out.println("Object has been written to " + filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

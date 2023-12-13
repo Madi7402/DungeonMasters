@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class NewGameController extends MenuController {
+public class NewGameController extends AbstractController {
 
     @FXML
     private ChoiceBox<String> myHeroTypeCB;
