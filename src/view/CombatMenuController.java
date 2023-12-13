@@ -1,21 +1,17 @@
 package view;
 
-import controller.PropertyChangeEnableFight;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import model.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.util.Objects;
 
 import static controller.PropertyChangeEnableFight.*;
 import static controller.PropertyChangeEnableFight.ATTACK_MISS;
@@ -41,9 +37,23 @@ public class CombatMenuController extends AbstractController implements Property
     @FXML
     private ImageView myMonsterImageView;
     @FXML
-    private TextArea myTextLogs;
+    private Button myAttackButton;
+    @FXML
+    private Button mySpecialAttackButton;
+    @FXML
+    private TextArea myLogTextArea;
+    @FXML
+    private Button myHiddenGameOverButton;
+
+    @FXML
+    private ListView<Item> myInventoryListView;
+
+    @FXML
+    private Button myInventoryUseButton;
+
     private DungeonAdventure myDungeonAdventure;
     private Monster myMonster;
+    private Hero myHero;
     public void initialize(){
         myReturnButton.setOnAction(event -> {
             try {
@@ -53,17 +63,51 @@ public class CombatMenuController extends AbstractController implements Property
                 e.printStackTrace();
             }
         });
-        //initArt();
-        //initArt();
-    }
 
-    public void setMyDungeonAdventure(final DungeonAdventure theDungeonAdventure) {
-        myDungeonAdventure = Objects.requireNonNull(theDungeonAdventure);
+        myAttackButton.setOnAction(actionEvent -> {
+            if (myMonster.getMyHealthPoints() > 0 && myHero.getMyMaxHealthPoints() > 0) {
+                myHero.attack(myMonster);
+                myMonster.attack(myHero);
+            }
+        });
+
+        mySpecialAttackButton.setOnAction(actionEvent -> {
+            if (myMonster.getMyHealthPoints() > 0 && myHero.getMyMaxHealthPoints() > 0) {
+                myHero.specialSkill(myMonster);
+                myMonster.attack(myHero);
+            }
+        });
+
+        myHiddenGameOverButton.setOnAction(actionEvent -> {
+            try {
+                gameOver(actionEvent);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+
+        myInventoryListView.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.intValue() >= 0) {
+                System.out.println("Selected Index: " + newValue.intValue());
+            } else {
+                System.out.println("No item selected");
+            }
+        });
+
+        myInventoryUseButton.setOnAction(actionEvent -> {
+            System.out.println(myInventoryListView.getSelectionModel().getSelectedItem());
+            myDungeonAdventure.getMyHero().useItem(myInventoryListView.getSelectionModel().getSelectedItem());
+        });
+
+        //initArt();
+        //initArt();
     }
 
     public void gameOver(ActionEvent event) throws IOException {
-        switchScene(event, "GameOver.FXML");
+        switchScene(event, "GameOver.fxml");
     }
+
     public void victory(ActionEvent event) throws IOException {
         FXMLLoader loader = switchScene(event, "Overworld.fxml");
         OverworldController controller = loader.getController();
@@ -74,15 +118,46 @@ public class CombatMenuController extends AbstractController implements Property
         DungeonCharacter source = (DungeonCharacter) evt.getSource();
         String name = source.getMyName();
         switch (evt.getPropertyName()) {
-            case DEATH -> myTextLogs.appendText("\n" + name + " DIED!");
-            case ATTACK -> myTextLogs.appendText("\n" + name + " Attacked!");
-            case TAKE_DAMAGE -> myTextLogs.appendText("\n" + name + " took damage!");
-            case HEALTH_CHANGED
-                    -> myTextLogs.appendText("\n" + name + "'s health changed from "
-                    + evt.getOldValue() + " to " + evt.getNewValue());
-            case ATTACK_BLOCK -> myTextLogs.appendText("\n" + name + " blocked the attack.");
-            case ATTACK_MISS -> myTextLogs.appendText("\n" + name + " missed!");
-            case INVENTORY_ACTION -> myTextLogs.appendText("\n" + "Hero Inventory Changed");
+            case DEATH -> {
+                myLogTextArea.appendText("\n" + name + " DIED!");
+                if (source.equals(myHero)) {
+                    myHiddenGameOverButton.fire(); // HACK
+                }
+            }
+            case ATTACK -> myLogTextArea.appendText("\n" + name + " Attacked!");
+            case TAKE_DAMAGE -> myLogTextArea.appendText("\n" + name + " took damage!");
+            case HEALTH_CHANGED -> {
+                if (evt.getOldValue() != null) {
+                    myLogTextArea.appendText("\n" + name + "'s health changed from "
+                            + evt.getOldValue() + " to " + evt.getNewValue());
+
+                    if (source.equals(myMonster)) {
+                        myEnemyHealthBar.setProgress((int) evt.getNewValue() / (double) myMonster.getMyMaxHealthPoints());
+                        myEnemyHealth.setText(evt.getNewValue() + "/" + myMonster.getMyMaxHealthPoints());
+                    } else {
+                        int healthPoints = (int) evt.getNewValue();
+                        int maxHealthPoint = myHero.getMyMaxHealthPoints();
+                        myHeroHealthBar.setProgress(healthPoints / (double) maxHealthPoint);
+                        myHeroHealth.setText(evt.getNewValue() + "/" + myHero.getMyMaxHealthPoints());
+                    }
+                } else {
+                    if (source.equals(myMonster)) {
+                        myEnemyHealthBar.setProgress(myMonster.getMyHealthPoints() / (double) myMonster.getMyMaxHealthPoints());
+                        myEnemyHealth.setText(myMonster.getMyHealthPoints()  + "/" + myMonster.getMyMaxHealthPoints());
+                    } else {
+                        int healthPoints = myMonster.getMyHealthPoints();
+                        int maxHealthPoint = myHero.getMyMaxHealthPoints();
+                        myHeroHealthBar.setProgress(healthPoints / (double) maxHealthPoint);
+                        myHeroHealth.setText(myMonster.getMyHealthPoints() + "/" + myHero.getMyMaxHealthPoints());
+                    }
+                }
+            }
+            case ATTACK_BLOCK -> myLogTextArea.appendText("\n" + name + " blocked the attack.");
+            case ATTACK_MISS -> myLogTextArea.appendText("\n" + name + " missed!");
+            case INVENTORY_ACTION -> {
+                updateInventoryList();
+                myLogTextArea.appendText("\n" + "Hero Inventory Changed");
+            }
             default -> System.err.println("Unhandled Event: " + evt.getPropertyName());
         }
     }
@@ -92,21 +167,26 @@ public class CombatMenuController extends AbstractController implements Property
         if (myDungeonAdventure != null) {
             myDungeonAdventure.getMyHero().addPropertyChangeListener(this);
             // Configure hero
-            Hero hero = myDungeonAdventure.getMyHero();
-            myHeroName.setText(hero.getMyName());
-            myHeroHealth.setText(hero.getMyHealthPoints()+"");
-            myHeroImageView.setImage(hero.getMyImage());
+            myHero = myDungeonAdventure.getMyHero();
+            myHeroName.setText(myHero.getMyName());
+            myHeroHealth.setText(myHero.getMyHealthPoints() + "/" + myHero.getMyMaxHealthPoints());
+            myHeroImageView.setImage(myHero.getMyImage());
 
 
             // TODO -JA: get monster from room instead of this test monster
             MonsterFactory mf = new MonsterFactory();
             myMonster = mf.createMonster(MonsterType.OGRE);
+            myMonster.addPropertyChangeListener(this);
             myEnemyName.setText(myMonster.getMyName());
-            myEnemyHealth.setText(myMonster.getMyHealthPoints()+"");
+            myEnemyHealth.setText(myMonster.getMyHealthPoints() + "/" + myMonster.getMyMaxHealthPoints());
             myMonsterImageView.setImage(myMonster.getMyImage());
+            updateInventoryList();
         }
     }
-
+    private void updateInventoryList() {
+        ObservableList<Item> items = FXCollections.observableArrayList(myDungeonAdventure.getMyHero().getInventory());
+        myInventoryListView.setItems(items);
+    }
 
     //myEnemyHealthBar.setProgress((current/total)F);
 

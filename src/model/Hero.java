@@ -113,7 +113,12 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
         Item currentItem = myInventory.get(theIndex);
         switch(currentItem.getType()) {
             case HEALING_POTION -> {
-                return heal(currentItem.getMyHealthPoints());
+                boolean didHeal = heal(currentItem.getMyHealthPoints());
+                if (didHeal) {
+                    fireEvent(HEALTH_CHANGED);
+                    return true;
+                }
+                return false;
             }
             case VISION_POTION -> {
                 fireEvent(VISION_POTION_USED); // Advise view to reveal relevant part of maze
