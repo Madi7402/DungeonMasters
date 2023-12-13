@@ -50,7 +50,6 @@ public class CombatMenuController extends AbstractController implements Property
 
     @FXML
     private Button myInventoryUseButton;
-
     private DungeonAdventure myDungeonAdventure;
     private Monster myMonster;
     private Hero myHero;

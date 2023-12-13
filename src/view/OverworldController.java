@@ -309,8 +309,7 @@ public class OverworldController extends AbstractController implements PropertyC
             }
             case NAV_FAIL -> System.err.println("Failed to navigate, no doors? Edge of map?"); // TODO -JA: Play failure sound or animate direction that failed
             case HIT_PIT -> myDamageAnimation.play();
-            case HEALTH_CHANGED, HEALTH_UPDATE ->
-                myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
+            case HEALTH_CHANGED, HEALTH_UPDATE -> myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
             case VISION_POTION_USED -> {
                 myDungeonAdventure.getMyDungeon().getMyMaze().setSurroundingRoomsVisible(myDungeonAdventure.getMyDungeon().getMyCurrentCoordinates(), 1);
                 try {
