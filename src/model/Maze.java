@@ -16,37 +16,19 @@ public class Maze {
     /**
      * The collection of rooms in the maze, organized by their coordinates.
      */
-    private final TreeMap<Coordinates, Room> rooms = new TreeMap<>();
+    private final TreeMap<Coordinates, Room> myRooms = new TreeMap<>();
     /**
      * The width of the maze, representing the number of columns (or rooms).
      */
-    private int width = 5;
+    private int myWidth = 5;
     /**
      * The height of the maze, representing the number of rows.
      */
-    private int height = 5;
+    private int myHeight = 5;
     /**
      * The fixed number of levels in the maze.
      */
-    private static final int LEVELS = 4;  // Fixed number of levels - can move to game and pass from there
-                                          // game decides a.k.a. DungeonAdventure
-
-
-//    // Test constructor for Maze development until maze generation is finished
-//// TODO: TESTING CONSTRUCTOR REMOVE ME WHEN DONE
-//    public Maze(boolean theTesting) {
-//        for (int l = 0; l < LEVELS; l++) {
-//            System.out.println("Gen Level: " + l);
-//            for (int i = -1; i < width; i++) {
-//                for (int j = -1; j < height; j++) {
-//                    Coordinates coord = new Coordinates(l, j, i);
-//                    Room genRoom = Room.generateRandomRoom(coord);
-//                    rooms.put(coord, genRoom);
-//                }
-//            }
-//        }
-//        System.out.println();
-//    }
+    private static final int LEVELS = 4;  // TODO -ME move to game (DungeonAdventure) and pass from there
 
     /**
      * Constructs a maze with the specified number of levels, width, and height.
@@ -56,8 +38,8 @@ public class Maze {
      * @param height The height of the maze (number of rows).
      */
     public Maze(AbstractRoomFactory roomFactory, int width, int height) {
-        this.width = width;
-        this.height = height;
+        this.myWidth = width;
+        this.myHeight = height;
         initializeMaze(roomFactory);
     }
 
@@ -92,11 +74,11 @@ public class Maze {
 
         private void validateRoom(Room room) {
 
-            if (isExitFound && isExitRoom(room)) {
+            if (!isExitFound && isExitRoom(room)) {    //maybe these are the problem...
                 isExitFound = true;
             }
 
-            if (hasDeadEnd && isDeadEndRoom(room)) {
+            if (!hasDeadEnd && isDeadEndRoom(room)) {
                 hasDeadEnd = true;
                 room.setPillar(true);
             }
@@ -110,14 +92,14 @@ public class Maze {
      */
     private void initializeMazeRooms(AbstractRoomFactory roomFactory, int level) {
         // Loop through each level, row, and column to create rooms
-        for (int row = 0; row < width; row++) {
-            for (int col = 0; col < height; col++) {
+        for (int row = 0; row < myWidth; row++) {
+            for (int col = 0; col < myHeight; col++) {
                 var coordinates = new Coordinates(level, row, col);
-                rooms.put(coordinates, roomFactory.createRoom(coordinates));
+                myRooms.put(coordinates, roomFactory.createRoom(coordinates));
             }
         }
     }
-    // TO DO - test to make sure this works on reentry
+    // TODO - test to make sure this works on reentry
 
 
     /**
@@ -132,19 +114,19 @@ public class Maze {
 
         if (level % 2 == 0) {
             // Even levels: bottom-left entrance to top-right exit
-            entrance = new Coordinates(level, 0, height - 1);
-            exit = new Coordinates(level, width - 1, 0);
+            entrance = new Coordinates(level, 0, myHeight - 1);
+            exit = new Coordinates(level, myWidth - 1, 0);
         } else {
             // Odd levels: top-right entrance to bottom-left exit
-            entrance = new Coordinates(level, width - 1, 0);
-            exit = new Coordinates(level, 0, height - 1);
+            entrance = new Coordinates(level, myWidth - 1, 0);
+            exit = new Coordinates(level, 0, myHeight - 1);
         }
 
         // TODO - delete any objects!!! (from the entrance and exit)
 
         // Set entrance and exit
-        rooms.get(entrance).setPortal(Portal.ENTRANCE);
-        rooms.get(exit).setPortal(Portal.EXIT);
+        myRooms.get(entrance).setMyPortal(Portal.ENTRANCE);
+        myRooms.get(exit).setMyPortal(Portal.EXIT);
 
 
         return entrance;
@@ -159,15 +141,17 @@ public class Maze {
      */
     private boolean TraverseTo(Coordinates coordinate, ValidMazeCriteria criteria) {
         if (!isValidRoom(coordinate)) {
-            return false; // does this need to throw?? yes. should never get invalid room
+            System.out.println("Invalid Room: " + coordinate); // TODO - remove debugging when done
+            return false; // TODO -ME make this throw (should never get invalid room)
         }
 
-        var room = rooms.get(coordinate);
+        var room = myRooms.get(coordinate);
         connectRooms(room);
         criteria.validateRoom(room);
         room.setIsVisited(true);
 
         if (isTraversalComplete()) {
+            System.out.println("Traversal Complete"); // TODO - remove debugging when done
             return criteria.isValid();
         }
 
@@ -177,6 +161,7 @@ public class Maze {
 
             // Check if the next room is within bounds and not visited
             if (!isVisited(nextCoordinate)) {
+                System.out.println("Visiting: " + nextCoordinate); // TODO - remove debugging when done
                 // Recursively generate the maze from the next room
                 if (TraverseTo(nextCoordinate, criteria)) {
                     return true;
@@ -186,12 +171,16 @@ public class Maze {
         return false;
     }
 
+    // if all rooms are visited, return true // if 1+ is not visited, return false
     private boolean isTraversalComplete() {
-        return rooms.values().stream().allMatch(Room::isVisited); // if all visited, return true
-    }                                                             // if one+ isn't, return false
+        boolean complete = myRooms.values().stream().allMatch(Room::isVisited);
+        System.out.println("Traversal Complete: " + complete); // TODO - remove debugging when done
+        return complete;
+    }
 
+    // all 4 directions
     private void connectRooms(Room room) {
-        for (var direction : Direction.values()) { // all 4 directions :)
+        for (var direction : Direction.values()) {
             connectRooms(room, direction);
         }
     }
@@ -199,18 +188,18 @@ public class Maze {
     private void connectRooms(Room room, Direction direction) {
         var coordinate = room.getCoordinate();
         var neighborCoordinate = coordinate.generate(direction);
-        if (rooms.containsKey(neighborCoordinate)) {
-            var neighbor = rooms.get(neighborCoordinate);
+        if (myRooms.containsKey(neighborCoordinate)) {
+            var neighbor = myRooms.get(neighborCoordinate);
             room.trySetNeighbor(neighbor, direction);
         }
     }
 
     private boolean isDeadEndRoom(Room room) {
-        return (room.getPortal() == Portal.NONE && room.getNeighbors().size() == 1);
+        return (room.getMyPortal() == Portal.NONE && room.getNeighbors().size() == 1);
     }
 
     private boolean isExitRoom(Room room) {
-        return room.getPortal() == Portal.EXIT;
+        return room.getMyPortal() == Portal.EXIT;
     }
 
     /**
@@ -229,7 +218,7 @@ public class Maze {
      * @return True if the room is within bounds; otherwise, false.
      */
     private boolean isValidRoom(Coordinates coordinate) {
-        return rooms.containsKey(coordinate);
+        return myRooms.containsKey(coordinate);
     }
 
     /**
@@ -238,7 +227,7 @@ public class Maze {
      * @return True if the room has been visited; otherwise, false.
      */
     private boolean isVisited(Coordinates coordinate) {
-        return rooms.get(coordinate).isVisited();
+        return myRooms.get(coordinate).isVisited();
     }
 
     /**
@@ -247,6 +236,6 @@ public class Maze {
      * @return the room at the given coordinates
      */
     public Room getRoom(Coordinates theCoordinates) {
-        return rooms.get(theCoordinates);
+        return myRooms.get(theCoordinates);
     }
 }

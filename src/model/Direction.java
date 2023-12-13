@@ -16,12 +16,12 @@ public enum Direction {
     /**
      * The x offset indicating movement in the horizontal direction.
      */
-    private final int xOffset;
+    private final int myXOffset;
 
     /**
      * The y offset indicating movement in the vertical direction.
      */
-    private final int yOffset;
+    private final int myYOffset;
 
     /**
      * Constructs a direction with the specified x and y offsets.
@@ -30,8 +30,8 @@ public enum Direction {
      * @param yOffset The y offset indicating movement in the vertical direction.
      */
     Direction(int xOffset, int yOffset) {
-        this.xOffset = xOffset;
-        this.yOffset = yOffset;
+        this.myXOffset = xOffset;
+        this.myYOffset = yOffset;
     }
 
     /**
@@ -40,7 +40,7 @@ public enum Direction {
      * @return The x offset.
      */
     public int getXOffset() {
-        return xOffset;
+        return myXOffset;
     }
 
     /**
@@ -49,7 +49,7 @@ public enum Direction {
      * @return The y offset.
      */
     public int getYOffset() {
-        return yOffset;
+        return myYOffset;
     }
 
     public Direction getOppositeDirection() {
