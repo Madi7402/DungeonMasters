@@ -6,15 +6,15 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.shape.Circle;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.SubScene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -78,6 +78,9 @@ public class OverworldController extends MenuController implements PropertyChang
 
     @FXML
     private Button myInventoryUseButton;
+
+    @FXML
+    private Button myInventoryInfoButton;
     private Timeline myDamageAnimation;
     private DungeonAdventure myDungeonAdventure;
     private OverworldControls myOverworldControls;
@@ -157,10 +160,20 @@ public class OverworldController extends MenuController implements PropertyChang
             }
         });
 
+
         myInventoryUseButton.setOnAction(actionEvent -> {
             System.out.println(myInventoryListView.getSelectionModel().getSelectedItem());
             myDungeonAdventure.getMyHero().useItem(myInventoryListView.getSelectionModel().getSelectedItem());
         });
+
+        myInventoryInfoButton.setOnAction(actionEvent -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, myInventoryListView.getSelectionModel().getSelectedItem().getDescription());
+            alert.setHeaderText(myInventoryListView.getSelectionModel().getSelectedItem().getName());
+            alert.setTitle("Item Information");
+            alert.showAndWait();
+        });
+
+        // Draw initial room grid
         updateRoomGrid();
     }
 
