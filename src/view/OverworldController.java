@@ -29,6 +29,7 @@ import java.io.ObjectOutputStream;
 
 import static controller.PropertyChangeEnableDungeon.*;
 import static controller.PropertyChangeEnableFight.HEALTH_CHANGED;
+import static controller.PropertyChangeEnableFight.HEALTH_UPDATE;
 import static controller.PropertyChangeEnableHero.INVENTORY_ACTION;
 import static controller.PropertyChangeEnableHero.VISION_POTION_USED;
 
@@ -90,6 +91,9 @@ public class OverworldController extends AbstractController implements PropertyC
     @FXML
     private Accordion myAccordion;
 
+    @FXML
+    private Button myPitButton;
+
     private Timeline myDamageAnimation;
     private DungeonAdventure myDungeonAdventure;
     private OverworldControls myOverworldControls;
@@ -119,6 +123,11 @@ public class OverworldController extends AbstractController implements PropertyC
             if (myOverworldControls != null) {
                 myOverworldControls.right();
             }
+        });
+
+        myPitButton.setOnAction(actionEvent -> {
+            Item pit = new Item(ItemType.PIT);
+            myDungeonAdventure.getMyHero().getItem(pit);
         });
 
         myFightButton.setOnAction(actionEvent -> {
@@ -151,13 +160,9 @@ public class OverworldController extends AbstractController implements PropertyC
         myOverworldControls = new OverworldControls(myDungeonAdventure.getMyDungeon());
 
         // Add event listeners
-        dungeon.addPropertyChangeListener(NAVIGATED, this);
-        dungeon.addPropertyChangeListener(NAV_FAIL, this);
-        dungeon.addPropertyChangeListener(HIT_PIT, this);
+        dungeon.addPropertyChangeListener(this);
 
-        hero.addPropertyChangeListener(INVENTORY_ACTION, this);
-        hero.addPropertyChangeListener(HEALTH_CHANGED, this);
-        hero.addPropertyChangeListener(VISION_POTION_USED, this);
+        hero.addPropertyChangeListener(this);
 
         // TODO JA: Get icon for HERO from myDungeonAdventure rather than stealing from NewGame
         myHeroNameDisplayText.setText(hero.getMyName());
@@ -295,7 +300,7 @@ public class OverworldController extends AbstractController implements PropertyC
             }
             case NAV_FAIL -> System.err.println("Failed to navigate, no doors? Edge of map?"); // TODO -JA: Play failure sound or animate direction that failed
             case HIT_PIT -> myDamageAnimation.play();
-            case HEALTH_CHANGED ->
+            case HEALTH_CHANGED, HEALTH_UPDATE ->
                 myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
             case VISION_POTION_USED -> {
                 myDungeonAdventure.getMyDungeon().getMyMaze().setSurroundingRoomsVisible(myDungeonAdventure.getMyDungeon().getMyCurrentCoordinates(), 1);

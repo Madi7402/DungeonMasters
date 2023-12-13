@@ -134,6 +134,7 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
         }
         fireEvent(HEALTH_CHANGED, myHealthPoints, theHealthPoints);
         this.myHealthPoints = theHealthPoints;
+        fireEvent(HEALTH_UPDATE);
     }
 
     /**

@@ -126,7 +126,7 @@ public class CombatMenuController extends AbstractController implements Property
             }
             case ATTACK -> myLogTextArea.appendText("\n" + name + " Attacked!");
             case TAKE_DAMAGE -> myLogTextArea.appendText("\n" + name + " took damage!");
-            case HEALTH_CHANGED -> {
+            case HEALTH_CHANGED, HEALTH_UPDATE -> {
                 if (evt.getOldValue() != null) {
                     myLogTextArea.appendText("\n" + name + "'s health changed from "
                             + evt.getOldValue() + " to " + evt.getNewValue());

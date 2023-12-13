@@ -6,8 +6,8 @@ import java.util.List;
 import controller.PropertyChangeEnableFight;
 import controller.PropertyChangeEnableHero;
 
-import static model.ItemType.HEALING_POTION;
-import static model.ItemType.VISION_POTION;
+import static controller.PropertyChangeEnableDungeon.HIT_PIT;
+import static model.ItemType.*;
 
 /**
  * A dungeon character that can be played by the player. Only one can exist per dungeon.
@@ -90,6 +90,12 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
     public void getItem(final Item theItem) {
         if (theItem == null) {
             throw new RuntimeException("Hero tried to receive null Item");
+        }
+
+        if (theItem.getType() == PIT) {
+            takeDamage(15);
+            fireEvent(HIT_PIT);
+            return;
         }
 
         switch (theItem.getType()) { // Update Potion counts

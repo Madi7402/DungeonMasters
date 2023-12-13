@@ -144,7 +144,8 @@
                               <Button fx:id="myLeftButton" layoutX="14.0" layoutY="144.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="75.0" text="Left" />
                               <Button fx:id="myRightButton" layoutX="219.0" layoutY="144.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="75.0" text="Right" />
                               <Button layoutX="118.0" layoutY="316.0" mnemonicParsing="false" onAction="#saveButton" prefHeight="25.0" prefWidth="78.0" text="Save" />
-                              <Button fx:id="myFightButton" layoutX="107.0" layoutY="268.0" mnemonicParsing="false" text="Fight me IRL" />
+                              <Button fx:id="myFightButton" layoutX="108.0" layoutY="276.0" mnemonicParsing="false" text="Fight me IRL" />
+                              <Button fx:id="myPitButton" layoutX="141.0" layoutY="244.0" mnemonicParsing="false" text="Pit" />
                            </children>
                         </AnchorPane>
                     </items>
