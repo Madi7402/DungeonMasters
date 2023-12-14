@@ -15,8 +15,7 @@ import java.util.TreeMap;
  */
 public class Room implements Serializable {
     @Serial
-    private static final long serialVersionUID = 0L; // Update on class changes (!)
-
+    private static final long serialVersionUID = 1L; // Update on class changes (!)
     /**
      * A mapping of directions to neighboring rooms.
      * This TreeMap represents the connections to adjacent rooms in different directions.
@@ -145,15 +144,14 @@ public class Room implements Serializable {
             return false;
         }
 
-        if (!theNeighbor.myCoordinates.equals(myCoordinates.generate(theDirection))) {
-            return false; // should this throw??
-        }
-
         if (!theNeighbor.myDoors.contains(theDirection.getOppositeDirection())) {
             myDoors.remove(theDirection);
             return false;
         }
+        // TODO - maybe this should return true (add not remove door)
 
+        myNeighbors.put(theDirection, theNeighbor);
+        theNeighbor.myNeighbors.put(theDirection.getOppositeDirection(), this);
         return true; // neighbor door matches yours
     }
 
@@ -286,7 +284,7 @@ public class Room implements Serializable {
     public void addItem(final Item theItem) {
         myItems.put(theItem.getType(), theItem);
     }
-    // use this in place of set pit, set pillar, etc. for anything that's an item
+        // use this in place of set pit, set pillar, etc. for anything that's an item
 
     /**
      * Removes all equipable items from the room and returns them.
@@ -305,7 +303,12 @@ public class Room implements Serializable {
     public EnumSet<Direction> getDoors() {
         return myDoors;
     }
-    // TODO -ME get rid of all the Item setters (pillar, potion, pit)
+
+    public void tryRemoveDoor(Direction theDirection) {
+        // TODO - if a door exists in this direction, remove it
+    }
+
+    // TODO - get rid of all the Item setters (pillar, potion, pit)
     // get rid of the related fields
     // keep has functions, check item tree instead of fields
     // update toString to use these functions for the printing

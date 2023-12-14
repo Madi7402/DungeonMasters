@@ -4,7 +4,6 @@ import controller.PropertyChange;
 import controller.PropertyChangeEnableDungeon;
 
 import java.beans.PropertyChangeSupport;
-import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -12,47 +11,28 @@ import java.io.Serializable;
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
 public class Dungeon extends PropertyChange implements PropertyChangeEnableDungeon, Serializable {
-    @Serial
-    private static final long serialVersionUID = 0L; // Update on class changes (!)
+    private static final long serialVersionUID = 1L; // Update on class changes (!)
     private final Maze myMaze;
     private Room myCurrentRoom;
     private Coordinates myCurrentCoordinates;
     /** Keep Track of our Observers and fire events. */
     private final PropertyChangeSupport myPcs;
 
-    public Dungeon() {
-        this(10,10);
-    }
 
     public Dungeon(final int theWidth, final int theHeight) {
         if (theWidth < 4 || theHeight < 4) {
             throw new IllegalArgumentException("Map must be at least 4x4");
         }
         myPcs = new PropertyChangeSupport(this);
-//        RandomRoomFactory rf = new RandomRoomFactory(); // TODO -JA: Use real maze
-//        myMaze = new Maze(rf, theWidth, theHeight);
-        myMaze = new Maze(true, theWidth, theHeight); // TODO -JA: Use real maze for constructing dungeon
-        myCurrentCoordinates = new Coordinates(0, 0, 0); // TODO -JA: is this really the entrance?
-        myCurrentRoom = myMaze.getRoom(myCurrentCoordinates);
+        var myRoomFactory = new RandomRoomFactory();
+        myMaze = new Maze(myRoomFactory, theWidth, theHeight);
+        myCurrentRoom = myMaze.getStartingRoom();
+        myCurrentCoordinates = myCurrentRoom.getCoordinate();
         myCurrentRoom.setIsVisited(true);
     }
 
-    public Room getMyCurrentRoom() {
-        return myCurrentRoom;
-    }
-
-    public boolean goDirection(Direction theDirection) {
-        Coordinates newCoord = new Coordinates(myCurrentCoordinates.level(), myCurrentCoordinates.row()+theDirection.getYOffset()
-                , myCurrentCoordinates.column()+theDirection.getXOffset());
-        if (myMaze.getRoom(newCoord) != null) { // && myCurrentRoom.getDoors().contains(theDirection)) { // TODO ENABLE DOOR CHECKS
-            myCurrentRoom = myMaze.getRoom(newCoord);
-            myCurrentRoom.setIsVisited(true);
-            myCurrentCoordinates = newCoord;
-            fireEvent(NAVIGATED);
-            return true;
-        }
-        fireEvent(NAV_FAIL);
-        return false;
+    public String getMyCurrentRoom() {
+        return myCurrentRoom.toString();
     }
 
     public Maze getMyMaze() {
@@ -61,5 +41,13 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
 
     public Coordinates getMyCurrentCoordinates() {
         return myCurrentCoordinates;
+    }
+
+    public void goDirection(Direction theDirection) {
+        Coordinates newCoord = new Coordinates(myCurrentCoordinates.level(), myCurrentCoordinates.row()+theDirection.getYOffset()
+                , myCurrentCoordinates.column()+theDirection.getXOffset());
+        if (myMaze.getRoom(newCoord) != null) {
+            myCurrentRoom = myMaze.getRoom(newCoord);
+        }
     }
 }

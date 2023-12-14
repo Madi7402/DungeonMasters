@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public class DungeonAdventure implements Serializable {
     @Serial
-    private static final long serialVersionUID = 0L; // Update on class changes (!)
+    private static final long serialVersionUID = 1L; // Update on class changes (!)
     /**
      * Saves Dungeon info
      */
@@ -21,7 +21,7 @@ public class DungeonAdventure implements Serializable {
      * Public constructor for DungeonAdventure
      */
     private DungeonAdventure() {
-        myDungeon = new Dungeon();
+        myDungeon = new Dungeon(10, 10); // TODO -JA: Is this default size good?
         myHero = new Thief("Default Hero");
     }
 

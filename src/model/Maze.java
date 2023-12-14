@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class Maze implements Serializable {
     @Serial
-    private static final long serialVersionUID = 0L; // Update on class changes (!)
+    private static final long serialVersionUID = 1L;
     /**
      * The collection of rooms in the maze, organized by their coordinates.
      */
@@ -31,25 +31,6 @@ public class Maze implements Serializable {
      */
     private static final int LEVELS = 4;  // TODO -ME move to game (DungeonAdventure) and pass from there
 
-    // Test constructor for Maze development until maze generation is finished
-// TODO: TESTING CONSTRUCTOR REMOVE ME WHEN DONE
-    public Maze(boolean theTesting, int theWidth, int theHeight) {
-        myWidth = theWidth;
-        myHeight = theHeight;
-        for (int l = 0; l < LEVELS; l++) {
-            System.err.println("Gen Level: " + l);
-            RandomRoomFactory rf = new RandomRoomFactory();
-            for (int i = 0; i < myWidth; i++) {
-                for (int j = 0; j < myHeight; j++) {
-                    Coordinates coord = new Coordinates(l, j, i);
-                    Room genRoom = rf.createRoom(coord);
-                    myRooms.put(coord, genRoom);
-                }
-            }
-        }
-        System.err.println();
-    }
-
     /**
      * Constructs a maze with the specified number of levels, width, and height.
      * Initializes the maze with an empty collection of rooms.
@@ -61,6 +42,15 @@ public class Maze implements Serializable {
         this.myWidth = theWidth;
         this.myHeight = theHeight;
         initializeMaze(theRoomFactory);
+    }
+
+    public Room getStartingRoom() {
+        for (var room : myRooms.values()) {
+            if (room.getMyPortal().equals(Portal.ENTRANCE)) {
+                return room;
+            }
+        }
+        throw new IllegalStateException("Maze has no entrance!");
     }
 
     /**
@@ -117,7 +107,7 @@ public class Maze implements Serializable {
          */
         private void validateRoom(final Room theRoom) {
 
-            if (!isExitFound && isExitRoom(theRoom)) {    //maybe these are the problem...
+            if (!isExitFound && isExitRoom(theRoom)) {
                 isExitFound = true;
             }
 
@@ -254,7 +244,9 @@ public class Maze implements Serializable {
         if (myRooms.containsKey(neighborCoordinate)) {
             var neighbor = myRooms.get(neighborCoordinate);
             theRoom.trySetNeighbor(neighbor, theDirection);
-        }
+        } else {
+        theRoom.tryRemoveDoor(theDirection); // TODO - write this method (down below)
+    }
     }
 
     /**
@@ -349,5 +341,31 @@ public class Maze implements Serializable {
             }
         }
         setRoomsVisible(coordinatesList);
+    }
+
+    /**
+     * Returns a string representation of the maze, including details for each level, row, and column.
+     * The representation includes room details obtained from the toString() method of each room in the maze.
+     * Each level is separated by a newline, and rooms are arranged in rows and columns.
+     *
+     * @return A string representation of the maze.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        for (int level = 0; level <= 3; level++) {
+            sb.append("Level %d\n".formatted(level + 1));
+            for (int row = 0; row < myHeight; row++) {
+                for (int col = 0; col < myWidth; col++) {
+                    Coordinates coordinates = new Coordinates(level, row, col);
+                    Room room = myRooms.get(coordinates);
+                    sb.append(room.toString());
+                }
+                sb.append('\n');
+            }
+            sb.append('\n');
+        }
+        return sb.toString();
     }
 }
