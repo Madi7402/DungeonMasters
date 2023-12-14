@@ -15,8 +15,8 @@ public class Dungeon {
     public Dungeon() {
         var myRoomFactory = new RandomRoomFactory();
         myMaze = new Maze(myRoomFactory, WIDTH, HEIGHT);
-        myCurrentCoordinates = new Coordinates(0, 0, 0);
-        myCurrentRoom = myMaze.getRoom(myCurrentCoordinates);
+        myCurrentRoom = myMaze.getStartingRoom();
+        myCurrentCoordinates = myCurrentRoom.getCoordinate();
     }
 
     public String getMyCurrentRoom() {

@@ -43,6 +43,15 @@ public class Maze {
         initializeMaze(theRoomFactory);
     }
 
+    public Room getStartingRoom() {
+       for (var room : myRooms.values()) {
+           if (room.getMyPortal().equals(Portal.ENTRANCE)) {
+               return room;
+           }
+       }
+       throw new IllegalStateException("Maze has no entrance!");
+    }
+
     /**
      * Initializes the maze with rooms, entrance and exit portals, and ensures traversability across levels.
      * Iterates through each level, initializing rooms, setting portals, and validating the maze.
