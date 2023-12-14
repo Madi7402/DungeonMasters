@@ -48,12 +48,13 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
     public boolean goDirection(Direction theDirection) {
         Coordinates newCoord = new Coordinates(myCurrentCoordinates.level(), myCurrentCoordinates.row()+theDirection.getYOffset()
                 , myCurrentCoordinates.column()+theDirection.getXOffset());
-        if (myMaze.getRoom(newCoord) != null) { // && myCurrentRoom.getDoors().contains(theDirection)) { // TODO ENABLE DOOR CHECKS
+        if (myMaze.getRoom(newCoord) != null && myCurrentRoom.getDoors().contains(theDirection)) { // TODO ENABLE DOOR CHECKS
             myCurrentRoom = myMaze.getRoom(newCoord);
             myCurrentRoom.setIsVisited(true);
             myCurrentCoordinates = newCoord;
+            System.err.println(myCurrentCoordinates);
             fireEvent(NAVIGATED);
-            return true;
+            return true; // TODO -JA: Why does this skip left/rooms after vision potion?
         }
         fireEvent(NAV_FAIL);
         return false;

@@ -75,6 +75,12 @@ public class Maze implements Serializable {
                 level--; // if it fails, keep the regeneration on this same level
             }
         }
+
+        // Set all rooms not visited so view can keep rooms invisible until visited by player
+        for (Map.Entry<Coordinates, Room> entry : myRooms.entrySet()) {
+            Room room = entry.getValue();
+            room.setIsVisited(false);
+        }
     }
 
     /**
