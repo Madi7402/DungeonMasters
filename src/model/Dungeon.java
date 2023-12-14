@@ -13,32 +13,36 @@ import java.io.Serializable;
  */
 public class Dungeon extends PropertyChange implements PropertyChangeEnableDungeon, Serializable {
     @Serial
-    private static final long serialVersionUID = 0L; // Update on class changes (!)
+    private static final long serialVersionUID = 1L; // Update on class changes (!)
     private final Maze myMaze;
     private Room myCurrentRoom;
     private Coordinates myCurrentCoordinates;
     /** Keep Track of our Observers and fire events. */
     private final PropertyChangeSupport myPcs;
 
-    public Dungeon() {
-        this(10,10);
-    }
 
     public Dungeon(final int theWidth, final int theHeight) {
         if (theWidth < 4 || theHeight < 4) {
             throw new IllegalArgumentException("Map must be at least 4x4");
         }
         myPcs = new PropertyChangeSupport(this);
-//        RandomRoomFactory rf = new RandomRoomFactory(); // TODO -JA: Use real maze
-//        myMaze = new Maze(rf, theWidth, theHeight);
-        myMaze = new Maze(true, theWidth, theHeight); // TODO -JA: Use real maze for constructing dungeon
-        myCurrentCoordinates = new Coordinates(0, 0, 0); // TODO -JA: is this really the entrance?
-        myCurrentRoom = myMaze.getRoom(myCurrentCoordinates);
+        var myRoomFactory = new RandomRoomFactory();
+        myMaze = new Maze(myRoomFactory, theWidth, theHeight);
+        myCurrentRoom = myMaze.getStartingRoom();
+        myCurrentCoordinates = myCurrentRoom.getCoordinate();
         myCurrentRoom.setIsVisited(true);
     }
 
     public Room getMyCurrentRoom() {
         return myCurrentRoom;
+    }
+
+    public Maze getMyMaze() {
+        return myMaze;
+    }
+
+    public Coordinates getMyCurrentCoordinates() {
+        return myCurrentCoordinates;
     }
 
     public boolean goDirection(Direction theDirection) {
@@ -53,13 +57,5 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
         }
         fireEvent(NAV_FAIL);
         return false;
-    }
-
-    public Maze getMyMaze() {
-        return myMaze;
-    }
-
-    public Coordinates getMyCurrentCoordinates() {
-        return myCurrentCoordinates;
     }
 }

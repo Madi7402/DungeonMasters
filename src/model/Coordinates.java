@@ -50,7 +50,7 @@ public record Coordinates(int level, int row, int column) implements Comparable<
      * @param theDirection The theDirection indicating the row and column offsets.
      * @return A new set of coordinates with adjusted row and column values.
      */
-    public Coordinates generate(final Direction theDirection) {
-        return generate(theDirection.getXOffset(), theDirection.getYOffset());
+    public Coordinates generate(final Direction theDirection) { // rows are y offsets, columns are x offsets
+        return generate(theDirection.getYOffset(), theDirection.getXOffset());
     }
 }

@@ -11,13 +11,13 @@ public class RandomRoomFactory extends AbstractRoomFactory {
 
     private static final double VISION_POTION_PERCENTAGE = 0.1;
 
-    private static final double NORTH_DOOR_PERCENTAGE = 0.5;
+    private static final double NORTH_DOOR_PERCENTAGE = 0.8;
 
-    private static final double SOUTH_DOOR_PERCENTAGE = 0.5;
+    private static final double SOUTH_DOOR_PERCENTAGE = 0.8;
 
-    private static final double EAST_DOOR_PERCENTAGE = 0.5;
+    private static final double EAST_DOOR_PERCENTAGE = 0.8;
 
-    private static final double WEST_DOOR_PERCENTAGE = 0.5;
+    private static final double WEST_DOOR_PERCENTAGE = 0.8;
 
     /**
      * Generates a random room with random features.
