@@ -9,8 +9,12 @@ public class Dungeon {
     private Room myCurrentRoom;
     private Coordinates myCurrentCoordinates;
 
+    private static final int WIDTH = 5;
+    private static final int HEIGHT = 5;
+
     public Dungeon() {
-        myMaze = new Maze(true); // TODO -JA: Replace with real map generation
+        var myRoomFactory = new RandomRoomFactory();
+        myMaze = new Maze(myRoomFactory, WIDTH, HEIGHT);
         myCurrentCoordinates = new Coordinates(0, 0, 0);
         myCurrentRoom = myMaze.getRoom(myCurrentCoordinates);
     }

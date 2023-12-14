@@ -307,8 +307,7 @@ public class Maze {
         StringBuilder sb = new StringBuilder();
 
         for (int level = 1; level <= 4; level++) {
-            sb.append("Level ");
-            sb.append(level + '\n');
+            sb.append("Level %d\n".formatted(level));
             for (int row = 0; row < myHeight; row++) {
                 for (int col = 0; col < myWidth; col++) {
                     Coordinates coordinates = new Coordinates(level, row, col);
