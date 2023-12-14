@@ -136,19 +136,20 @@ public class Room {
      * @return True if the neighbor was successfully set, false otherwise.
      */
     public boolean trySetNeighbor(final Room theNeighbor, final Direction theDirection) {
-        if (!myDoors.contains(theDirection)) {
-            return false;
+        if (!theNeighbor.myCoordinates.equals(myCoordinates.generate(theDirection))) {
+            throw new IllegalArgumentException("The neighbor is not really a neighbor.");
         }
 
-        if (!theNeighbor.myCoordinates.equals(myCoordinates.generate(theDirection))) {
-            return false; // should this throw??
+        if (!myDoors.contains(theDirection)) {
+            return false;
         }
 
         if (!theNeighbor.myDoors.contains(theDirection.getOppositeDirection())) {
             myDoors.remove(theDirection);
             return false;
-        }
-
+        } // TODO - maybe this should return true (add not remove door)
+        myNeighbors.put(theDirection, theNeighbor);
+        theNeighbor.myNeighbors.put(theDirection.getOppositeDirection(), this);
         return true; // neighbor door matches yours
     }
 
@@ -185,6 +186,7 @@ public class Room {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
+        // TODO - make a public method that takes a StringBuilder (for top part)
         // top line
         if (myDoors.contains(Direction.NORTH)) {
             sb.append("*-*\n");
@@ -192,6 +194,7 @@ public class Room {
             sb.append("***\n");
         }
 
+        // TODO - make a public method that takes a StringBuilder (for middle part)
         // middle line
         if (myDoors.contains(Direction.WEST)) {
             sb.append("|");
@@ -235,6 +238,7 @@ public class Room {
             sb.append("*\n");
         }
 
+        // TODO - print the south part
         // bottom line
         if (myDoors.contains(Direction.SOUTH)) {
             sb.append("*-*\n");
@@ -294,6 +298,10 @@ public class Room {
             myItems.remove(equipableItem.getType());
         }
         return equipableItems;
+    }
+
+    public void tryRemoveDoor(Direction theDirection) {
+        // TODO - if a door exists in this direction, remove it
     }
 
     // TODO - get rid of all the Item setters (pillar, potion, pit)

@@ -38,6 +38,9 @@ public class Maze {
      * @param theHeight The height of the maze (number of rows).
      */
     public Maze(final AbstractRoomFactory theRoomFactory, final int theWidth, int theHeight) {
+        if (theWidth < 2 || theHeight < 2) {
+            throw new IllegalArgumentException("theHeight, %d and the theWidth, %d must both be greater than 2".formatted(theHeight, theWidth));
+        }
         this.myWidth = theWidth;
         this.myHeight = theHeight;
         initializeMaze(theRoomFactory);
@@ -106,7 +109,7 @@ public class Maze {
          */
         private void validateRoom(final Room theRoom) {
 
-            if (!isExitFound && isExitRoom(theRoom)) {    //maybe these are the problem...
+            if (!isExitFound && isExitRoom(theRoom)) {
                 isExitFound = true;
             }
 
@@ -243,6 +246,8 @@ public class Maze {
         if (myRooms.containsKey(neighborCoordinate)) {
             var neighbor = myRooms.get(neighborCoordinate);
             theRoom.trySetNeighbor(neighbor, theDirection);
+        } else {
+            theRoom.tryRemoveDoor(theDirection); // TODO - write this method (down below)
         }
     }
 
@@ -315,8 +320,8 @@ public class Maze {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        for (int level = 1; level <= 4; level++) {
-            sb.append("Level %d\n".formatted(level));
+        for (int level = 0; level <= 3; level++) {
+            sb.append("Level %d\n".formatted(level + 1));
             for (int row = 0; row < myHeight; row++) {
                 for (int col = 0; col < myWidth; col++) {
                     Coordinates coordinates = new Coordinates(level, row, col);

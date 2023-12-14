@@ -19,6 +19,10 @@ public class Dungeon {
         myCurrentCoordinates = myCurrentRoom.getCoordinate();
     }
 
+    public Maze getMyMaze() {
+        return myMaze;
+    }
+
     public String getMyCurrentRoom() {
         return myCurrentRoom.toString();
     }
