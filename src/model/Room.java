@@ -269,9 +269,8 @@ public class Room {
      * @param theHasPillar True if the room has a pillar, false otherwise.
      */
     public void setPillar(final boolean theHasPillar) {
-        this.hasPillar = theHasPillar; // might need to add Item instead TO DO !!!
+        this.hasPillar = theHasPillar; // TODO - might need to add Item instead
     }
-
 
     /**
      * Adds an item to the room.
@@ -297,7 +296,7 @@ public class Room {
         return equipableItems;
     }
 
-    // TODO -ME get rid of all the Item setters (pillar, potion, pit)
+    // TODO - get rid of all the Item setters (pillar, potion, pit)
     // get rid of the related fields
     // keep has functions, check item tree instead of fields
     // update toString to use these functions for the printing

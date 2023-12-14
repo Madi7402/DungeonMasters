@@ -294,4 +294,31 @@ public class Maze {
     public Room getRoom(final Coordinates theCoordinates) {
         return myRooms.get(theCoordinates);
     }
+
+    /**
+     * Returns a string representation of the maze, including details for each level, row, and column.
+     * The representation includes room details obtained from the toString() method of each room in the maze.
+     * Each level is separated by a newline, and rooms are arranged in rows and columns.
+     *
+     * @return A string representation of the maze.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        for (int level = 1; level <= 4; level++) {
+            sb.append("Level ");
+            sb.append(level + '\n');
+            for (int row = 0; row < myHeight; row++) {
+                for (int col = 0; col < myWidth; col++) {
+                    Coordinates coordinates = new Coordinates(level, row, col);
+                    Room room = myRooms.get(coordinates);
+                    sb.append(room.toString());
+                }
+                sb.append('\n');
+            }
+            sb.append('\n');
+        }
+        return sb.toString();
+    }
 }
