@@ -4,6 +4,7 @@ import controller.PropertyChange;
 import controller.PropertyChangeEnableDungeon;
 
 import java.beans.PropertyChangeSupport;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
 public class Dungeon extends PropertyChange implements PropertyChangeEnableDungeon, Serializable {
+    @Serial
     private static final long serialVersionUID = 1L; // Update on class changes (!)
     private final Maze myMaze;
     private Room myCurrentRoom;
@@ -31,8 +33,8 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
         myCurrentRoom.setIsVisited(true);
     }
 
-    public String getMyCurrentRoom() {
-        return myCurrentRoom.toString();
+    public Room getMyCurrentRoom() {
+        return myCurrentRoom;
     }
 
     public Maze getMyMaze() {
@@ -43,11 +45,17 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
         return myCurrentCoordinates;
     }
 
-    public void goDirection(Direction theDirection) {
+    public boolean goDirection(Direction theDirection) {
         Coordinates newCoord = new Coordinates(myCurrentCoordinates.level(), myCurrentCoordinates.row()+theDirection.getYOffset()
                 , myCurrentCoordinates.column()+theDirection.getXOffset());
-        if (myMaze.getRoom(newCoord) != null) {
+        if (myMaze.getRoom(newCoord) != null) { // && myCurrentRoom.getDoors().contains(theDirection)) { // TODO ENABLE DOOR CHECKS
             myCurrentRoom = myMaze.getRoom(newCoord);
+            myCurrentRoom.setIsVisited(true);
+            myCurrentCoordinates = newCoord;
+            fireEvent(NAVIGATED);
+            return true;
         }
+        fireEvent(NAV_FAIL);
+        return false;
     }
 }
