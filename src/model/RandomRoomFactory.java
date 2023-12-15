@@ -38,22 +38,12 @@ public class RandomRoomFactory extends AbstractRoomFactory {
         var monster = MonsterType.NONE;
 
         if (hasMonster) {
-            monster = generateRandomMonster(random);
+            monster = MonsterType.getRandomMonster(random);
         }
 
         var doors = generateRandomDoors(random);
 
         return new Room(hasPit, hasHealingPotion, hasVisionPotion, monster, doors, theCoordinates);
-    }
-
-    private MonsterType generateRandomMonster(final Random theRandom) {
-        if (theRandom.nextDouble() < 0.33) {
-            return MonsterType.SKELETON;
-        } else if (theRandom.nextDouble() < 0.66) {
-            return MonsterType.GREMLIN;
-        } else {
-            return MonsterType.OGRE;
-        }
     }
 
     /**
