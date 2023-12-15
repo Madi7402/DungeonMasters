@@ -10,6 +10,8 @@ import model.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static controller.PropertyChangeEnableDungeon.GAME_WIN;
 import static controller.PropertyChangeEnableFight.*;
@@ -54,31 +56,55 @@ public class CombatMenuController extends AbstractController implements Property
     private Hero myHero;
 
     public void initialize(){
-        myReturnButton.setOnAction(event -> {
-                victory();
-        });
-
-        myAttackButton.setOnAction(actionEvent -> {
-            if (myMonster.getMyHealthPoints() > 0 && myHero.getMyMaxHealthPoints() > 0) {
-                myHero.attack(myMonster);
-                myMonster.attack(myHero);
-            }
-        });
-
-        mySpecialAttackButton.setOnAction(actionEvent -> {
-            if (myMonster.getMyHealthPoints() > 0 && myHero.getMyMaxHealthPoints() > 0) {
-                myHero.specialSkill(myMonster);
-                myMonster.attack(myHero);
-            }
-        });
-
-        myInventoryUseButton.setOnAction(actionEvent -> {
-            myDungeonAdventure.getMyHero().useItem(myInventoryListView.getSelectionModel().getSelectedItem());
-        });
-
+        myReturnButton.setOnAction(event -> returnToOverworld());
+        myAttackButton.setOnAction(actionEvent -> heroAction(MoveType.ATTACK));
+        mySpecialAttackButton.setOnAction(actionEvent -> heroAction(MoveType.SPEC));
+        myInventoryUseButton.setOnAction(actionEvent -> heroAction(MoveType.ITEM));
     }
 
-    public void victory() {
+
+    private enum MoveType {
+        ATTACK,
+        SPEC,
+        ITEM
+    }
+
+    /**
+     * Have the hero perform an action
+     * @param theMoveType the type of action to be performed from the battle screen
+     */
+    private void heroAction(MoveType theMoveType) {
+        if (myMonster == null && (myHero != null && myHero.isAlive())) {
+            if (theMoveType == MoveType.ITEM) // No monster, can still use item
+                myHero.useItem(myInventoryListView.getSelectionModel().getSelectedItem());
+            return;
+        } else if (myMonster == null || myHero == null) {
+            return;
+        }
+
+        if (myHero.getAttackSpeed() > myMonster.getAttackSpeed()) { // Hero faster, attacks first
+            switch (theMoveType) {
+                case ATTACK -> myHero.attack(myMonster);
+                case SPEC -> myHero.specialSkill(myMonster);
+                case ITEM -> myHero.useItem(myInventoryListView.getSelectionModel().getSelectedItem());
+            }
+
+            if (myMonster.isAlive()) {
+                myMonster.attack(myHero);
+            }
+        } else { // Monster faster, attacks first
+            myMonster.attack(myHero);
+            if (myHero.isAlive()) {
+                switch (theMoveType) {
+                    case ATTACK -> myHero.attack(myMonster);
+                    case SPEC -> myHero.specialSkill(myMonster);
+                    case ITEM -> myHero.useItem(myInventoryListView.getSelectionModel().getSelectedItem());
+                }
+            }
+        }
+    }
+
+    public void returnToOverworld() {
         myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
         myDungeonAdventure.getMyDungeon().removePropertyChangeListener(this);
         FXMLLoader loader = switchScene("Overworld.fxml");
@@ -170,7 +196,10 @@ public class CombatMenuController extends AbstractController implements Property
         }
     }
     private void updateInventoryList() {
-        ObservableList<Item> items = FXCollections.observableArrayList(myDungeonAdventure.getMyHero().getInventory());
+        // Only get potions for Combat menu
+        List<Item> potions = myDungeonAdventure.getMyHero().getInventory().stream()
+                .filter(item -> item.getType() == ItemType.HEALING_POTION).toList();
+        ObservableList<Item> items = FXCollections.observableArrayList(potions);
         myInventoryListView.setItems(items);
     }
 

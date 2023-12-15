@@ -98,13 +98,13 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
                 case 3 -> {
                     System.err.println("4 hit");
                     myHero.giveItem(ItemType.PILLAR_ENCAPSULATION);
-                    fireEvent(GAME_WIN);
+                    fireEvent(GAME_WIN); // TODO: make this event happen later?
                     return;
                 }
                 default -> {
                     System.err.println("default hit");
                     fireEvent(GAME_WIN);
-                    return ;
+                    return;
                 }
 
             }
