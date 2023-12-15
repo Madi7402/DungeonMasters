@@ -139,8 +139,7 @@ public class OverworldController extends AbstractController implements PropertyC
         });
 
         myPitButton.setOnAction(actionEvent -> {
-            Item pit = new Item(ItemType.PIT);
-            myDungeonAdventure.getMyHero().getItem(pit);
+            myDungeonAdventure.getMyHero().hitPit();
         });
 
         myFightButton.setOnAction(actionEvent -> {

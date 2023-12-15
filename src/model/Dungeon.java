@@ -41,10 +41,13 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
         }
         myHero = Objects.requireNonNull(theHero);
         myPcs = new PropertyChangeSupport(this);
+
+
         var myRoomFactory = new RandomRoomFactory();
         myMaze = new Maze(myRoomFactory, theWidth, theHeight);
         myCurrentRoom = myMaze.getStartingRoom();
         myCurrentCoordinates = myCurrentRoom.getCoordinate();
+
         myCurrentRoom.setIsVisited(true);
     }
 
@@ -61,20 +64,27 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
     }
 
     public boolean goDirection(Direction theDirection) {
-        Coordinates newCoord = new Coordinates(myCurrentCoordinates.level(), myCurrentCoordinates.row()+theDirection.getYOffset()
-                , myCurrentCoordinates.column()+theDirection.getXOffset());
-        if (myMaze.getRoom(newCoord) != null && myCurrentRoom.getDoors().contains(theDirection)) {
-            myCurrentRoom = myMaze.getRoom(newCoord);
+        Room newRoom = myMaze.getRoom(myCurrentCoordinates, theDirection);
+        if (newRoom != null && myCurrentRoom.getDoors().contains(theDirection)) {
+            myCurrentRoom = newRoom;
             myCurrentRoom.setIsVisited(true);
-            myCurrentCoordinates = newCoord;
+            myCurrentCoordinates = myCurrentRoom.getCoordinate();
             fireEvent(NAVIGATED);
-            return true;
+        } else {
+            fireEvent(NAV_FAIL);
+            return false;
         }
 
-        // TODO: is there a pit
+
+        if (myCurrentRoom.hasPit()) {
+            myHero.hitPit();
+        }
+
         // TODO: is there a monster?
-        // TODO: collect items (if there was a monster after fight)
-        fireEvent(NAV_FAIL);
-        return false;
+        // Get items from room
+        for (Item item : myCurrentRoom.takeEquipableItems()) {
+            myHero.getItem(item);
+        }
+        return true;
     }
 }

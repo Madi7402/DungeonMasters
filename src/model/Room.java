@@ -295,7 +295,7 @@ public class Room implements Serializable {
         var equipableItems = myItems.values().stream().filter(Item::isEquipable).toList();
 
         for (var equipableItem : equipableItems) {
-            myItems.remove(equipableItem.getType());
+            myItems.remove(equipableItem.getType()); // TODO: decrement item count?
         }
         return equipableItems;
     }
@@ -306,6 +306,14 @@ public class Room implements Serializable {
 
     public void tryRemoveDoor(Direction theDirection) {
         // TODO - if a door exists in this direction, remove it
+    }
+
+    /**
+     * Does the room have a pit?
+     * @return true if the room has a pit
+     */
+    public boolean hasPit() {
+        return hasPit;
     }
 
     // TODO - get rid of all the Item setters (pillar, potion, pit)

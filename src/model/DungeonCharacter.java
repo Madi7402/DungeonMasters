@@ -124,13 +124,13 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
     }
 
     /**
-     * Set myHealthPoints for this DungeonCharacter.
+     * Set myHealthPoints for this DungeonCharacter, if < 0, the character has died.
      * @param theHealthPoints a value above >= 0 representing the character's health points
-     * @throws IllegalArgumentException if theHealthPoints < 0
      */
-    public void setMyHealthPoints(final int theHealthPoints) {
-        if (theHealthPoints < 0) {
-            throw new IllegalArgumentException("Health points must not be less than 0");
+    public void setMyHealthPoints(int theHealthPoints) {
+        if (theHealthPoints <= 0) { // The character has died!
+            fireEvent(DEATH);
+            theHealthPoints = 0;
         }
         fireEvent(HEALTH_CHANGED, myHealthPoints, theHealthPoints);
         this.myHealthPoints = theHealthPoints;
