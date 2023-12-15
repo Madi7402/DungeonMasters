@@ -191,22 +191,30 @@ public class Room implements Serializable {
     }
 
     /**
-     * Represents the room as a 2D graphical representation.
+     * Generates the top part of the graphical representation of the room, including doors.
      *
-     * @return A string representing the graphical layout of the room.
+     * @return A string representing the top part of the room.
      */
-    @Override
-    public String toString() {
+    String printTopOfRoom() {
         StringBuilder sb = new StringBuilder();
 
-        // top line
         if (myDoors.contains(Direction.NORTH)) {
-            sb.append("*-*\n");
+            sb.append("*-*");
         } else {
-            sb.append("***\n");
+            sb.append("***");
         }
 
-        // middle line
+        return sb.toString();
+    }
+
+    /**
+     * Generates the middle part of the graphical representation of the room, including items and features.
+     *
+     * @return A string representing the middle part of the room.
+     */
+    String printMiddleOfRoom() {
+        StringBuilder sb = new StringBuilder();
+
         if (myDoors.contains(Direction.WEST)) {
             sb.append("|");
         } else {
@@ -244,17 +252,43 @@ public class Room implements Serializable {
         }
 
         if (myDoors.contains(Direction.EAST)) {
-            sb.append("|\n");
+            sb.append("|");
         } else {
-            sb.append("*\n");
+            sb.append("*");
         }
 
-        // bottom line
+        return sb.toString();
+    }
+
+    /**
+     * Generates the bottom part of the graphical representation of the room, including doors.
+     *
+     * @return A string representing the bottom part of the room.
+     */
+    String printBottomOfRoom() {
+        StringBuilder sb = new StringBuilder();
+
         if (myDoors.contains(Direction.SOUTH)) {
-            sb.append("*-*\n");
+            sb.append("*-*");
         } else {
-            sb.append("***\n");
+            sb.append("***");
         }
+
+        return sb.toString();
+    }
+
+    /**
+     * Represents the room as a 2D graphical representation.
+     *
+     * @return A string representing the graphical layout of the room.
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(printTopOfRoom()).append('\n');
+        sb.append(printMiddleOfRoom()).append('\n');
+        sb.append(printBottomOfRoom()).append('\n');
 
         return sb.toString();
     }
@@ -286,14 +320,29 @@ public class Room implements Serializable {
         this.hasPillar = thePillar;
     }
 
+    /**
+     * Checks whether the room contains a monster.
+     *
+     * @return true if the room has a monster, otherwise return false.
+     */
     public boolean hasMonster() {
         return myMonsterType != MonsterType.NONE;
     }
 
+    /**
+     * Retrieves the type of monster present in the room.
+     *
+     * @return The type of monster as a MonsterType enum value.
+     */
     public MonsterType getMyMonsterType() {
         return myMonsterType;
     }
 
+    /**
+     * Sets the type of monster for the room.
+     *
+     * @param theMonsterType The MonsterType to be set for the room.
+     */
     public void setMonsterType(final MonsterType theMonsterType) {
         this.myMonsterType = theMonsterType;
     }
@@ -328,15 +377,17 @@ public class Room implements Serializable {
 
     /**
      * Removes any doors that exist in the specified direction.
-     * @param theDirection
+     *
+     * @param theDirection The direction in which the door should be removed.
      */
     public void tryRemoveDoor(Direction theDirection) {
         myDoors.remove(theDirection);
     }
 
     /**
-     * Does the room have a pit?
-     * @return true if the room has a pit
+     * Checks whether the room contains a pit.
+     *
+     * @return true if the room has a pit, otherwise return false.
      */
     public boolean hasPit() {
         return hasPit;

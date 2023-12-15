@@ -348,12 +348,26 @@ public class Maze implements Serializable {
         for (int level = 0; level <= 3; level++) {
             sb.append("Level %d\n".formatted(level + 1));
             for (int row = 0; row < myHeight; row++) {
-                for (int col = 0; col < myWidth; col++) {
+                for (int col = 0; col < myWidth; col++) { // prints the top parts of the rooms
                     Coordinates coordinates = new Coordinates(level, row, col);
                     Room room = myRooms.get(coordinates);
-                    sb.append(room.toString()); // TODO - update the string to print 3 levels separately
+                    sb.append(room.printTopOfRoom()).append(' ');
                 }
                 sb.append('\n');
+
+                for (int col = 0; col < myWidth; col++) { // prints the middle parts of the rooms
+                    Coordinates coordinates = new Coordinates(level, row, col);
+                    Room room = myRooms.get(coordinates);
+                    sb.append(room.printMiddleOfRoom()).append(' ');
+                }
+                sb.append('\n');
+
+                for (int col = 0; col < myWidth; col++) { // prints the bottom parts of the rooms
+                    Coordinates coordinates = new Coordinates(level, row, col);
+                    Room room = myRooms.get(coordinates);
+                    sb.append(room.printBottomOfRoom()).append(' ');
+                }
+                sb.append('\n').append('\n');
             }
             sb.append('\n');
         }
