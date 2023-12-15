@@ -2,7 +2,6 @@ package view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -56,7 +55,7 @@ public class CombatMenuController extends AbstractController implements Property
     public void initialize(){
         myReturnButton.setOnAction(event -> {
             try {
-                victory(event);
+                victory();
             } catch (IOException e) {
                 // Handle the IOException, e.g., log it or show an error message
                 e.printStackTrace();
@@ -81,7 +80,7 @@ public class CombatMenuController extends AbstractController implements Property
             myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
             myDungeonAdventure.getMyDungeon().removePropertyChangeListener(this);
             try {
-                gameOver(actionEvent);
+                gameOver();
             } catch (IOException e) {
                 throw new RuntimeException("Could not reach GameOver from CombatMenuController");
             }
@@ -109,10 +108,10 @@ public class CombatMenuController extends AbstractController implements Property
 //        switchScene(event, "GameOver.fxml");
 //    }
 
-    public void victory(ActionEvent event) throws IOException {
+    public void victory() throws IOException {
         myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
         myDungeonAdventure.getMyDungeon().removePropertyChangeListener(this);
-        FXMLLoader loader = switchScene(event, "Overworld.fxml");
+        FXMLLoader loader = switchScene("Overworld.fxml");
         OverworldController controller = loader.getController();
         controller.setAdventure(myDungeonAdventure);
     }
@@ -181,11 +180,17 @@ public class CombatMenuController extends AbstractController implements Property
 
             // TODO -JA: get monster from room instead of this test monster
             MonsterFactory mf = new MonsterFactory();
-            myMonster = mf.createMonster(MonsterType.OGRE);
-            myMonster.addPropertyChangeListener(this);
-            myEnemyName.setText(myMonster.getMyName());
-            myEnemyHealth.setText(myMonster.getMyHealthPoints() + "/" + myMonster.getMyMaxHealthPoints());
-            myMonsterImageView.setImage(myMonster.getMyImage());
+            myMonster = mf.createMonster(myDungeonAdventure.getMyDungeon().getMyCurrentRoom().getMyMonsterType());
+            if (myMonster != null) {
+                myMonster.addPropertyChangeListener(this);
+                myEnemyName.setText(myMonster.getMyName());
+                myEnemyHealth.setText(myMonster.getMyHealthPoints() + "/" + myMonster.getMyMaxHealthPoints());
+                myMonsterImageView.setImage(myMonster.getMyImage());
+            } else {
+                myLogTextArea.appendText("There was no monster in this room.");
+                myAttackButton.setDisable(true);
+                mySpecialAttackButton.setDisable(true);
+            }
             updateInventoryList();
         }
     }

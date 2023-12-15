@@ -117,7 +117,7 @@ public class OverworldController extends AbstractController implements PropertyC
         myDieButton.setOnAction(actionEvent -> {
 //            try {
             try {
-                gameOver(actionEvent);
+                gameOver();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -138,21 +138,23 @@ public class OverworldController extends AbstractController implements PropertyC
             }
         });
 
-        myPitButton.setOnAction(actionEvent -> {
-            myDungeonAdventure.getMyHero().hitPit();
-        });
+        myPitButton.setOnAction(actionEvent -> myDungeonAdventure.getMyHero().hitPit());
 
         myFightButton.setOnAction(actionEvent -> {
             try {
-                FXMLLoader loader = switchScene(actionEvent, "CombatMenu.fxml");
-                CombatMenuController controller = loader.getController();
-                myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
-                myDungeonAdventure.getMyDungeon().removePropertyChangeListener(this);
-                controller.setAdventure(myDungeonAdventure);
+                switchToFightScene();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    private void switchToFightScene() throws IOException {
+        FXMLLoader loader = switchScene("CombatMenu.fxml");
+        CombatMenuController controller = loader.getController();
+        myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
+        myDungeonAdventure.getMyDungeon().removePropertyChangeListener(this);
+        controller.setAdventure(myDungeonAdventure);
     }
 
     private void setupAnimations() {
@@ -326,6 +328,13 @@ public class OverworldController extends AbstractController implements PropertyC
 
             case DEATH -> myDieButton.fire();
             case INVENTORY_ACTION -> updateInventoryList();
+            case FIGHT_BEGIN -> {
+                try {
+                    switchToFightScene();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             default -> System.err.println("Received unknown event " + evt.getPropertyName());
         }
     }

@@ -2,7 +2,6 @@ package view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,14 +30,14 @@ public class LoadGameController extends AbstractController implements Initializa
 
     }
 
-    public void loadButton(ActionEvent event){
+    public void loadButton(){
         try{
             FileInputStream fileInputStream = new FileInputStream(mySaveList.getSelectionModel().getSelectedItem());
             BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
             ObjectInputStream objectInputStream = new ObjectInputStream(bufferedInputStream);
             DungeonAdventure da = (DungeonAdventure) objectInputStream.readObject();
 
-            FXMLLoader loader = switchScene(event, "Overworld.fxml");
+            FXMLLoader loader = switchScene("Overworld.fxml");
             OverworldController controller = loader.getController();
             controller.setAdventure(da);
             //controller.setHeroImage(myHeroImageView.getImage()); // TODO - JA: Get this in Overworld Controller Instead from DA
@@ -49,8 +48,8 @@ public class LoadGameController extends AbstractController implements Initializa
         }
     }
 
-    public void newGameButton(ActionEvent event) throws IOException {
-        switchScene(event, "NewGame.fxml");
+    public void newGameButton() throws IOException {
+        switchScene( "NewGame.fxml");
     }
 
 
