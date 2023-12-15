@@ -34,4 +34,10 @@ public class MonsterFactoryTest {
         assertEquals("Level 1 Character: model.Skeleton Health: 100 Heal Chance: 30.0",
                 skeleton.toString());
     }
+
+    @Test
+    public void createNone() {
+        Monster noneMonster = mf.createMonster(MonsterType.NONE);
+        assertNull(noneMonster);
+    }
 }
