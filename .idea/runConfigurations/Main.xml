@@ -5,7 +5,7 @@
     <option name="VM_PARAMETERS" value="--module-path lib/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="view.*" />
+        <option name="PATTERN" value="controller.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

@@ -1,6 +1,10 @@
 package controller;
 
 public interface PropertyChangeEnableFight extends PropertyChangeEnable {
+    /**
+     * The Fight has begun!
+     */
+    String FIGHT_BEGIN = "dfightStart";
     /** The character has died **/
     String DEATH = "death";
     /** An attack has been performed, (it may still be blocked) **/
@@ -13,4 +17,8 @@ public interface PropertyChangeEnableFight extends PropertyChangeEnable {
     String HEALTH_CHANGED = "hChange";
     /** The character took damage **/
     String TAKE_DAMAGE = "aDamaged";
+
+    // ** please update my health....
+    String HEALTH_UPDATE = "hUpdate";
+
 }

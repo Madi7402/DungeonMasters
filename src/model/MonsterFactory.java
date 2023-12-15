@@ -9,6 +9,7 @@ public class MonsterFactory {
             case GREMLIN -> new Gremlin();
             case OGRE -> new Ogre();
             case SKELETON -> new Skeleton();
+            case NONE -> null;
         };
     }
 }

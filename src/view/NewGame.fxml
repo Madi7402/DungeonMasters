@@ -10,12 +10,11 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.NewGameController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.NewGameController">
    <children>
       <AnchorPane layoutX="14.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="216.0" prefWidth="337.0" style="-fx-background-color: red;">
          <children>
             <TextField id="hero-name" fx:id="myHeroNameTextField" layoutX="149.0" layoutY="41.0" promptText="Hero Name" AnchorPane.leftAnchor="149.0" AnchorPane.topAnchor="41.0" />
-            <Button fx:id="myPlayButton" layoutX="145.0" layoutY="175.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" text="Play" />
             <TextFlow layoutX="-5.0" prefHeight="32.0" prefWidth="325.0" textAlignment="CENTER">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hero Selection">
@@ -33,6 +32,7 @@
             <ImageView fx:id="myHeroImageView" fitHeight="168.0" fitWidth="130.0" layoutX="14.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" />
             <ChoiceBox fx:id="myHeroTypeCB" layoutX="149.0" layoutY="91.0" prefHeight="26.0" prefWidth="162.0" />
             <Text layoutX="149.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hero Class" />
+            <Button fx:id="myPlayButton" layoutX="147.0" layoutY="139.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="171.0" text="Play" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="14.0" layoutY="241.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="119.0" prefWidth="337.0" style="-fx-background-color: red;">
@@ -46,13 +46,14 @@
                   </Text>
                </children>
             </TextFlow>
-            <Slider fx:id="myMapWidthSlider" layoutX="99.0" layoutY="52.0" min="4.0" value="4.0" />
-            <Slider fx:id="myMapHeightSlider" layoutX="99.0" layoutY="74.0" min="4.0" value="4.0" />
+            <Slider fx:id="myMapWidthSlider" layoutX="99.0" layoutY="52.0" max="50.0" min="10.0" value="4.0" />
+            <Slider fx:id="myMapHeightSlider" layoutX="99.0" layoutY="74.0" max="50.0" min="10.0" value="4.0" />
             <Text layoutX="59.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Width" />
             <Text layoutX="54.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Height" />
-            <Text fx:id="myWidthSliderValue" layoutX="239.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" />
-            <Text fx:id="myHeightSliderValue" layoutX="239.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4" />
+            <Text fx:id="myWidthSliderValue" layoutX="239.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" />
+            <Text fx:id="myHeightSliderValue" layoutX="239.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" />
          </children>
       </AnchorPane>
+      <Button layoutX="14.0" layoutY="674.0" mnemonicParsing="false" onAction="#backToMenuButton" prefHeight="32.0" prefWidth="337.0" text="Back" />
    </children>
 </AnchorPane>

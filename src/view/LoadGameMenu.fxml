@@ -1,11 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-
-<AnchorPane fx:controller="view.Controller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoadGameController">
    <children>
-      <Label layoutX="286.0" layoutY="192.0" text="LoadGameMenu" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="251.0" layoutX="892.0" layoutY="106.0" stroke="BLACK" strokeType="INSIDE" width="315.0" />
+      <Label layoutX="989.0" layoutY="23.0" text="Load Game">
+         <font>
+            <Font size="24.0" />
+         </font></Label>
+      <Label layoutX="963.0" layoutY="58.0" text="Load Game from previous save..." />
+      <VBox layoutX="862.0" layoutY="336.0" prefHeight="360.0" prefWidth="375.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#newGameButton" prefHeight="35.0" prefWidth="375.0" text="New Game">
+               <VBox.margin>
+                  <Insets bottom="20.0" top="50.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#backToMenuButton" prefHeight="35.0" prefWidth="375.0" text="Back">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#loadButton" prefHeight="35.0" prefWidth="375.0" text="Re-enter...">
+               <VBox.margin>
+                  <Insets bottom="50.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+      <Text layoutX="907.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Collect the 4 pillars, climb the tower, kill some monsters, escape and EXPERIENCE GLORY! If you dare re-enter..." wrappingWidth="284.0">
+         <font>
+            <Font name="Candara Light" size="24.0" />
+         </font>
+      </Text>
+      <ListView fx:id="mySaveList" layoutX="14.0" layoutY="19.0" prefHeight="683.0" prefWidth="835.0" />
    </children>
 </AnchorPane>
