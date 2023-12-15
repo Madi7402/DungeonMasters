@@ -83,7 +83,7 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
             return new Image("img/" + myImagePath);
         } catch(Exception e) {
             // We do what we must because we can
-            System.err.println(getClass().getSimpleName() + "img was null!");
+            System.err.println(getClass().getSimpleName() + " img was null!: " + myImagePath);
         }
         return null;
     }
