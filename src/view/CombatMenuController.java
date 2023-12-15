@@ -78,6 +78,8 @@ public class CombatMenuController extends AbstractController implements Property
         });
 
         myHiddenGameOverButton.setOnAction(actionEvent -> {
+            myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
+            myDungeonAdventure.getMyDungeon().removePropertyChangeListener(this);
             try {
                 gameOver(actionEvent);
             } catch (IOException e) {
@@ -108,6 +110,8 @@ public class CombatMenuController extends AbstractController implements Property
 //    }
 
     public void victory(ActionEvent event) throws IOException {
+        myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
+        myDungeonAdventure.getMyDungeon().removePropertyChangeListener(this);
         FXMLLoader loader = switchScene(event, "Overworld.fxml");
         OverworldController controller = loader.getController();
         controller.setAdventure(myDungeonAdventure);
@@ -121,6 +125,9 @@ public class CombatMenuController extends AbstractController implements Property
                 myLogTextArea.appendText("\n" + name + " DIED!");
                 if (source.equals(myHero)) {
                     myHiddenGameOverButton.fire(); // HACK
+                } else {
+                    myAttackButton.setDisable(true);
+                    mySpecialAttackButton.setDisable(true);
                 }
             }
             case ATTACK -> myLogTextArea.appendText("\n" + name + " Attacked!");
