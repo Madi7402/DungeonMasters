@@ -171,10 +171,10 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
         }
         // TODO -JA: Should we be able to heal if we are dead (health == 0)?
 
-        // TODO -JA: keep track of maximum health for the character and don't exceed that.
         int newHealthPoints = myHealthPoints += theHealth;
-        fireEvent(HEALTH_CHANGED, myHealthPoints, newHealthPoints); // TODO -JA: Why can't OverWorld see this event?
+        fireEvent(HEALTH_CHANGED, myHealthPoints, newHealthPoints);
         myHealthPoints = newHealthPoints;
+        fireEvent(HEALTH_UPDATE);
         return true;
     }
 
