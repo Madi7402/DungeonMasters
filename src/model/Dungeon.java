@@ -47,7 +47,7 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
 
         var myRoomFactory = new RandomRoomFactory();
         myMaze = new Maze(myRoomFactory, theWidth, theHeight);
-        myCurrentRoom = myMaze.getStartingRoom();
+        myCurrentRoom = myMaze.getStartingRoom(0);
         myCurrentCoordinates = myCurrentRoom.getCoordinate();
 
         myCurrentRoom.setVisited(true);
@@ -81,11 +81,35 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
                 myHero.getItem(item);
             }
 
+            checkIfExit();
             return true;
         }
 
         fireEvent(NAV_FAIL);
         return false; // Could not navigate to room
+    }
+
+    private void checkIfExit() {
+        if (myCurrentRoom.getPortal() == Portal.EXIT) {
+            switch (myCurrentCoordinates.level()) {
+                case 0 -> myHero.giveItem(ItemType.PILLAR_ABSTRACTION);
+                case 1 -> myHero.giveItem(ItemType.PILLAR_POLYMORPHISM);
+                case 2 -> myHero.giveItem(ItemType.PILLAR_INHERITANCE);
+                case 3 -> {
+                    System.err.println("4 hit");
+                    myHero.giveItem(ItemType.PILLAR_ENCAPSULATION);
+                    fireEvent(GAME_WIN);
+                    return;
+                }
+                default -> {
+                    System.err.println("default hit");
+                    fireEvent(GAME_WIN);
+                    return ;
+                }
+
+            }
+            navigateToRoom(myMaze.getStartingRoom(myCurrentCoordinates.level()+1));
+        }
     }
 
     private boolean navigateToRoom(final Room theRoom) {

@@ -17,4 +17,9 @@ public interface PropertyChangeEnableDungeon extends PropertyChangeEnable {
      * There was a monster in the room (START A FIGHT)
      */
     String FIGHT = "dFight";
+
+    /**
+     * You won the game!
+     */
+    String GAME_WIN = "dWin";
 }
