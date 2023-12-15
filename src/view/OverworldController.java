@@ -92,9 +92,6 @@ public class OverworldController extends AbstractController implements PropertyC
 
     @FXML
     private Button myPitButton;
-    @FXML
-    private Button myDieButton;
-
     private Timeline myDamageAnimation;
     private DungeonAdventure myDungeonAdventure;
     private OverworldControls myOverworldControls;
@@ -128,16 +125,11 @@ public class OverworldController extends AbstractController implements PropertyC
 
         myPitButton.setOnAction(actionEvent -> myDungeonAdventure.getMyHero().hitPit());
 
-        myFightButton.setOnAction(actionEvent -> {
-            try {
-                switchToFightScene();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        myFightButton.setOnAction(actionEvent -> switchToFightScene());
+
     }
 
-    private void switchToFightScene() throws IOException {
+    private void switchToFightScene() {
         FXMLLoader loader = switchScene("CombatMenu.fxml");
         CombatMenuController controller = loader.getController();
         myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
@@ -182,9 +174,8 @@ public class OverworldController extends AbstractController implements PropertyC
 
         updateInventoryList();
 
-        myInventoryUseButton.setOnAction(actionEvent -> {
-            myDungeonAdventure.getMyHero().useItem(myInventoryListView.getSelectionModel().getSelectedItem());
-        });
+        myInventoryUseButton.setOnAction(actionEvent ->
+                myDungeonAdventure.getMyHero().useItem(myInventoryListView.getSelectionModel().getSelectedItem()));
 
         myInventoryInfoButton.setOnAction(actionEvent -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, myInventoryListView.getSelectionModel().getSelectedItem().getDescription());
@@ -302,15 +293,9 @@ public class OverworldController extends AbstractController implements PropertyC
                 myDungeonAdventure.getMyDungeon().getMyMaze().setSurroundingRoomsVisible(myDungeonAdventure.getMyDungeon().getMyCurrentCoordinates(), 1);
                 updateRoomGrid();
             }
-            case DEATH -> myDieButton.fire();
+            case DEATH -> switchScene("GameOverScreen.fxml");
             case INVENTORY_ACTION -> updateInventoryList();
-            case FIGHT_BEGIN -> {
-                try {
-                    switchToFightScene();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            case FIGHT_BEGIN -> switchToFightScene();
             default -> System.err.println("Received unknown event " + evt.getPropertyName());
         }
     }
