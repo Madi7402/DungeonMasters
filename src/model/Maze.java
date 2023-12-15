@@ -351,23 +351,23 @@ public class Maze implements Serializable {
                 for (int col = 0; col < myWidth; col++) { // prints the top parts of the rooms
                     Coordinates coordinates = new Coordinates(level, row, col);
                     Room room = myRooms.get(coordinates);
-                    sb.append(room.printTopOfRoom());
+                    sb.append(room.printTopOfRoom()).append(' ');
                 }
                 sb.append('\n');
 
                 for (int col = 0; col < myWidth; col++) { // prints the middle parts of the rooms
                     Coordinates coordinates = new Coordinates(level, row, col);
                     Room room = myRooms.get(coordinates);
-                    sb.append(room.printMiddleOfRoom());
+                    sb.append(room.printMiddleOfRoom()).append(' ');
                 }
                 sb.append('\n');
 
                 for (int col = 0; col < myWidth; col++) { // prints the bottom parts of the rooms
                     Coordinates coordinates = new Coordinates(level, row, col);
                     Room room = myRooms.get(coordinates);
-                    sb.append(room.printBottomOfRoom());
+                    sb.append(room.printBottomOfRoom()).append(' ');
                 }
-                sb.append('\n');
+                sb.append('\n').append('\n');
             }
             sb.append('\n');
         }
