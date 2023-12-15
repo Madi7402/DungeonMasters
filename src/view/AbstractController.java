@@ -13,12 +13,19 @@ public abstract class AbstractController {
     private Scene myScene;
     private Parent myRoot;
 
-    private static int WINDOW_WIDTH = 1280;
-    private static int WINDOW_HEIGHT = 720;
+    private final static int WINDOW_WIDTH = 1280;
+    private final static int WINDOW_HEIGHT = 720;
 
-    public FXMLLoader switchScene(String sceneName) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(sceneName)));
-        myRoot = fxmlLoader.load();
+    public FXMLLoader switchScene(String sceneName) {
+        FXMLLoader fxmlLoader = null;
+        try {
+            fxmlLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(sceneName)));
+            myRoot = fxmlLoader.load();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            System.err.println("[IOException] Could not load scene: " + sceneName);
+            System.exit(1);
+        }
         myScene = new Scene(myRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
         AbstractController ac = fxmlLoader.getController();
         ac.setMyStage(myStage);
@@ -27,11 +34,11 @@ public abstract class AbstractController {
         return fxmlLoader;
     }
 
-    public void backToMenuButton() throws IOException {
+    public void backToMenuButton() {
         switchScene("StartMenu.fxml");
     }
 
-    public void gameOver() throws IOException {
+    public void gameOver() {
         switchScene("GameOverScreen.fxml");
     }
 
