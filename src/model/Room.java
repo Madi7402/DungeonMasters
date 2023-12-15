@@ -42,26 +42,30 @@ public class Room implements Serializable {
      * Indicates whether the room has a pillar.
      * A pillar is a special item that...
      */
-    private boolean hasPillar; // will go away, only need method
+    private boolean hasPillar;
     /**
      * Indicates whether the room has a pit.
      * A pit is a dangerous element that...
      */
-    private boolean hasPit; // will go away, only need method
+    private boolean hasPit;
     /**
      * Indicates whether the room has a healing potion.
      * A healing potion is an item that...
      */
-    private boolean hasHealingPotion; // will go away, only need method
+    private boolean hasHealingPotion;
     /**
      * Indicates whether the room has a vision potion.
      * A vision potion is an item that...
      */
-    private boolean hasVisionPotion; // will go away, only need method
+    private boolean hasVisionPotion;
+    /**
+     * Indicates whether the room contains a monster (of any type).
+     */
+    private boolean hasMonster;
     /**
      * Indicates whether the room has been visited by the backtracking algorithm.
      */
-    private boolean isVisited; // keep here
+    private boolean isVisited;
     /**
      * The coordinates of the room in the maze.
      * Coordinates include the level, row, and column of the room.
@@ -304,8 +308,12 @@ public class Room implements Serializable {
         return myDoors;
     }
 
+    /**
+     * Removes any doors that exist in the specified direction.
+     * @param theDirection
+     */
     public void tryRemoveDoor(Direction theDirection) {
-        // TODO - if a door exists in this direction, remove it
+        myDoors.remove(theDirection);
     }
 
     /**
@@ -315,12 +323,4 @@ public class Room implements Serializable {
     public boolean hasPit() {
         return hasPit;
     }
-
-    // TODO - get rid of all the Item setters (pillar, potion, pit)
-    // get rid of the related fields
-    // keep has functions, check item tree instead of fields
-    // update toString to use these functions for the printing
-    // map means one pit, one pillar, and one potion of each type
-    // don't touch Portal!!!
-    // and then update Maze to use Items instead of booleans
 }
