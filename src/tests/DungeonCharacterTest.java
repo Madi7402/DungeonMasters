@@ -10,8 +10,17 @@ import org.junit.jupiter.api.Test;
 public class DungeonCharacterTest {
     @Test
     public void setHealthPointsTest() {
-        final Priestess priestess = new Priestess("TestName");
-        assertThrows(IllegalArgumentException.class, () -> priestess.setMyHealthPoints(-1));
+        Priestess priestess = new Priestess("TestName");
+        priestess.setMyHealthPoints(-1);
+        assertEquals(0, priestess.getMyHealthPoints());
+
+        priestess = new Priestess("TestName");
+        priestess.setMyHealthPoints(0);
+        assertEquals(0, priestess.getMyHealthPoints());
+
+        priestess = new Priestess("TestName");
+        priestess.setMyHealthPoints(1);
+        assertEquals(1, priestess.getMyHealthPoints());
     }
 
     @Test
