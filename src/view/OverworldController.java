@@ -114,18 +114,6 @@ public class OverworldController extends AbstractController implements PropertyC
             }
         });
 
-        myDieButton.setOnAction(actionEvent -> {
-//            try {
-            try {
-                gameOver();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-//            } catch (IOException e) {
-//                throw new RuntimeException("Could not load game over from OverworldController");
-//            }
-        });
-
         myLeftButton.setOnAction(actionEvent -> {
             if (myOverworldControls != null) {
                 myOverworldControls.left();

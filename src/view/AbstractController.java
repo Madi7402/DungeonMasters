@@ -13,8 +13,8 @@ public abstract class AbstractController {
     private Scene myScene;
     private Parent myRoot;
 
-    public static int WINDOW_WIDTH = 1280;
-    public static int WINDOW_HEIGHT = 720;
+    private static int WINDOW_WIDTH = 1280;
+    private static int WINDOW_HEIGHT = 720;
 
     public FXMLLoader switchScene(String sceneName) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(sceneName)));
@@ -29,10 +29,6 @@ public abstract class AbstractController {
 
     public void backToMenuButton() throws IOException {
         switchScene("StartMenu.fxml");
-    }
-
-    public void settingsButton() throws IOException {
-        switchScene("Settings.fxml");
     }
 
     public void gameOver() throws IOException {

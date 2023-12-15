@@ -100,13 +100,7 @@ public class CombatMenuController extends AbstractController implements Property
             myDungeonAdventure.getMyHero().useItem(myInventoryListView.getSelectionModel().getSelectedItem());
         });
 
-        //initArt();
-        //initArt();
     }
-
-//    public void gameOver(ActionEvent event) throws IOException {
-//        switchScene(event, "GameOver.fxml");
-//    }
 
     public void victory() throws IOException {
         myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
@@ -123,6 +117,7 @@ public class CombatMenuController extends AbstractController implements Property
             case DEATH -> {
                 myLogTextArea.appendText("\n" + name + " DIED!");
                 if (source.equals(myHero)) {
+                    myDieButton.fire(); // HACK
                     myHiddenGameOverButton.fire(); // HACK
                 } else {
                     myAttackButton.setDisable(true);
@@ -150,10 +145,10 @@ public class CombatMenuController extends AbstractController implements Property
                         myEnemyHealthBar.setProgress(myMonster.getMyHealthPoints() / (double) myMonster.getMyMaxHealthPoints());
                         myEnemyHealth.setText(myMonster.getMyHealthPoints()  + "/" + myMonster.getMyMaxHealthPoints());
                     } else {
-                        int healthPoints = myMonster.getMyHealthPoints();
+                        int healthPoints = myHero.getMyHealthPoints();
                         int maxHealthPoint = myHero.getMyMaxHealthPoints();
                         myHeroHealthBar.setProgress(healthPoints / (double) maxHealthPoint);
-                        myHeroHealth.setText(myMonster.getMyHealthPoints() + "/" + myHero.getMyMaxHealthPoints());
+                        myHeroHealth.setText(myHero.getMyHealthPoints() + "/" + myHero.getMyMaxHealthPoints());
                     }
                 }
             }
@@ -199,13 +194,4 @@ public class CombatMenuController extends AbstractController implements Property
         myInventoryListView.setItems(items);
     }
 
-    //myEnemyHealthBar.setProgress((current/total)F);
-
-    //Load in text fields
-    //Art
-    //Health bars
-    //Hook up buttons
-
-    //SQlite
-    //
 }
