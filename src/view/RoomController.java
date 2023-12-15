@@ -3,8 +3,11 @@ package view;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import model.Direction;
 import model.Room;
+
+import java.util.Objects;
 
 public class RoomController {
     @FXML
@@ -18,6 +21,8 @@ public class RoomController {
 
     @FXML
     private AnchorPane myAnchorPane;
+    @FXML
+    private Text myRoomText;
     private Room myRoom;
 
     public void initialize() {
@@ -25,6 +30,7 @@ public class RoomController {
     }
 
     public void setRoom(final Room theRoom) {
+        myRoom = Objects.requireNonNull(theRoom);
         for (Direction direction : theRoom.getDoors()) {
             switch (direction) {
                 case NORTH -> myNorthDoor.setVisible(true);
@@ -35,8 +41,10 @@ public class RoomController {
             }
         }
 
+        myRoomText.setText(myRoom.toString() + myRoom.getCoordinate());
         if (theRoom.isVisited()) {
             myAnchorPane.setVisible(true);
         }
+
     }
 }

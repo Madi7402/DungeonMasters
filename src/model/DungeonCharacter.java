@@ -58,7 +58,6 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
         myHealthPoints = myStats.startingHealth(); // TODO -JA: Do we just want to build this into CharStats?
         myPcs = new PropertyChangeSupport(this);
         final String imgQuery = "SELECT img FROM character where name == '" + this.getClass().getSimpleName().toLowerCase() + "'";
-        System.out.println(imgQuery);
         try (SQLite db = new SQLite(imgQuery)) {
             ResultSet rs = db.getMyResults();
             myImagePath = rs.getString("img");
@@ -84,7 +83,7 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
             return new Image("img/" + myImagePath);
         } catch(Exception e) {
             // We do what we must because we can
-            System.err.println(getClass().getSimpleName() + "img was null!");
+            System.err.println(getClass().getSimpleName() + " img was null!: " + myImagePath);
         }
         return null;
     }
@@ -124,13 +123,13 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
     }
 
     /**
-     * Set myHealthPoints for this DungeonCharacter.
+     * Set myHealthPoints for this DungeonCharacter, if < 0, the character has died.
      * @param theHealthPoints a value above >= 0 representing the character's health points
-     * @throws IllegalArgumentException if theHealthPoints < 0
      */
-    public void setMyHealthPoints(final int theHealthPoints) {
-        if (theHealthPoints < 0) {
-            throw new IllegalArgumentException("Health points must not be less than 0");
+    public void setMyHealthPoints(int theHealthPoints) {
+        if (theHealthPoints <= 0) { // The character has died!
+            fireEvent(DEATH);
+            theHealthPoints = 0;
         }
         fireEvent(HEALTH_CHANGED, myHealthPoints, theHealthPoints);
         this.myHealthPoints = theHealthPoints;

@@ -1,6 +1,10 @@
 package controller;
 
 public interface PropertyChangeEnableFight extends PropertyChangeEnable {
+    /**
+     * The Fight has begun!
+     */
+    String FIGHT_BEGIN = "dfightStart";
     /** The character has died **/
     String DEATH = "death";
     /** An attack has been performed, (it may still be blocked) **/

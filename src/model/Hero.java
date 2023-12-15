@@ -59,15 +59,6 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
             return false;
         }
 
-        if (theDamage >= getMyHealthPoints()) {
-            //System.out.println("Here in death event case");
-            setMyHealthPoints(0);
-            fireEvent(DEATH); // TODO -JA: Perhaps fire events in setMyHealthPoints()?
-            return true;
-        }
-
-        //System.out.println("Here");
-        fireEvent(TAKE_DAMAGE);
         setMyHealthPoints(getMyHealthPoints() - theDamage);
 
         return true;
@@ -93,12 +84,6 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
     public void getItem(final Item theItem) {
         if (theItem == null) {
             throw new RuntimeException("Hero tried to receive null Item");
-        }
-
-        if (theItem.getType() == PIT) {
-            takeDamage(15);
-            fireEvent(HIT_PIT);
-            return;
         }
 
         switch (theItem.getType()) { // Update Potion counts
@@ -137,6 +122,14 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
                 return false; // Other items, such as pillars, are NOT consumable
             }
         }
+    }
+
+    /**
+     * Take damage from stepping in a pit, notably this can not be blocked.
+     */
+    public void hitPit() {
+        fireEvent(HIT_PIT);
+       setMyHealthPoints(getMyHealthPoints() - 15);// TODO make this configurable
     }
 
     /**

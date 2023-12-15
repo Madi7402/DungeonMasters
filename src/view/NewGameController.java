@@ -58,7 +58,7 @@ public class NewGameController extends AbstractController {
                 return;
             }
             try {
-                FXMLLoader loader = switchScene(actionEvent, "Overworld.fxml");
+                FXMLLoader loader = switchScene("Overworld.fxml");
                 OverworldController controller = loader.getController();
                 controller.setAdventure(da);
             } catch (IOException e) {

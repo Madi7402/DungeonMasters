@@ -11,6 +11,8 @@ public class RandomRoomFactory extends AbstractRoomFactory {
 
     private static final double VISION_POTION_PERCENTAGE = 0.1;
 
+    private static final double MONSTER_PERCENTAGE = 0.02;
+
     private static final double NORTH_DOOR_PERCENTAGE = 0.8;
 
     private static final double SOUTH_DOOR_PERCENTAGE = 0.8;
@@ -32,10 +34,26 @@ public class RandomRoomFactory extends AbstractRoomFactory {
         boolean hasPit = random.nextDouble() < PIT_PERCENTAGE;
         boolean hasHealingPotion = random.nextDouble() < HEALING_POTION_PERCENTAGE;
         boolean hasVisionPotion = random.nextDouble() < VISION_POTION_PERCENTAGE;
+        boolean hasMonster = random.nextDouble() < MONSTER_PERCENTAGE;
+        var monster = MonsterType.NONE;
+
+        if (hasMonster) {
+            monster = generateRandomMonster(random);
+        }
 
         var doors = generateRandomDoors(random);
 
-        return new Room(hasPit, hasHealingPotion, hasVisionPotion, doors, theCoordinates);
+        return new Room(hasPit, hasHealingPotion, hasVisionPotion, monster, doors, theCoordinates);
+    }
+
+    private MonsterType generateRandomMonster(final Random theRandom) {
+        if (theRandom.nextDouble() < 0.33) {
+            return MonsterType.SKELETON;
+        } else if (theRandom.nextDouble() < 0.66) {
+            return MonsterType.GREMLIN;
+        } else {
+            return MonsterType.OGRE;
+        }
     }
 
     /**

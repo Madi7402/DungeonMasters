@@ -43,7 +43,7 @@ public class CombatMenuController extends AbstractController implements Property
     @FXML
     private TextArea myLogTextArea;
     @FXML
-    private Button myDieButton;
+    private Button myHiddenGameOverButton;
 
     @FXML
     private ListView<Item> myInventoryListView;
@@ -56,7 +56,7 @@ public class CombatMenuController extends AbstractController implements Property
     public void initialize(){
         myReturnButton.setOnAction(event -> {
             try {
-                victory(event);
+                victory();
             } catch (IOException e) {
                 // Handle the IOException, e.g., log it or show an error message
                 e.printStackTrace();
@@ -77,6 +77,17 @@ public class CombatMenuController extends AbstractController implements Property
             }
         });
 
+        myHiddenGameOverButton.setOnAction(actionEvent -> {
+            myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
+            myDungeonAdventure.getMyDungeon().removePropertyChangeListener(this);
+            try {
+                gameOver();
+            } catch (IOException e) {
+                throw new RuntimeException("Could not reach GameOver from CombatMenuController");
+            }
+        });
+
+
         myInventoryListView.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.intValue() >= 0) {
                 System.out.println("Selected Index: " + newValue.intValue());
@@ -92,8 +103,10 @@ public class CombatMenuController extends AbstractController implements Property
 
     }
 
-    public void victory(ActionEvent event) throws IOException {
-        FXMLLoader loader = switchScene(event, "Overworld.fxml");
+    public void victory() throws IOException {
+        myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
+        myDungeonAdventure.getMyDungeon().removePropertyChangeListener(this);
+        FXMLLoader loader = switchScene("Overworld.fxml");
         OverworldController controller = loader.getController();
         controller.setAdventure(myDungeonAdventure);
     }
@@ -105,7 +118,10 @@ public class CombatMenuController extends AbstractController implements Property
             case DEATH -> {
                 myLogTextArea.appendText("\n" + name + " DIED!");
                 if (source.equals(myHero)) {
-                    myDieButton.fire(); // HACK
+                    myHiddenGameOverButton.fire(); // HACK
+                } else {
+                    myAttackButton.setDisable(true);
+                    mySpecialAttackButton.setDisable(true);
                 }
             }
             case ATTACK -> myLogTextArea.appendText("\n" + name + " Attacked!");
@@ -159,11 +175,17 @@ public class CombatMenuController extends AbstractController implements Property
 
             // TODO -JA: get monster from room instead of this test monster
             MonsterFactory mf = new MonsterFactory();
-            myMonster = mf.createMonster(MonsterType.OGRE);
-            myMonster.addPropertyChangeListener(this);
-            myEnemyName.setText(myMonster.getMyName());
-            myEnemyHealth.setText(myMonster.getMyHealthPoints() + "/" + myMonster.getMyMaxHealthPoints());
-            myMonsterImageView.setImage(myMonster.getMyImage());
+            myMonster = mf.createMonster(myDungeonAdventure.getMyDungeon().getMyCurrentRoom().getMyMonsterType());
+            if (myMonster != null) {
+                myMonster.addPropertyChangeListener(this);
+                myEnemyName.setText(myMonster.getMyName());
+                myEnemyHealth.setText(myMonster.getMyHealthPoints() + "/" + myMonster.getMyMaxHealthPoints());
+                myMonsterImageView.setImage(myMonster.getMyImage());
+            } else {
+                myLogTextArea.appendText("There was no monster in this room.");
+                myAttackButton.setDisable(true);
+                mySpecialAttackButton.setDisable(true);
+            }
             updateInventoryList();
         }
     }

@@ -17,11 +17,15 @@ public class Main extends Application {
     private static int WINDOW_HEIGHT = 720;
     @Override
     public void start(Stage theStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("StartMenu.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("StartMenu.fxml"));
+        Parent root = loader.load();
+
         theStage.setTitle("Dungeon Master's Adventure");
         theStage.setScene(new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT));
         theStage.setResizable(false);
         theStage.show();
+        MenuController mc = loader.getController();
+        mc.setMyStage(theStage);
     }
 
 }

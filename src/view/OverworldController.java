@@ -6,13 +6,11 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -116,6 +114,18 @@ public class OverworldController extends AbstractController implements PropertyC
             }
         });
 
+        myDieButton.setOnAction(actionEvent -> {
+//            try {
+            try {
+                gameOver();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+//            } catch (IOException e) {
+//                throw new RuntimeException("Could not load game over from OverworldController");
+//            }
+        });
+
         myLeftButton.setOnAction(actionEvent -> {
             if (myOverworldControls != null) {
                 myOverworldControls.left();
@@ -128,20 +138,23 @@ public class OverworldController extends AbstractController implements PropertyC
             }
         });
 
-        myPitButton.setOnAction(actionEvent -> {
-            Item pit = new Item(ItemType.PIT);
-            myDungeonAdventure.getMyHero().getItem(pit);
-        });
+        myPitButton.setOnAction(actionEvent -> myDungeonAdventure.getMyHero().hitPit());
 
         myFightButton.setOnAction(actionEvent -> {
             try {
-                FXMLLoader loader = switchScene(actionEvent, "CombatMenu.fxml");
-                CombatMenuController controller = loader.getController();
-                controller.setAdventure(myDungeonAdventure);
+                switchToFightScene();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    private void switchToFightScene() throws IOException {
+        FXMLLoader loader = switchScene("CombatMenu.fxml");
+        CombatMenuController controller = loader.getController();
+        myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
+        myDungeonAdventure.getMyDungeon().removePropertyChangeListener(this);
+        controller.setAdventure(myDungeonAdventure);
     }
 
     private void setupAnimations() {
@@ -315,6 +328,13 @@ public class OverworldController extends AbstractController implements PropertyC
 
             case DEATH -> myDieButton.fire();
             case INVENTORY_ACTION -> updateInventoryList();
+            case FIGHT_BEGIN -> {
+                try {
+                    switchToFightScene();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             default -> System.err.println("Received unknown event " + evt.getPropertyName());
         }
     }
