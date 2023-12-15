@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.GameEnd">
+   <children>
+      <Label layoutX="501.0" layoutY="240.0" text="If only things had gone differently...">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="464.0" layoutY="163.0" text="You Perished" textFill="#ff2525">
+         <font>
+            <Font name="Bell MT" size="64.0" />
+         </font>
+      </Label>
+      <Button layoutX="597.0" layoutY="574.0" mnemonicParsing="false" onAction="#backToMenuButton" text="Back to menu" />
+   </children>
+</AnchorPane>

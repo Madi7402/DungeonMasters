@@ -13,55 +13,80 @@ public class Tui implements PropertyChangeListener {
     public static void main(String[]theArgs) {
         Tui tui = new Tui();
         tui.generateDungeon();
+        tui.loadDungeonAdventure();
 //        tui.fightSim();
-//        tui.saveLoadConcept();
     }
 
-    private void generateDungeon() {
-        DungeonAdventure da = new DungeonAdventure();
+    private void loadDungeonAdventure() {
+        DungeonAdventure da = null;
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("output.dat"))) {
+            da = (DungeonAdventure) ois.readObject();
+            System.out.println("Object has been deserialized");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println(da.getMyDungeon().getMyCurrentRoom());
+        System.out.println(da.getMyHero().toString());
         Scanner scanner = new Scanner(System.in);
+        TuiControl control = new TuiControl(da.getMyDungeon());
         while (scanner.hasNext()) {
             System.out.println(da.getMyDungeon().getMyCurrentRoom());
             String option = scanner.next();
-            switch (option) {
-                case "l" -> da.getMyDungeon().goDirection(Direction.WEST);
-                case "r" -> da.getMyDungeon().goDirection(Direction.EAST);
-                case "d" -> da.getMyDungeon().goDirection(Direction.SOUTH);
-                case "u" -> da.getMyDungeon().goDirection(Direction.NORTH);
-                default -> System.err.println("Unknown command");
-            }
-        }
+            boolean isValidMove = switch (option) {
+                case "l" -> control.left();
+                case "r" -> control.right();
+                case "u" -> control.up();
+                case "d" -> control.down();
+                default -> false;
+            };
 
+            if (isValidMove) {
+                System.out.println("Moved to + "+ da.getMyDungeon().getMyCurrentCoordinates().row()
+                        + ", " + da.getMyDungeon().getMyCurrentCoordinates().column() + "\n"
+                        + da.getMyDungeon().getMyCurrentRoom());
+            } else {
+                System.out.println("invalid move");
+                break;
+            }
+
+        }
     }
 
-    private void saveLoadConcept() throws IOException, ClassNotFoundException {
-        Hero hero = new Thief("Billy");
-        System.out.println("Original hero: " + hero);
-        MonsterFactory mf = new MonsterFactory();
-        Monster ogre = mf.createMonster(MonsterType.OGRE);
+    private void generateDungeon() {
+        DungeonAdventure da = new DungeonAdventure(new Thief("Test Thief"), 10, 10);
+        Scanner scanner = new Scanner(System.in);
+        TuiControl control = new TuiControl(da.getMyDungeon());
+        while (scanner.hasNext()) {
+            System.out.println(da.getMyDungeon().getMyCurrentRoom());
+            String option = scanner.next();
+            boolean isValidMove = switch (option) {
+                case "l" -> control.left();
+                case "r" -> control.right();
+                case "u" -> control.up();
+                case "d" -> control.down();
+                default -> false;
+            };
 
-        ogre.addPropertyChangeListener(this);
-        hero.addPropertyChangeListener(this);
-
-        while (hero.getMyHealthPoints() >= 75) {
-            ogre.attack(hero);
+            if (isValidMove) {
+                System.out.println("Moved to + "+ da.getMyDungeon().getMyCurrentCoordinates().row()
+                        + ", " + da.getMyDungeon().getMyCurrentCoordinates().column() + "\n"
+                        + da.getMyDungeon().getMyCurrentRoom());
+            } else {
+                System.out.println("invalid move");
+                break;
+            }
         }
-        System.out.println("Original hero: " + hero);
+        // Define the file path where you want to save the object
+        String filePath = "output.dat";
 
-        // Save
-        FileOutputStream outputFile = new FileOutputStream("savedhero.txt");
-        ObjectOutputStream outputObj = new ObjectOutputStream(outputFile);
-        outputObj.writeObject(hero);
-        outputObj.flush();
-        outputObj.close();
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            // Write the object to the file
+            oos.writeObject(da);
+            System.out.println("Object has been written to " + filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        // Load
-        FileInputStream inputFile = new FileInputStream("savedhero.txt");
-        ObjectInputStream inputObj = new ObjectInputStream(inputFile);
-        Hero newhero = (Hero) inputObj.readObject();
-        inputObj.close();
-
-        System.out.println("New Hero: " + newhero.toString());
     }
 
     public void fightSim() {

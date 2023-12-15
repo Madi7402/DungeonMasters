@@ -25,14 +25,6 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Button>
-            <Button mnemonicParsing="false" onAction="#settingsButton" prefHeight="30.0" prefWidth="200.0" text="Settings">
-               <padding>
-                  <Insets bottom="10.0" top="10.0" />
-               </padding>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </Button>
             <Button mnemonicParsing="false" onAction="#creditsButton" prefHeight="30.0" prefWidth="200.0" text="Credits">
                <padding>
                   <Insets bottom="10.0" top="10.0" />
