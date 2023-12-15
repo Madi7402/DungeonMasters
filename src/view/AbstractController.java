@@ -1,7 +1,6 @@
 package view;
 
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -24,7 +23,7 @@ public abstract class AbstractController {
         myRoot = fxmlLoader.load();
         myStage = (Stage)((Node)event.getSource()).getScene().getWindow();
         myScene = new Scene(myRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
-        myStage.setScene(myScene);
+        myStage.setScene(myScene);  //Bug here, however it works if not sent here by menu
         myStage.show();
         return fxmlLoader;
     }
@@ -38,7 +37,7 @@ public abstract class AbstractController {
     }
 
     public void gameOver(ActionEvent theEvent) throws IOException {
-        switchScene(theEvent, "GameOver.fxml");
-    }
+        switchScene(theEvent, "GameOverScreen.fxml");
 
+    }
 }

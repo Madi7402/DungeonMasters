@@ -6,11 +6,13 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -114,13 +116,13 @@ public class OverworldController extends AbstractController implements PropertyC
             }
         });
 
-        myDieButton.setOnAction(actionEvent -> {
-            try {
-                gameOver(actionEvent);
-            } catch (IOException e) {
-                throw new RuntimeException("Could not load game over from OverworldController");
-            }
-        });
+//        myDieButton.setOnAction(actionEvent -> {
+//            try {
+//                gameOver(actionEvent);
+//            } catch (IOException e) {
+//                throw new RuntimeException("Could not load game over from OverworldController");
+//            }
+//        });
 
         myLeftButton.setOnAction(actionEvent -> {
             if (myOverworldControls != null) {

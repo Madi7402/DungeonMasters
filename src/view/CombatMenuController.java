@@ -43,7 +43,7 @@ public class CombatMenuController extends AbstractController implements Property
     @FXML
     private TextArea myLogTextArea;
     @FXML
-    private Button myHiddenGameOverButton;
+    private Button myDieButton;
 
     @FXML
     private ListView<Item> myInventoryListView;
@@ -77,13 +77,13 @@ public class CombatMenuController extends AbstractController implements Property
             }
         });
 
-        myHiddenGameOverButton.setOnAction(actionEvent -> {
-            try {
-                gameOver(actionEvent);
-            } catch (IOException e) {
-                throw new RuntimeException("Could not reach GameOver from CombatMenuController");
-            }
-        });
+//        myHiddenGameOverButton.setOnAction(actionEvent -> {
+//            try {
+//                gameOver(actionEvent);
+//            } catch (IOException e) {
+//                throw new RuntimeException("Could not reach GameOver from CombatMenuController");
+//            }
+//        });
 
 
         myInventoryListView.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
@@ -103,24 +103,27 @@ public class CombatMenuController extends AbstractController implements Property
         //initArt();
     }
 
-//    public void gameOver(ActionEvent event) throws IOException {
-//        switchScene(event, "GameOver.fxml");
-//    }
-
     public void victory(ActionEvent event) throws IOException {
         FXMLLoader loader = switchScene(event, "Overworld.fxml");
         OverworldController controller = loader.getController();
         controller.setAdventure(myDungeonAdventure);
     }
 
-    public void propertyChange(PropertyChangeEvent evt) {   //TODO Make these situations update everything needed
+    public void propertyChange(PropertyChangeEvent evt) {   //TODO Make these situations update everything needed        //It is going here after
+        //PROBLEM: only recognizes aStart, aDamaged, hChange, hUpdate, aMiss, aBlock
+        //Problem: Only recognizes when monster dies
+        //First event of a round is not identified
+        //When it says recieved unknown event, that is coming from propertychangeevent
+        System.out.println(evt.getPropertyName()); //Still reaches here
         DungeonCharacter source = (DungeonCharacter) evt.getSource();
         String name = source.getMyName();
         switch (evt.getPropertyName()) {
-            case DEATH -> {
+            case DEATH -> { //Death on combat screen isnt making it to this point
+                //System.out.println("HERE");
+                //Doesnt recognize hero death
                 myLogTextArea.appendText("\n" + name + " DIED!");
                 if (source.equals(myHero)) {
-                    myHiddenGameOverButton.fire(); // HACK
+                    myDieButton.fire(); // HACK
                 }
             }
             case ATTACK -> myLogTextArea.appendText("\n" + name + " Attacked!");
@@ -144,10 +147,10 @@ public class CombatMenuController extends AbstractController implements Property
                         myEnemyHealthBar.setProgress(myMonster.getMyHealthPoints() / (double) myMonster.getMyMaxHealthPoints());
                         myEnemyHealth.setText(myMonster.getMyHealthPoints()  + "/" + myMonster.getMyMaxHealthPoints());
                     } else {
-                        int healthPoints = myMonster.getMyHealthPoints();
+                        int healthPoints = myHero.getMyHealthPoints();
                         int maxHealthPoint = myHero.getMyMaxHealthPoints();
                         myHeroHealthBar.setProgress(healthPoints / (double) maxHealthPoint);
-                        myHeroHealth.setText(myMonster.getMyHealthPoints() + "/" + myHero.getMyMaxHealthPoints());
+                        myHeroHealth.setText(myHero.getMyHealthPoints() + "/" + myHero.getMyMaxHealthPoints());
                     }
                 }
             }

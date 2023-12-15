@@ -16,4 +16,5 @@ public interface PropertyChangeEnableFight extends PropertyChangeEnable {
 
     // ** please update my health....
     String HEALTH_UPDATE = "hUpdate";
+
 }

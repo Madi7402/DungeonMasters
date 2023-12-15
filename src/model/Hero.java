@@ -60,12 +60,15 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
         }
 
         if (theDamage >= getMyHealthPoints()) {
+            //System.out.println("Here in death event case");
             setMyHealthPoints(0);
             fireEvent(DEATH); // TODO -JA: Perhaps fire events in setMyHealthPoints()?
-        } else {
-            fireEvent(TAKE_DAMAGE);
-            setMyHealthPoints(getMyHealthPoints() - theDamage);
+            return true;
         }
+
+        //System.out.println("Here");
+        fireEvent(TAKE_DAMAGE);
+        setMyHealthPoints(getMyHealthPoints() - theDamage);
 
         return true;
     }
