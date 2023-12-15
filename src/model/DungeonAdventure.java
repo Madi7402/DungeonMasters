@@ -17,12 +17,21 @@ public class DungeonAdventure implements Serializable {
     private final Dungeon myDungeon;
     private final Hero myHero;
 
+    private final static int DEFAULT_WIDTH = 10;
+    private final static int DEFAULT_HEIGHT = 10;
+
     /**
      * Public constructor for DungeonAdventure
      */
     private DungeonAdventure() {
         myHero = new Thief("Default Hero");
-        myDungeon = new Dungeon(myHero,10, 10); // TODO -JA: Is this default size good?
+        myDungeon = new Dungeon(myHero,DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    }
+
+    public DungeonAdventure(final Hero theHero) {
+        myHero = Objects.requireNonNull(theHero);
+        myDungeon = new Dungeon(myHero,DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
     }
 
     public DungeonAdventure(final Hero theHero, final int theMapWidth, final int theMapHeight) {

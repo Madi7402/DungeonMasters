@@ -20,18 +20,6 @@ public class NewGameController extends AbstractController {
     private ChoiceBox<String> myHeroTypeCB;
 
     @FXML
-    private Slider myMapWidthSlider;
-
-    @FXML
-    private Slider myMapHeightSlider;
-
-    @FXML
-    private Text myWidthSliderValue;
-
-    @FXML
-    private Text myHeightSliderValue;
-
-    @FXML
     private TextField myHeroNameTextField;
 
     @FXML
@@ -46,7 +34,6 @@ public class NewGameController extends AbstractController {
     public void initialize() {
         initHeroSelect();
         initHeroTextBox();
-        initSliders();
         initPlayButton();
     }
 
@@ -68,13 +55,11 @@ public class NewGameController extends AbstractController {
     }
 
     private DungeonAdventure createAdventure() {
-        int mapWidth = (int) myMapWidthSlider.getValue();
-        int mapHeight = (int) myMapHeightSlider.getValue();
         String name = myHeroNameDisplayText.getText();
         return switch(myHeroTypeCB.getValue()) {
-            case "Thief" -> new DungeonAdventure(new Thief(name), mapWidth, mapHeight);
-            case "Priestess" -> new DungeonAdventure(new Priestess(name), mapWidth, mapHeight);
-            case "Warrior" -> new DungeonAdventure(new Warrior(name), mapWidth, mapHeight);
+            case "Thief" -> new DungeonAdventure(new Thief(name));
+            case "Priestess" -> new DungeonAdventure(new Priestess(name));
+            case "Warrior" -> new DungeonAdventure(new Warrior(name));
             default -> null;
         };
     }
@@ -130,17 +115,5 @@ public class NewGameController extends AbstractController {
             }
             myHeroNameDisplayText.setText(tf.getText());
         });
-    }
-
-    private void initSliders() {
-        // Write slider value text
-        myMapWidthSlider.valueProperty().addListener(
-                (observable, oldVal, newVal) -> myWidthSliderValue.setText(newVal.intValue()+"")
-        );
-
-        // Write slider value text
-        myMapHeightSlider.valueProperty().addListener(
-                (o, oldVal, newVal) -> myHeightSliderValue.setText(newVal.intValue()+"")
-        );
     }
 }
