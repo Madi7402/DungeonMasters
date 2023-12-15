@@ -12,20 +12,22 @@ public class Main extends Application {
     public static void main(String[] args){
         launch(args);
     }
-
-    private static int WINDOW_WIDTH = 1280;
-    private static int WINDOW_HEIGHT = 720;
     @Override
     public void start(Stage theStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("StartMenu.fxml"));
-        Parent root = loader.load();
-
+        Parent root = FXMLLoader.load(getClass().getResource("StartMenu.fxml"));
         theStage.setTitle("Dungeon Master's Adventure");
-        theStage.setScene(new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT));
+        theStage.setScene(new Scene(root, AbstractController.WINDOW_WIDTH, AbstractController.WINDOW_HEIGHT));
         theStage.setResizable(false);
         theStage.show();
-        MenuController mc = loader.getController();
-        mc.setMyStage(theStage);
     }
+
+    /*
+    TODO:
+    -Add art
+    -TIE MODEL TO CONTROLLER IN GENERAL
+    -Figure out main game menu
+    -Remove text area in load game
+     */
+
 
 }

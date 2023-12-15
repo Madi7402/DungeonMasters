@@ -1,10 +1,7 @@
 package model;
 
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Collection;
 import java.util.EnumSet;
-import java.util.TreeMap;
+import java.util.Random;
 
 /**
  * Represents a dungeon room within the maze, storing information about items and pillars.
@@ -13,56 +10,37 @@ import java.util.TreeMap;
  *
  * @author Jonathan Abrams, Martha Emerson, Madison Pope
  */
-public class Room implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L; // Update on class changes (!)
-    /**
-     * A mapping of directions to neighboring rooms.
-     * This TreeMap represents the connections to adjacent rooms in different directions.
-     * The keys are Direction enum values, and the values are corresponding neighboring Room objects.
-     */
-    private final TreeMap<Direction, Room> myNeighbors = new TreeMap<>();
-    /**
-     * A mapping of item types to items present in the room.
-     * This TreeMap represents the items located in the room, where keys are ItemType enum values,
-     * and values are corresponding Item objects.
-     */
-    private final TreeMap<ItemType, Item> myItems = new TreeMap<>();
+public class Room {
     /**
      * The portal type associated with the room.
      * It can be one of the following: NONE, ENTRANCE, or EXIT.
      */
-    private Portal myPortal;
+    private Portal portal;
     /**
      * The set of directions where the room has doors.
      * These directions represent possible connections to adjacent rooms.
      */
-    private EnumSet<Direction> myDoors;
-    /**
-     * The monster type associated with the room (if it has a monster).
-     * It can be one of the following: NONE, GREMLIN, OGRE, SKELETON
-     */
-    private MonsterType myMonsterType;
+    private EnumSet<Direction> doors;
     /**
      * Indicates whether the room has a pillar.
      * A pillar is a special item that...
      */
-    private boolean hasPillar; // will go away, only need method
+    private boolean hasPillar; // keep here
     /**
      * Indicates whether the room has a pit.
      * A pit is a dangerous element that...
      */
-    private boolean hasPit; // will go away, only need method
+    private boolean hasPit;
     /**
      * Indicates whether the room has a healing potion.
      * A healing potion is an item that...
      */
-    private boolean hasHealingPotion; // will go away, only need method
+    private boolean hasHealingPotion;
     /**
      * Indicates whether the room has a vision potion.
      * A vision potion is an item that...
      */
-    private boolean hasVisionPotion; // will go away, only need method
+    private boolean hasVisionPotion;
     /**
      * Indicates whether the room has been visited by the backtracking algorithm.
      */
@@ -71,7 +49,7 @@ public class Room implements Serializable {
      * The coordinates of the room in the maze.
      * Coordinates include the level, row, and column of the room.
      */
-    private Coordinates myCoordinates; // x, y, and z (levels)
+    private Coordinates coordinates; // x, y, and z (levels)
 
     /**
      * Default constructor for an empty room.
@@ -86,44 +64,71 @@ public class Room implements Serializable {
      * @param hasPit            Whether the room has a pit.
      * @param hasHealingPotion Whether the room has a healing potion.
      * @param hasVisionPotion   Whether the room has a vision potion.
-     * @param theDoors             The doors in various directions.
-     * @param theCoordinates       The coordinates of the room.
+     * @param doors             The doors in various directions.
+     * @param coordinates       The coordinates of the room.
      */
-    public Room(final boolean hasPit, final boolean hasHealingPotion, final boolean hasVisionPotion,
-                final MonsterType theMonsterType, final EnumSet<Direction> theDoors, final Coordinates theCoordinates) {
-        this.myPortal = Portal.NONE;
+    public Room(boolean hasPit, boolean hasHealingPotion, boolean hasVisionPotion,
+                EnumSet<Direction> doors, Coordinates coordinates) {
+        this.portal = Portal.NONE;
         this.isVisited = false;
         this.hasPillar = false;
         this.hasPit = hasPit;
         this.hasHealingPotion = hasHealingPotion;
-        if (hasHealingPotion) {
-            addItem(new Item(ItemType.HEALING_POTION));
-        }
         this.hasVisionPotion = hasVisionPotion;
-        if (hasVisionPotion) {
-            addItem(new Item(ItemType.VISION_POTION));
+        this.doors = doors;
+        this.coordinates = coordinates;
+    }
+
+    /**
+     * Generates a random room with random features.
+     *
+     * @param coordinates The coordinates for the generated room.
+     * @return A randomly generated room.
+     */
+    public static Room generateRandomRoom(Coordinates coordinates) {
+        Random random = new Random();
+
+        boolean hasPit = random.nextDouble() < 0.1;  // 10% chance for a pit
+        boolean hasHealingPotion = random.nextDouble() < 0.1;  // 10% chance for a healing potion
+        boolean hasVisionPotion = random.nextDouble() < 0.1;  // 10% chance for a vision potion
+                                                            // TO DO - fix magic numbers
+        var doors = generateRandomDoors(random);
+
+        return new Room(hasPit, hasHealingPotion, hasVisionPotion, doors, coordinates);
+    }
+
+    /**
+     * Generates a random set of doors (directions) for a room.
+     * The likelihood of having a door in each direction is determined by a random number generator.
+     *
+     * @param random The random number generator used for door generation.
+     * @return An EnumSet containing randomly generated doors.
+     */
+    private static EnumSet<Direction> generateRandomDoors(Random random) {
+        var doors = EnumSet.noneOf(Direction.class);
+
+        if (random.nextDouble() < 0.5) {
+            doors.add(Direction.NORTH);
         }
-        this.myMonsterType = theMonsterType;
-        this.myDoors = theDoors;
-        this.myCoordinates = theCoordinates;
+        if (random.nextDouble() < 0.5) {
+            doors.add(Direction.SOUTH);
+        }
+        if (random.nextDouble() < 0.5) {
+            doors.add(Direction.EAST);
+        }
+        if (random.nextDouble() < 0.5) {
+            doors.add(Direction.WEST);
+        }
+        return doors;
     }
 
     /**
      * Sets the portal type for the room.
      *
-     * @param thePortal The portal type for the room.
+     * @param portal The portal type for the room.
      */
-    public void setPortal(final Portal thePortal) {
-        this.myPortal = thePortal;
-    }
-
-    /**
-     * Retrieves the portal type associated with the room.
-     *
-     * @return The portal type of the room.
-     */
-    public Portal getPortal() {
-        return myPortal;
+    public void setPortal(Portal portal) {
+        this.portal = portal;
     }
 
     /**
@@ -138,32 +143,10 @@ public class Room implements Serializable {
     /**
      * Sets the visitation status of the room.
      *
-     * @param theVisited The visitation status to set.
+     * @param isVisited The visitation status to set.
      */
-    public void setVisited(final boolean theVisited) {
-        this.isVisited = theVisited;
-    }
-
-    /**
-     * Attempts to set a neighbor in a specified direction.
-     *
-     * @param theNeighbor   The neighboring room.
-     * @param theDirection  The direction of the neighbor.
-     * @return True if the neighbor was successfully set, false otherwise.
-     */
-    public boolean trySetNeighbor(final Room theNeighbor, final Direction theDirection) {
-        if (!myDoors.contains(theDirection)) {
-            return false;
-        }
-
-        if (!theNeighbor.myDoors.contains(theDirection.getOppositeDirection())) {
-            myDoors.remove(theDirection);
-            return false;
-        }
-
-        myNeighbors.put(theDirection, theNeighbor);
-        theNeighbor.myNeighbors.put(theDirection.getOppositeDirection(), this);
-        return true; // neighbor door matches yours
+    public void setIsVisited(boolean isVisited) {
+        this.isVisited = isVisited;
     }
 
     /**
@@ -174,7 +157,7 @@ public class Room implements Serializable {
     public boolean hasMultipleItems() {
         int itemCount = 0;
 
-        if (hasPit) {
+        if (hasPit) { // could maybe batch into enum set of items... TO DO ?
             itemCount++;
         }
         if (hasHealingPotion) {
@@ -191,31 +174,23 @@ public class Room implements Serializable {
     }
 
     /**
-     * Generates the top part of the graphical representation of the room, including doors.
+     * Represents the room as a 2D graphical representation.
      *
-     * @return A string representing the top part of the room.
+     * @return A string representing the graphical layout of the room.
      */
-    String printTopOfRoom() {
+    @Override
+    public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        if (myDoors.contains(Direction.NORTH)) {
-            sb.append("*-*");
+        // top line
+        if (doors.contains(Direction.NORTH)) {
+            sb.append("*-*\n");
         } else {
-            sb.append("***");
+            sb.append("***\n");
         }
 
-        return sb.toString();
-    }
-
-    /**
-     * Generates the middle part of the graphical representation of the room, including items and features.
-     *
-     * @return A string representing the middle part of the room.
-     */
-    String printMiddleOfRoom() {
-        StringBuilder sb = new StringBuilder();
-
-        if (myDoors.contains(Direction.WEST)) {
+        // middle line
+        if (doors.contains(Direction.WEST)) {
             sb.append("|");
         } else {
             sb.append("*");
@@ -224,7 +199,7 @@ public class Room implements Serializable {
         if (hasMultipleItems()) {
             sb.append("M");
         } else if (hasPillar) { // one pillar type per level
-            var level = myCoordinates.level();
+            var level = coordinates.level();
 
             if (level == 0) { // fix magic numbers
                 sb.append("A");
@@ -239,9 +214,9 @@ public class Room implements Serializable {
             }
         } else if (hasPit) {
             sb.append("X");
-        } else if (myPortal.equals(Portal.ENTRANCE)) {
+        } else if (portal.equals(Portal.ENTRANCE)) {
             sb.append("i");
-        } else if (myPortal.equals(Portal.EXIT)) {
+        } else if (portal.equals(Portal.EXIT)) {
             sb.append("O");
         } else if (hasHealingPotion) {
             sb.append("H");
@@ -251,145 +226,19 @@ public class Room implements Serializable {
             sb.append(" ");
         }
 
-        if (myDoors.contains(Direction.EAST)) {
-            sb.append("|");
+        if (doors.contains(Direction.EAST)) {
+            sb.append("|\n");
         } else {
-            sb.append("*");
+            sb.append("*\n");
         }
 
-        return sb.toString();
-    }
-
-    /**
-     * Generates the bottom part of the graphical representation of the room, including doors.
-     *
-     * @return A string representing the bottom part of the room.
-     */
-    String printBottomOfRoom() {
-        StringBuilder sb = new StringBuilder();
-
-        if (myDoors.contains(Direction.SOUTH)) {
-            sb.append("*-*");
+        // bottom line
+        if (doors.contains(Direction.SOUTH)) {
+            sb.append("*-*\n");
         } else {
-            sb.append("***");
+            sb.append("***\n");
         }
 
         return sb.toString();
-    }
-
-    /**
-     * Represents the room as a 2D graphical representation.
-     *
-     * @return A string representing the graphical layout of the room.
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append(printTopOfRoom()).append('\n');
-        sb.append(printMiddleOfRoom()).append('\n');
-        sb.append(printBottomOfRoom()).append('\n');
-
-        return sb.toString();
-    }
-
-    /**
-     * Retrieves the coordinate of a room in the maze.
-     *
-     * @return The coordinate of the room.
-     */
-    public Coordinates getCoordinate() {
-        return this.myCoordinates;
-    }
-
-    /**
-     * Retrieves the neighbors of the room.
-     *
-     * @return A collection of neighboring rooms.
-     */
-    public Collection<Room> getNeighbors() {
-        return this.myNeighbors.values();
-    }
-
-    /**
-     * Sets the presence of a pillar in the room.
-     *
-     * @param thePillar True if the room has a pillar, false otherwise.
-     */
-    public void setPillar(final boolean thePillar) {
-        this.hasPillar = thePillar;
-    }
-
-    /**
-     * Checks whether the room contains a monster.
-     *
-     * @return true if the room has a monster, otherwise return false.
-     */
-    public boolean hasMonster() {
-        return myMonsterType != MonsterType.NONE;
-    }
-
-    /**
-     * Retrieves the type of monster present in the room.
-     *
-     * @return The type of monster as a MonsterType enum value.
-     */
-    public MonsterType getMyMonsterType() {
-        return myMonsterType;
-    }
-
-    /**
-     * Sets the type of monster for the room.
-     *
-     * @param theMonsterType The MonsterType to be set for the room.
-     */
-    public void setMonsterType(final MonsterType theMonsterType) {
-        this.myMonsterType = theMonsterType;
-    }
-
-    /**
-     * Adds an item to the room.
-     *
-     * @param theItem The item to be added.
-     */
-    public void addItem(final Item theItem) {
-        myItems.put(theItem.getType(), theItem);
-    }
-        // use this in place of set pit, set pillar, etc. for anything that's an item
-
-    /**
-     * Removes all equipable items from the room and returns them.
-     *
-     * @return A collection of equipable items.
-     */
-    public Collection<Item> takeEquipableItems() {
-        var equipableItems = myItems.values().stream().filter(Item::isEquipable).toList();
-
-        for (var equipableItem : equipableItems) {
-            myItems.remove(equipableItem.getType());
-        }
-        return equipableItems;
-    }
-
-    public EnumSet<Direction> getDoors() {
-        return myDoors;
-    }
-
-    /**
-     * Removes any doors that exist in the specified direction.
-     *
-     * @param theDirection The direction in which the door should be removed.
-     */
-    public void tryRemoveDoor(Direction theDirection) {
-        myDoors.remove(theDirection);
-    }
-
-    /**
-     * Checks whether the room contains a pit.
-     *
-     * @return true if the room has a pit, otherwise return false.
-     */
-    public boolean hasPit() {
-        return hasPit;
     }
 }

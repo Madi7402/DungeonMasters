@@ -3,12 +3,6 @@
   <component name="CheckStyle-IDEA-Module" serialisationVersion="2">
     <option name="activeLocationsIds" />
   </component>
-  <component name="FindBugs-IDEA">
-    <analysisEffort>min</analysisEffort>
-    <minRank>1</minRank>
-    <minPriority>High</minPriority>
-    <suppressWarningsClassName />
-  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
@@ -20,6 +14,7 @@
     <orderEntry type="library" exported="" name="junit.jupiter" level="project" />
     <orderEntry type="library" exported="" name="slf4j-api-1.7.36" level="project" />
     <orderEntry type="library" exported="" name="sqlite-jdbc-3.43.2.2" level="project" />
-    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" exported="" name="lib" level="application" />
+    <orderEntry type="library" name="javafx" level="project" />
   </component>
 </module>

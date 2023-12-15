@@ -7,11 +7,11 @@ import java.sql.*;
  * Handle the SQLite connection processes.
  */
 public class SQLite implements AutoCloseable {
+    private final SQLiteDataSource myDataSource = new SQLiteDataSource();
     private final Connection myConnection;
     private final ResultSet myResults;
 
     public SQLite(String theStatement) throws SQLException {
-        SQLiteDataSource myDataSource = new SQLiteDataSource();
         myDataSource.setUrl("jdbc:sqlite:database.sqlite.db"); // TODO -JA: Make this a field? Constructor Parameter?
         this.myConnection = myDataSource.getConnection();
         this.myResults = makeQuery(theStatement); // TODO -JA: Avoid SQli?

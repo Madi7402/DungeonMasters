@@ -7,14 +7,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import model.*;
+import model.DungeonCharacter;
 import res.SQLite;
-import javafx.fxml.FXMLLoader;
-import java.io.IOException;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class NewGameController extends AbstractController {
+public class NewGameController {
 
     @FXML
     private ChoiceBox<String> myHeroTypeCB;
@@ -44,46 +43,12 @@ public class NewGameController extends AbstractController {
     private ImageView myHeroImageView;
 
     public void initialize() {
-        initHeroSelect();
-        initHeroTextBox();
-        initSliders();
-        initPlayButton();
-    }
-
-    private void initPlayButton() {
-        myPlayButton.setOnAction(actionEvent -> {
-            DungeonAdventure da = createAdventure();
-            if (da == null) {
-                // TODO -JA: Indicate that DungeonAdventure creation failed.
-                return;
-            }
-            try {
-                FXMLLoader loader = switchScene("Overworld.fxml");
-                OverworldController controller = loader.getController();
-                controller.setAdventure(da);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
-
-    private DungeonAdventure createAdventure() {
-        int mapWidth = (int) myMapWidthSlider.getValue();
-        int mapHeight = (int) myMapHeightSlider.getValue();
-        String name = myHeroNameDisplayText.getText();
-        return switch(myHeroTypeCB.getValue()) {
-            case "Thief" -> new DungeonAdventure(new Thief(name), mapWidth, mapHeight);
-            case "Priestess" -> new DungeonAdventure(new Priestess(name), mapWidth, mapHeight);
-            case "Warrior" -> new DungeonAdventure(new Warrior(name), mapWidth, mapHeight);
-            default -> null;
-        };
-    }
-
-    private void initHeroSelect() {
         // Select Hero Type
         myHeroTypeCB.setOnAction(actionEvent -> {
+            System.out.println("selected action " + actionEvent.toString());
             String query = "SELECT img FROM character where friendly_name = '" + myHeroTypeCB.getValue() + "'";
             try (SQLite db = new SQLite(query)) {
+                System.out.println("Querying: " + query);
                 ResultSet rs = db.getMyResults();
                 if (rs.next()) {
                     String imageName = rs.getString("img");
@@ -118,21 +83,7 @@ public class NewGameController extends AbstractController {
             e.printStackTrace();
             System.exit(1);
         }
-    }
 
-    private void initHeroTextBox() {
-        // Display Hero name under Image and clamp to MAX_NAME_LENGTH
-        myHeroNameTextField.setOnKeyTyped(keyEvent -> {
-            TextField tf = myHeroNameTextField;
-            if (tf.getText().length() > DungeonCharacter.MAX_NAME_LENGTH) { // Clamp max HERO length
-                tf.setText(tf.getText().substring(0, DungeonCharacter.MAX_NAME_LENGTH));
-                tf.positionCaret(tf.getLength()); // Reset caret to the end to avoid overwrite
-            }
-            myHeroNameDisplayText.setText(tf.getText());
-        });
-    }
-
-    private void initSliders() {
         // Write slider value text
         myMapWidthSlider.valueProperty().addListener(
                 (observable, oldVal, newVal) -> myWidthSliderValue.setText(newVal.intValue()+"")
@@ -142,5 +93,16 @@ public class NewGameController extends AbstractController {
         myMapHeightSlider.valueProperty().addListener(
                 (o, oldVal, newVal) -> myHeightSliderValue.setText(newVal.intValue()+"")
         );
+
+        // Display Hero name under Image and clamp to MAX_NAME_LENGTH
+        myHeroNameTextField.setOnKeyTyped(keyEvent -> {
+            TextField tf = myHeroNameTextField;
+            if (tf.getText().length() > DungeonCharacter.MAX_NAME_LENGTH) { // Clamp max HERO length
+                tf.setText(tf.getText().substring(0, DungeonCharacter.MAX_NAME_LENGTH));
+                tf.positionCaret(tf.getLength()); // Reset caret to the end to avoid overwrite
+            }
+            myHeroNameDisplayText.setText(tf.getText());
+        });
+
     }
 }
