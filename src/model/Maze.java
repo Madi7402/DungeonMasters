@@ -115,11 +115,13 @@ public class Maze implements Serializable {
 
             if (!isExitFound && isExitRoom(theRoom)) {
                 isExitFound = true;
+                // TODO - add extra scary monster to guard exit
             }
 
             if (!hasDeadEnd && isDeadEndRoom(theRoom)) {
                 hasDeadEnd = true;
                 theRoom.setPillar(true);
+                // TODO - add extra scary monster to guard pillar
             }
         }
     }
@@ -268,16 +270,6 @@ public class Maze implements Serializable {
      */
     private boolean isExitRoom(final Room theRoom) {
         return theRoom.getPortal() == Portal.EXIT;
-    }
-
-    /**
-     * Retrieves a randomized list of directions (North, South, East, West).
-     * @return A randomized list of directions.
-     */
-    private List<Direction> getRandomizedDirections() {
-        List<Direction> directions = Arrays.asList(Direction.values());
-        Collections.shuffle(directions);
-        return directions;
     }
 
     /**
