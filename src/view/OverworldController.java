@@ -115,11 +115,15 @@ public class OverworldController extends AbstractController implements PropertyC
         });
 
         myDieButton.setOnAction(actionEvent -> {
+//            try {
             try {
                 gameOver(actionEvent);
             } catch (IOException e) {
-                throw new RuntimeException("Could not load game over from OverworldController");
+                throw new RuntimeException(e);
             }
+//            } catch (IOException e) {
+//                throw new RuntimeException("Could not load game over from OverworldController");
+//            }
         });
 
         myLeftButton.setOnAction(actionEvent -> {
@@ -143,6 +147,8 @@ public class OverworldController extends AbstractController implements PropertyC
             try {
                 FXMLLoader loader = switchScene(actionEvent, "CombatMenu.fxml");
                 CombatMenuController controller = loader.getController();
+                myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
+                myDungeonAdventure.getMyDungeon().removePropertyChangeListener(this);
                 controller.setAdventure(myDungeonAdventure);
             } catch (IOException e) {
                 throw new RuntimeException(e);
