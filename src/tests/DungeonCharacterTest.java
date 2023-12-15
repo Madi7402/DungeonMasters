@@ -39,7 +39,6 @@ public class DungeonCharacterTest {
         if (priestess.useItem(0)) {
             priestess.removeItem(0);
         }
-        // TODO -JA: don't allow to heal past initial max health points
         assertEquals(100, priestess.getMyHealthPoints());
     }
 }

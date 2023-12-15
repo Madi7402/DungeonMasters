@@ -6,7 +6,7 @@ package model;
  */
 public abstract class Monster extends DungeonCharacter {
     Monster() {
-        super("Monster", 1); // TODO -JA: set monster name
+        super("Monster", 1);
     }
     /**
      * Reduce health by provided amount, possibly heal afterward.
@@ -30,7 +30,7 @@ public abstract class Monster extends DungeonCharacter {
         setMyHealthPoints(getMyHealthPoints() - theDamage);
 
         if (randomChance(myStats.healChance())) { // Random chance to heal after taking damage
-            heal(randomValue(myStats.minHeal(), myStats.maxHeal())); // TODO -JA: max healing to startHealth or a cap%
+            heal(randomValue(myStats.minHeal(), myStats.maxHeal()));
         }
 
         return true;

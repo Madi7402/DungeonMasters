@@ -41,16 +41,12 @@ public class NewGameController extends AbstractController {
         myPlayButton.setOnAction(actionEvent -> {
             DungeonAdventure da = createAdventure();
             if (da == null) {
-                // TODO -JA: Indicate that DungeonAdventure creation failed.
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to Crete DungeonAdventure");
                 return;
             }
-            try {
                 FXMLLoader loader = switchScene("Overworld.fxml");
                 OverworldController controller = loader.getController();
                 controller.setAdventure(da);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         });
     }
 
