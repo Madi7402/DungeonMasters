@@ -32,6 +32,10 @@ import static controller.PropertyChangeEnableFight.*;
 import static controller.PropertyChangeEnableHero.INVENTORY_ACTION;
 import static controller.PropertyChangeEnableHero.VISION_POTION_USED;
 
+/**
+ * Main controller for the overworld screen ("Overworld.fxml")
+ * @author Jonathan Abrams, Madison Pope, Martha Emerson
+ */
 public class OverworldController extends AbstractController implements PropertyChangeListener {
     @FXML
     private ImageView myHeroImageView;
@@ -99,6 +103,9 @@ public class OverworldController extends AbstractController implements PropertyC
     private DungeonAdventure myDungeonAdventure;
     private OverworldControls myOverworldControls;
 
+    /**
+     * A method for initializing buttons on the screen.
+     */
     public void initialize() {
         setupAnimations();
         myAccordion.setExpandedPane(myAccordion.getPanes().get(0));
@@ -137,6 +144,10 @@ public class OverworldController extends AbstractController implements PropertyC
         });
     }
 
+    /**
+     * A method for switching to the combat screen ("CombatMenu.fxml").
+     * @throws IOException Input/Output Exception.
+     */
     private void switchToFightScene() throws IOException {
         FXMLLoader loader = switchScene("CombatMenu.fxml");
         CombatMenuController controller = loader.getController();
@@ -156,6 +167,11 @@ public class OverworldController extends AbstractController implements PropertyC
         myDamageAnimation.setCycleCount(5);
     }
 
+    /**
+     * A method for setting the DungeonAdventure object you wish to play.
+     * @param theDungeonAdventure A DungeonAdventure save.
+     * @throws IOException Input/Output Exception.
+     */
     public void setAdventure(DungeonAdventure theDungeonAdventure) throws IOException {
         myDungeonAdventure = theDungeonAdventure;
         Dungeon dungeon = theDungeonAdventure.getMyDungeon();
@@ -210,6 +226,10 @@ public class OverworldController extends AbstractController implements PropertyC
         myInventoryListView.setItems(items); // TODO -JA: Add tooltips?
     }
 
+    /**
+     * Updates the room grid by loading adjacent rooms.
+     * @throws IOException Input/Output Exception.
+     */
     public void updateRoomGrid() throws IOException {
         if (myDungeonAdventure != null) {
             loadRoom(myDungeonAdventure.getMyDungeon().getMyCurrentRoom(), myCurrentRoom);
@@ -217,6 +237,10 @@ public class OverworldController extends AbstractController implements PropertyC
         }
     }
 
+    /**
+     * Gets all adjacent room data to load and set as viewable.
+     * @throws IOException Input/Output Exception.
+     */
     public void getAdjacentRooms() throws IOException { // I don't want to talk about this
         Coordinates myCurrentCoordinates = myDungeonAdventure.getMyDungeon().getMyCurrentRoom().getCoordinate();
         Maze maze = myDungeonAdventure.getMyDungeon().getMyMaze();
@@ -284,6 +308,12 @@ public class OverworldController extends AbstractController implements PropertyC
         }
     }
 
+    /**
+     * Loads the room FXML file ("Room.fxml")
+     * @param theRoom The Room you want to load.
+     * @param theSubScene The subScene you want to load.
+     * @throws IOException Input/Output Exception.
+     */
     public void loadRoom(Room theRoom, SubScene theSubScene) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Room.fxml"));
         Parent fxmlRoot = loader.load();
@@ -292,6 +322,10 @@ public class OverworldController extends AbstractController implements PropertyC
         rc.setRoom(theRoom);
     }
 
+    /**
+     * Property Change method to handle PropertyChangeEvents.
+     * @param evt A PropertyChangeEvent object describing the event source and the property that has changed.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
@@ -327,10 +361,17 @@ public class OverworldController extends AbstractController implements PropertyC
         }
     }
 
+    /**
+     * Getter for the current DungeonAdventure.
+     * @return DungeonAdventure.
+     */
     public DungeonAdventure getMyDungeonAdventure(){
         return myDungeonAdventure;
     }
 
+    /**
+     * Button method that saves the game.
+     */
     public void saveButton(){
         String filePath = "Save Files/" + getMyDungeonAdventure().getMyHero().getMyName() + ".dat";
 

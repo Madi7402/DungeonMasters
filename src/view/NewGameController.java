@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Controller class for the "NewGame.fxml" screen.
+ * @author Jonathan Abrams, Madison Pope, Martha Emerson.
+ */
 public class NewGameController extends AbstractController {
 
     @FXML
@@ -43,6 +47,9 @@ public class NewGameController extends AbstractController {
     @FXML
     private ImageView myHeroImageView;
 
+    /**
+     * Initializes the GUI elements on the screen.
+     */
     public void initialize() {
         initHeroSelect();
         initHeroTextBox();

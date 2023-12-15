@@ -13,11 +13,20 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the Load game FXML file ("LoadGameMenu.fxml")
+ * @author Jonathan Abrams, Madison Pope, Martha Emerson.
+ */
 public class LoadGameController extends AbstractController implements Initializable{
 
     @FXML
     private ListView<String> mySaveList;
 
+    /**
+     * Overrien initialize method from FXML. Loads data into save file table.
+     * @param url A URL.
+     * @param resourceBundle A ResourceBundle.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ArrayList<String> options = new ArrayList();
@@ -29,6 +38,10 @@ public class LoadGameController extends AbstractController implements Initializa
         mySaveList.setItems(list);
     }
 
+    /**
+     * Button method for loading in a selected save file when player picks one from the ListView.
+     * Reads from "Save Game" folder.
+     */
     public void loadButton(){
         try{
             FileInputStream fileInputStream = new FileInputStream(mySaveList.getSelectionModel().getSelectedItem());
@@ -47,13 +60,12 @@ public class LoadGameController extends AbstractController implements Initializa
 
     }
 
+    /**
+     * Switches to "NewGame.fxml" on button press.
+     * @throws IOException Input/Output Exception.
+     */
     public void newGameButton() throws IOException {
         switchScene( "NewGame.fxml");
     }
 
-
-
-//    public void loadAdventure(ActionEvent event){
-//        //When player hits play, load the dungeon based on the file name
-//    }
 }

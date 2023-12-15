@@ -9,6 +9,10 @@ import model.Room;
 
 import java.util.Objects;
 
+/**
+ * Controller class for "Room.fxml."
+ * @author Jonathan Abrams, Madison Pope, Martha Emerson.
+ */
 public class RoomController {
     @FXML
     private Rectangle myNorthDoor;
@@ -25,10 +29,10 @@ public class RoomController {
     private Text myRoomText;
     private Room myRoom;
 
-    public void initialize() {
-
-    }
-
+    /**
+     * Sets the adjacent rooms and makes them visible.
+     * @param theRoom A Room you want to get the adjacent rooms for.
+     */
     public void setRoom(final Room theRoom) {
         myRoom = Objects.requireNonNull(theRoom);
         for (Direction direction : theRoom.getDoors()) {
@@ -45,6 +49,6 @@ public class RoomController {
         if (theRoom.isVisited()) {
             myAnchorPane.setVisible(true);
         }
-
     }
+
 }

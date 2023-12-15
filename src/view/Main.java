@@ -7,14 +7,28 @@ import javafx.stage.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 
+/**
+ * Main class that launches the program GUI
+ * @author Joanthan Abrams, Madison Pope, Martha Emerson
+ */
 public class Main extends Application {
 
+    private static int WINDOW_WIDTH = 1280;
+    private static int WINDOW_HEIGHT = 720;
+
+    /**
+     * Main method that launches the program.
+     * @param args
+     */
     public static void main(String[] args){
         launch(args);
     }
 
-    private static int WINDOW_WIDTH = 1280;
-    private static int WINDOW_HEIGHT = 720;
+    /**
+     * Overriden start method for starting the program.
+     * @param theStage a FXML Stage object.
+     * @throws Exception
+     */
     @Override
     public void start(Stage theStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("StartMenu.fxml"));

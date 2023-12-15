@@ -16,6 +16,10 @@ import static controller.PropertyChangeEnableFight.*;
 import static controller.PropertyChangeEnableFight.ATTACK_MISS;
 import static controller.PropertyChangeEnableHero.INVENTORY_ACTION;
 
+/**
+ * Controller for the "CombatMenu.fxml" screen.
+ * @author Jonathan Abrams, Madison Pope, Martha Emerson.
+ */
 public class CombatMenuController extends AbstractController implements PropertyChangeListener {
     @FXML
     private Label myEnemyName;
@@ -52,6 +56,10 @@ public class CombatMenuController extends AbstractController implements Property
     private DungeonAdventure myDungeonAdventure;
     private Monster myMonster;
     private Hero myHero;
+
+    /**
+     * Initializes all buttons on the screen.
+     */
     public void initialize(){
         myReturnButton.setOnAction(event -> {
             try {
@@ -86,7 +94,6 @@ public class CombatMenuController extends AbstractController implements Property
             }
         });
 
-
         myInventoryListView.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.intValue() >= 0) {
                 System.out.println("Selected Index: " + newValue.intValue());
@@ -102,6 +109,10 @@ public class CombatMenuController extends AbstractController implements Property
 
     }
 
+    /**
+     * Method that takes the player back to the over world screen ("Overworld.fxml") after combat.
+     * @throws IOException Input/Output Exception.
+     */
     public void victory() throws IOException {
         myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
         myDungeonAdventure.getMyDungeon().removePropertyChangeListener(this);
@@ -110,6 +121,10 @@ public class CombatMenuController extends AbstractController implements Property
         controller.setAdventure(myDungeonAdventure);
     }
 
+    /**
+     * Property Change method that handles PropertyChangeEvents.
+     * @param evt A PropertyChangeEvent object describing the event source and the property that has changed.
+     */
     public void propertyChange(PropertyChangeEvent evt) {   //TODO Make these situations update everything needed
         DungeonCharacter source = (DungeonCharacter) evt.getSource();
         String name = source.getMyName();
@@ -162,6 +177,10 @@ public class CombatMenuController extends AbstractController implements Property
         }
     }
 
+    /**
+     * A setter method that lets you set the DungeonAdventure.
+     * @param theDungeon A DungeonAdventure.
+     */
     public void setAdventure(final DungeonAdventure theDungeon) {
         myDungeonAdventure = theDungeon;
         if (myDungeonAdventure != null) {
@@ -189,6 +208,7 @@ public class CombatMenuController extends AbstractController implements Property
             updateInventoryList();
         }
     }
+
     private void updateInventoryList() {
         ObservableList<Item> items = FXCollections.observableArrayList(myDungeonAdventure.getMyHero().getInventory());
         myInventoryListView.setItems(items);
