@@ -37,4 +37,8 @@ public abstract class AbstractController {
         switchScene(event, "Settings.fxml");
     }
 
+    public void gameOver(ActionEvent theEvent) throws IOException {
+        switchScene(theEvent, "GameOver.fxml");
+    }
+
 }

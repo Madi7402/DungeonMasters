@@ -116,9 +116,9 @@ public class OverworldController extends AbstractController implements PropertyC
 
         myDieButton.setOnAction(actionEvent -> {
             try {
-                switchScene(actionEvent, "GameOver.fxml");
+                gameOver(actionEvent);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Could not load game over from OverworldController");
             }
         });
 
@@ -309,8 +309,7 @@ public class OverworldController extends AbstractController implements PropertyC
             }
             case NAV_FAIL -> System.err.println("Failed to navigate, no doors? Edge of map?"); // TODO -JA: Play failure sound or animate direction that failed
             case HIT_PIT -> myDamageAnimation.play();
-            case HEALTH_CHANGED, HEALTH_UPDATE ->
-                myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
+            case HEALTH_CHANGED, HEALTH_UPDATE -> myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
             case VISION_POTION_USED -> {
                 myDungeonAdventure.getMyDungeon().getMyMaze().setSurroundingRoomsVisible(myDungeonAdventure.getMyDungeon().getMyCurrentCoordinates(), 1);
                 try {
@@ -320,9 +319,7 @@ public class OverworldController extends AbstractController implements PropertyC
                 }
             }
 
-            case DEATH -> {
-                myDieButton.fire();
-            }
+            case DEATH -> myDieButton.fire();
             case INVENTORY_ACTION -> updateInventoryList();
             default -> System.err.println("Received unknown event " + evt.getPropertyName());
         }

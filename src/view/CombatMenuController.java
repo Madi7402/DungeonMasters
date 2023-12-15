@@ -50,7 +50,6 @@ public class CombatMenuController extends AbstractController implements Property
 
     @FXML
     private Button myInventoryUseButton;
-
     private DungeonAdventure myDungeonAdventure;
     private Monster myMonster;
     private Hero myHero;
@@ -82,7 +81,7 @@ public class CombatMenuController extends AbstractController implements Property
             try {
                 gameOver(actionEvent);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Could not reach GameOver from CombatMenuController");
             }
         });
 
@@ -104,9 +103,9 @@ public class CombatMenuController extends AbstractController implements Property
         //initArt();
     }
 
-    public void gameOver(ActionEvent event) throws IOException {
-        switchScene(event, "GameOver.fxml");
-    }
+//    public void gameOver(ActionEvent event) throws IOException {
+//        switchScene(event, "GameOver.fxml");
+//    }
 
     public void victory(ActionEvent event) throws IOException {
         FXMLLoader loader = switchScene(event, "Overworld.fxml");
