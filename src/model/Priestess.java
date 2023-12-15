@@ -15,7 +15,7 @@ public class Priestess extends Hero {
      * @param theName the provided name of the Hero.
      */
     public Priestess(final String theName) {
-        super(theName); // TODO -JA: Do we want to be able to pass in a starting level?
+        super(theName);
     }
 
     /**
@@ -28,7 +28,7 @@ public class Priestess extends Hero {
         if (!randomChance(SPECIAL_SKILL.getChance())) {
             return false;
         }
-        heal(randomValue(myStats.minHeal(), myStats.maxHeal())); // TODO -JA: perhaps decide stats closer to a potion
+        heal(randomValue(myStats.minHeal(), myStats.maxHeal()));
         return true;
     }
 }

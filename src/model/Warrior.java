@@ -9,13 +9,20 @@ public class Warrior extends Hero {
      * The Warrior's special skill.
      */
     private static final SpecialSkill SPECIAL_SKILL = SpecialSkill.CRUSHING_BLOW;
-
+    /**
+     * The least amount of damage the warrior's special attack can inflict.
+     */
+    private static final int MIN_SPEC_DAMAGE = 75;
+    /**
+     * The most amount of damage the warrior's special attack can inflict.
+     */
+    private static final int MAX_SPEC_DAMAGE = 175;
     /**
      * Construct a Warrior.
      * @param theName the provided name of the Hero.
      */
     public Warrior(final String theName) {
-        super(theName); // TODO -JA: Do we want to be able to pass in a starting level?
+        super(theName);
     }
 
     /**
@@ -29,7 +36,7 @@ public class Warrior extends Hero {
             return false;
         }
         fireEvent(ATTACK);
-        theTarget.takeDamage(randomValue(75, 175)); // TODO -JA: replace Magic numbers?
+        theTarget.takeDamage(randomValue(MIN_SPEC_DAMAGE, MAX_SPEC_DAMAGE));
         return true;
     }
 }

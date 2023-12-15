@@ -12,9 +12,11 @@ public class SQLite implements AutoCloseable {
 
     public SQLite(String theStatement) throws SQLException {
         SQLiteDataSource myDataSource = new SQLiteDataSource();
-        myDataSource.setUrl("jdbc:sqlite:database.sqlite.db"); // TODO -JA: Make this a field? Constructor Parameter?
+        myDataSource.setUrl("jdbc:sqlite:database.sqlite.db");
         this.myConnection = myDataSource.getConnection();
-        this.myResults = makeQuery(theStatement); // TODO -JA: Avoid SQli?
+        // In the future it would be nice to have prepared statements to avoid potential
+        // SQLi issues or other SQL related security problems
+        this.myResults = makeQuery(theStatement);
     }
 
     /**

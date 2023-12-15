@@ -59,8 +59,6 @@ public class CharStats implements Serializable {
      * @param theClassName the simplified class name of the character (e.g. "Ogre")
      */
     public CharStats(final String theClassName) {
-        // TODO -JA: Create a specification outlying appropriate values for DungeonCharacter
-        //           statistics and damage characteristics.
         final String query = "SELECT * FROM character where name == '" + theClassName.toLowerCase() + "'";
         try (SQLite db = new SQLite(query)) {
             ResultSet rs = db.getMyResults();

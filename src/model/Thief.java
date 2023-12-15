@@ -15,7 +15,7 @@ public class Thief extends Hero {
      * @param theName the provided name of the Hero.
      */
     public Thief(final String theName) {
-        super(theName); // TODO -JA: Do we want to be able to pass in a starting level?
+        super(theName);
     }
 
     /**
