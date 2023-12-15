@@ -28,7 +28,6 @@ public class LoadGameController extends AbstractController implements Initializa
         }
         ObservableList<String> list = FXCollections.observableArrayList(options);
         mySaveList.setItems(list);
-
     }
 
     public void loadButton(ActionEvent event){
@@ -43,10 +42,10 @@ public class LoadGameController extends AbstractController implements Initializa
             controller.setAdventure(da);
             //controller.setHeroImage(myHeroImageView.getImage()); // TODO - JA: Get this in Overworld Controller Instead from DA
 
-
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     public void newGameButton(ActionEvent event) throws IOException {

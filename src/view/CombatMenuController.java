@@ -77,15 +77,6 @@ public class CombatMenuController extends AbstractController implements Property
             }
         });
 
-//        myHiddenGameOverButton.setOnAction(actionEvent -> {
-//            try {
-//                gameOver(actionEvent);
-//            } catch (IOException e) {
-//                throw new RuntimeException("Could not reach GameOver from CombatMenuController");
-//            }
-//        });
-
-
         myInventoryListView.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue.intValue() >= 0) {
                 System.out.println("Selected Index: " + newValue.intValue());
@@ -99,8 +90,6 @@ public class CombatMenuController extends AbstractController implements Property
             myDungeonAdventure.getMyHero().useItem(myInventoryListView.getSelectionModel().getSelectedItem());
         });
 
-        //initArt();
-        //initArt();
     }
 
     public void victory(ActionEvent event) throws IOException {
@@ -109,18 +98,11 @@ public class CombatMenuController extends AbstractController implements Property
         controller.setAdventure(myDungeonAdventure);
     }
 
-    public void propertyChange(PropertyChangeEvent evt) {   //TODO Make these situations update everything needed        //It is going here after
-        //PROBLEM: only recognizes aStart, aDamaged, hChange, hUpdate, aMiss, aBlock
-        //Problem: Only recognizes when monster dies
-        //First event of a round is not identified
-        //When it says recieved unknown event, that is coming from propertychangeevent
-        System.out.println(evt.getPropertyName()); //Still reaches here
+    public void propertyChange(PropertyChangeEvent evt) {   //TODO Make these situations update everything needed
         DungeonCharacter source = (DungeonCharacter) evt.getSource();
         String name = source.getMyName();
         switch (evt.getPropertyName()) {
-            case DEATH -> { //Death on combat screen isnt making it to this point
-                //System.out.println("HERE");
-                //Doesnt recognize hero death
+            case DEATH -> {
                 myLogTextArea.appendText("\n" + name + " DIED!");
                 if (source.equals(myHero)) {
                     myDieButton.fire(); // HACK
@@ -190,13 +172,4 @@ public class CombatMenuController extends AbstractController implements Property
         myInventoryListView.setItems(items);
     }
 
-    //myEnemyHealthBar.setProgress((current/total)F);
-
-    //Load in text fields
-    //Art
-    //Health bars
-    //Hook up buttons
-
-    //SQlite
-    //
 }
