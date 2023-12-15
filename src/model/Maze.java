@@ -29,7 +29,7 @@ public class Maze implements Serializable {
     /**
      * The fixed number of levels in the maze.
      */
-    private static final int LEVELS = 4;  // TODO -ME move to game (DungeonAdventure) and pass from there
+    private static final int LEVELS = 4;
 
     /**
      * Constructs a maze with the specified number of levels, width, and height.
@@ -46,7 +46,7 @@ public class Maze implements Serializable {
 
     public Room getStartingRoom() {
         for (var room : myRooms.values()) {
-            if (room.getMyPortal().equals(Portal.ENTRANCE)) {
+            if (room.getPortal().equals(Portal.ENTRANCE)) {
                 return room;
             }
         }
@@ -79,7 +79,7 @@ public class Maze implements Serializable {
         // Set all rooms not visited so view can keep rooms invisible until visited by player
         for (Map.Entry<Coordinates, Room> entry : myRooms.entrySet()) {
             Room room = entry.getValue();
-            room.setIsVisited(false);
+            room.setVisited(false);
         }
     }
 
@@ -140,7 +140,6 @@ public class Maze implements Serializable {
             }
         }
     }
-    // TODO - test to make sure this works on reentry
 
     /**
      * Sets the entrance and exit portals for each level in the maze.
@@ -166,8 +165,8 @@ public class Maze implements Serializable {
         // TODO - delete any objects!!! (from the entrance and exit)
 
         // Set entrance and exit
-        myRooms.get(entrance).setMyPortal(Portal.ENTRANCE);
-        myRooms.get(exit).setMyPortal(Portal.EXIT);
+        myRooms.get(entrance).setPortal(Portal.ENTRANCE);
+        myRooms.get(exit).setPortal(Portal.EXIT);
 
 
         return entrance;
@@ -184,17 +183,15 @@ public class Maze implements Serializable {
      */
     private boolean TraverseTo(final Coordinates theCoordinate, final ValidMazeCriteria theCriteria) {
         if (!isValidRoom(theCoordinate)) {
-            System.out.println("Invalid Room: " + theCoordinate); // TODO - remove debugging when done
-            return false; // TODO -ME make this throw (should never get invalid room)
+            throw new IllegalArgumentException("Invalid room: " + theCoordinate);
         }
 
         var room = myRooms.get(theCoordinate);
         connectRooms(room);
         theCriteria.validateRoom(room);
-        room.setIsVisited(true);
+        room.setVisited(true);
 
         if (isTraversalComplete()) {
-            System.out.println("Traversal Complete"); // TODO - remove debugging when done
             return theCriteria.isValid();
         }
 
@@ -204,7 +201,6 @@ public class Maze implements Serializable {
 
             // Check if the next room is within bounds and not visited
             if (!isVisited(nextCoordinate)) {
-                System.out.println("Visiting: " + nextCoordinate); // TODO - remove debugging when done
                 // Recursively generate the maze from the next room
                 if (TraverseTo(nextCoordinate, theCriteria)) {
                     return true;
@@ -220,10 +216,8 @@ public class Maze implements Serializable {
      * @return True if all rooms are visited; otherwise, false.
      */
     private boolean isTraversalComplete() {
-        boolean complete = myRooms.values().stream().allMatch(Room::isVisited);
-        System.out.println("Traversal Complete: " + complete); // TODO - remove debugging when done
-        return complete;        // if all rooms are visited, return true
-    }                           // if 1+ is not visited, return false
+        return myRooms.values().stream().allMatch(Room::isVisited);
+    }
 
     /**
      * Connects the given room to its neighboring rooms in all four directions.
@@ -251,8 +245,8 @@ public class Maze implements Serializable {
             var neighbor = myRooms.get(neighborCoordinate);
             theRoom.trySetNeighbor(neighbor, theDirection);
         } else {
-        theRoom.tryRemoveDoor(theDirection); // TODO - write this method (down below)
-    }
+        theRoom.tryRemoveDoor(theDirection);
+        }
     }
 
     /**
@@ -263,7 +257,7 @@ public class Maze implements Serializable {
      * @return True if the room is a dead-end; otherwise, false.
      */
     private boolean isDeadEndRoom(final Room theRoom) {
-        return (theRoom.getMyPortal() == Portal.NONE && theRoom.getNeighbors().size() == 1);
+        return (theRoom.getPortal() == Portal.NONE && theRoom.getNeighbors().size() == 1);
     }
 
     /**
@@ -273,7 +267,7 @@ public class Maze implements Serializable {
      * @return True if the room is an exit room; otherwise, false.
      */
     private boolean isExitRoom(final Room theRoom) {
-        return theRoom.getMyPortal() == Portal.EXIT;
+        return theRoom.getPortal() == Portal.EXIT;
     }
 
     /**
@@ -322,11 +316,10 @@ public class Maze implements Serializable {
                 theCoordinates.column()+theDirection.getXOffset()));
     }
 
-
     private void setRoomsVisible(final List<Coordinates> theCoordinates) {
         for (Coordinates coord : theCoordinates ) {
             if (isValidRoom(coord)) {
-                getRoom(coord).setIsVisited(true);
+                getRoom(coord).setVisited(true);
             }
         }
     }
@@ -366,7 +359,7 @@ public class Maze implements Serializable {
                 for (int col = 0; col < myWidth; col++) {
                     Coordinates coordinates = new Coordinates(level, row, col);
                     Room room = myRooms.get(coordinates);
-                    sb.append(room.toString());
+                    sb.append(room.toString()); // TODO - update the string to print 3 levels separately
                 }
                 sb.append('\n');
             }
