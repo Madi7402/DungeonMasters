@@ -1,33 +1,46 @@
 package model;
 
-import java.io.Serial;
-import java.io.Serializable;
-import java.util.Objects;
-
 /**
  * Creates the dungeon with a difficulty and map.
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
-public class DungeonAdventure implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L; // Update on class changes (!)
+public class DungeonAdventure {
     /**
      * Saves Dungeon info
      */
     private final Dungeon myDungeon;
-    private final Hero myHero;
 
     /**
      * Public constructor for DungeonAdventure
      */
-    private DungeonAdventure() {
-        myHero = new Thief("Default Hero");
-        myDungeon = new Dungeon(myHero,10, 10); // TODO -JA: Is this default size good?
+    public DungeonAdventure(){
+        myDungeon = new Dungeon();
     }
 
-    public DungeonAdventure(final Hero theHero, final int theMapWidth, final int theMapHeight) {
-        myHero = Objects.requireNonNull(theHero);
-        myDungeon = new Dungeon(myHero, theMapWidth, theMapHeight);
+    /**
+     * Creates a new game given a difficulty
+     * @param theDifficulty String difficulty name //TODO enums
+     */
+    public void newGame(String theDifficulty) { //TODO Do we want this to just deal with just difficulty or do we want to pass it with a default map?
+        Maze map = new Maze(4, 5, 5);  //TODO implement maze
+        newGame(theDifficulty, map);
+    }
+
+    /**
+     * Creates a new game given a difficulty and map
+     * @param theDifficulty String difficulty name
+     * @param theMap Maze that makes up the map
+     */
+    public void newGame(String theDifficulty, Maze theMap) {
+        if(theDifficulty.equals("Easy")) {
+            //TODO Fill in
+        } else if(theDifficulty.equals("Normal")) {
+
+        } else if(theDifficulty.equals("Hard")) {
+
+        } else {
+            throw new IllegalArgumentException("Error: Not a difficulty type");
+        }
     }
 
     /**
@@ -36,13 +49,5 @@ public class DungeonAdventure implements Serializable {
      */
     public Dungeon getMyDungeon() {
         return myDungeon;
-    }
-
-    /**
-     * Get the Hero for this DungeonAdventure
-     * @return the Hero
-     */
-    public Hero getMyHero() {
-        return myHero;
     }
 }

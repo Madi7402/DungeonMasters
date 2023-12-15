@@ -1,41 +1,35 @@
 package view;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Objects;
 
 public abstract class AbstractController {
     private Stage myStage;
     private Scene myScene;
     private Parent myRoot;
 
-    private static int WINDOW_WIDTH = 1280;
-    private static int WINDOW_HEIGHT = 720;
+    public static int WINDOW_WIDTH = 1280;
+    public static int WINDOW_HEIGHT = 720;
 
-    public FXMLLoader switchScene(String sceneName) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(sceneName)));
-        myRoot = fxmlLoader.load();
+    public void switchScene(ActionEvent event, String sceneName) throws IOException {
+        myRoot = FXMLLoader.load(getClass().getResource(sceneName));
+        myStage = (Stage)((Node)event.getSource()).getScene().getWindow();
         myScene = new Scene(myRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
-        AbstractController ac = fxmlLoader.getController();
-        ac.setMyStage(myStage);
         myStage.setScene(myScene);
         myStage.show();
-        return fxmlLoader;
     }
 
-    public void backToMenuButton() throws IOException {
-        switchScene("StartMenu.fxml");
+    public void backToMenuButton(ActionEvent event) throws IOException {
+        switchScene(event, "StartMenu.fxml");
+    }
+    public void settingsButton(ActionEvent event) throws IOException {
+        switchScene(event, "Settings.fxml");
     }
 
-    public void gameOver() throws IOException {
-        switchScene("GameOverScreen.fxml");
-    }
-
-    protected void setMyStage(final Stage theStage) {
-        myStage = Objects.requireNonNull(theStage);
-    }
 }

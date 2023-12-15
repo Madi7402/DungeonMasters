@@ -12,7 +12,6 @@
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
-            <Button fx:id="myDieButton" layoutX="24.0" layoutY="18.0" mnemonicParsing="false" onAction="#gameOver" opacity="0.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" height="435.0" layoutX="-8.0" stroke="#000000a6" strokeType="INSIDE" width="1301.0">
                <fill>
                   <LinearGradient endX="0.5023696682464455" endY="1.0" startX="0.4976303317535545">
@@ -31,8 +30,8 @@
                   </LinearGradient>
                </fill>
             </Rectangle>
-            <ImageView fx:id="myMonsterImageView" fitHeight="285.0" fitWidth="298.0" layoutX="24.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
-            <ProgressBar fx:id="myEnemyHealthBar" layoutX="551.0" layoutY="48.0" prefWidth="200.0" progress="1.0" />
+            <ImageView fitHeight="375.0" fitWidth="1230.0" layoutX="24.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
+            <ProgressBar fx:id="myEnemyHealthBar" layoutX="551.0" layoutY="48.0" prefWidth="200.0" progress="0.0" />
             <Label fx:id="myEnemyName" alignment="TOP_CENTER" layoutX="551.0" layoutY="13.0" prefHeight="17.0" prefWidth="200.0" text="ENEMY NAME" textAlignment="CENTER" textFill="RED">
                <font>
                   <Font size="24.0" />
@@ -43,14 +42,14 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextArea fx:id="myLogTextArea" editable="false" layoutX="314.0" layoutY="316.0" prefHeight="105.0" prefWidth="674.0" />
+            <TextArea layoutX="314.0" layoutY="316.0" prefHeight="105.0" prefWidth="674.0" />
          </children></AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
-            <ImageView fx:id="myHeroImageView" fitHeight="181.0" fitWidth="276.0" layoutX="964.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fitHeight="181.0" fitWidth="276.0" layoutX="964.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" />
             <VBox layoutX="55.0" layoutY="19.0" prefHeight="240.0" prefWidth="375.0">
                <children>
-                  <Button fx:id="myAttackButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="392.0" text="Attack">
+                  <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="392.0" text="Attack">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -58,7 +57,7 @@
                         <Insets top="35.0" />
                      </VBox.margin>
                   </Button>
-                  <Button fx:id="mySpecialAttackButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="377.0" text="(Special)">
+                  <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="377.0" text="(Special)">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -68,12 +67,29 @@
                   </Button>
                </children>
             </VBox>
-            <ProgressBar fx:id="myHeroHealthBar" layoutX="1002.0" layoutY="233.0" prefWidth="200.0" progress="1.0" />
+            <VBox layoutX="510.0" layoutY="19.0" prefHeight="240.0" prefWidth="375.0">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="392.0" text="Dodge">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="35.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="392.0" text="Item">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="40.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
+            <ProgressBar fx:id="myHeroHealthBar" layoutX="1002.0" layoutY="233.0" prefWidth="200.0" progress="0.0" />
             <Label fx:id="myHeroName" layoutX="1002.0" layoutY="206.0" text="(Hero Name)" />
             <Label fx:id="myHeroHealth" layoutX="1002.0" layoutY="255.0" text="Health/Health" />
-            <Button fx:id="myReturnButton" layoutX="838.0" layoutY="243.0" mnemonicParsing="false" text="Return to Overworld" />
-            <ListView fx:id="myInventoryListView" layoutX="449.0" layoutY="53.0" prefHeight="162.0" prefWidth="368.0" />
-            <Button fx:id="myInventoryUseButton" layoutX="449.0" layoutY="221.0" mnemonicParsing="false" text="Use Item" />
          </children></AnchorPane>
   </items>
 </SplitPane>

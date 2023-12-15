@@ -13,24 +13,24 @@ public class SoundManager {
     /**
      * The MediaPlayer responsible for playing audio in the SoundManager.
      */
-    private MediaPlayer myMediaPlayer;
+    private MediaPlayer mediaPlayer;
     /**
      * The volume level for sound effects in the SoundManager.
      * The default value is 0.5 (medium volume).
      */
-    private double mySoundVolume = 0.5; // sound volume (defaults to medium)
+    private double soundVolume = 0.5; // sound volume (defaults to medium)
     /**
      * The volume level for background music in the SoundManager.
      * The default value is 0.5 (medium volume).
      */
-    private double myMusicVolume = 0.5; // music volume (defaults to medium)
+    private double musicVolume = 0.5; // music volume (defaults to medium)
 
     /**
      * Constructs a SoundManager instance.
      * Loads media files for sound effects and background music.
      */
     public SoundManager() {
-        // TODO - write code for loading media files
+        // TO DO - write code for loading media files
         // music for levels, battles, different menus, etc.
         // sound effects for potions, pits, health status, level completion, etc.
     }
@@ -38,22 +38,22 @@ public class SoundManager {
     /**
      * Plays a sound effect with the specified file name.
      *
-     * @param theSoundFileName The file name of the sound effect.
+     * @param soundFileName The file name of the sound effect.
      */
-    public void playSound(final String theSoundFileName) {
-        Media sound = new Media(getClass().getResource(theSoundFileName).toString());
+    public void playSound(String soundFileName) {
+        Media sound = new Media(getClass().getResource(soundFileName).toString());
         MediaPlayer soundPlayer = new MediaPlayer(sound);
-        soundPlayer.setVolume(mySoundVolume);
+        soundPlayer.setVolume(soundVolume);
         soundPlayer.play();
     }
 
     /**
      * Sets the volume for sound effects.
      *
-     * @param theVolume The volume level (0.0 to 1.0).
+     * @param volume The volume level (0.0 to 1.0).
      */
-    public void setMySoundVolume(final double theVolume) {
-        this.mySoundVolume = theVolume;
+    public void setSoundVolume(double volume) {
+        this.soundVolume = volume;
     }
 
     /**
@@ -61,8 +61,8 @@ public class SoundManager {
      *
      * @return The volume level (0.0 to 1.0).
      */
-    public double getMySoundVolume() {
-        return mySoundVolume;
+    public double getSoundVolume() {
+        return soundVolume;
     }
 
     /**
@@ -75,34 +75,34 @@ public class SoundManager {
     /**
      * Plays background music with the specified file name.
      *
-     * @param theMusicFileName The file name of the background music.
+     * @param musicFileName The file name of the background music.
      */
-    public void playMusic(final String theMusicFileName) {
-        Media music = new Media(getClass().getResource(theMusicFileName).toString());
-        myMediaPlayer = new MediaPlayer(music);
-        myMediaPlayer.setVolume(myMusicVolume);
-        myMediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Background music can repeat forever
-        myMediaPlayer.play();
+    public void playMusic(String musicFileName) {
+        Media music = new Media(getClass().getResource(musicFileName).toString());
+        mediaPlayer = new MediaPlayer(music);
+        mediaPlayer.setVolume(musicVolume);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Background music can repeat forever
+        mediaPlayer.play();
     }
 
     /**
      * Stops playing the current background music.
      */
     public void stopMusic() {
-        if (myMediaPlayer != null) {
-            myMediaPlayer.stop();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
         }
     }
 
     /**
      * Sets the volume for background music.
      *
-     * @param theVolume The volume level (0.0 to 1.0).
+     * @param volume The volume level (0.0 to 1.0).
      */
-    public void setMyMusicVolume(final double theVolume) {
-        this.myMusicVolume = theVolume;
-        if (myMediaPlayer != null) {
-            myMediaPlayer.setVolume(myMusicVolume);
+    public void setMusicVolume(double volume) {
+        this.musicVolume = volume;
+        if (mediaPlayer != null) {
+            mediaPlayer.setVolume(musicVolume);
         }
     }
 
@@ -111,8 +111,8 @@ public class SoundManager {
      *
      * @return The volume level (0.0 to 1.0).
      */
-    public double getMyMusicVolume() {
-        return myMusicVolume;
+    public double getMusicVolume() {
+        return musicVolume;
     }
 
     /**
@@ -121,16 +121,16 @@ public class SoundManager {
      * If not muted, this method will mute both sound effects and background music.
      */
     public void toggleMute() {
-        if (mySoundVolume > 0.0 || myMusicVolume > 0.0) {
-            mySoundVolume = 0.0;
-            myMusicVolume = 0.0;
+        if (soundVolume > 0.0 || musicVolume > 0.0) {
+            soundVolume = 0.0;
+            musicVolume = 0.0;
         } else {
-            mySoundVolume = 0.5; // volume gets reset to medium
-            myMusicVolume = 0.5; // sound gets reset to medium
+            soundVolume = 0.5; // volume gets reset to medium
+            musicVolume = 0.5; // sound gets reset to medium
         }
 
-        if (myMediaPlayer != null) {
-            myMediaPlayer.setVolume(myMusicVolume);
+        if (mediaPlayer != null) {
+            mediaPlayer.setVolume(musicVolume);
         }
     }
 

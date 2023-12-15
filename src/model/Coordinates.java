@@ -1,8 +1,5 @@
 package model;
 
-import java.io.Serial;
-import java.io.Serializable;
-
 /**
  * Represents a set of coordinates in a 3D space, specifying a level, row, and column.
  * Coordinates are immutable and can be generated based on an offset from the current coordinates.
@@ -10,47 +7,35 @@ import java.io.Serializable;
  *
  * @author Jonathan Abrams, Martha Emerson, Madison Pope
  */
-public record Coordinates(int level, int row, int column) implements Comparable<Coordinates>, Serializable {
-    @Serial
-    private static final long serialVersionUID = 0L; // Update on class changes (!)
+public record Coordinates(int level, int row, int column) implements Comparable<Coordinates> {
     /**
      * Generates new coordinates based on the specified row and column offsets.
      *
-     * @param theOffsetRow    The offset to add to the current row.
-     * @param theOffsetColumn The offset to add to the current column.
+     * @param offsetRow    The offset to add to the current row.
+     * @param offsetColumn The offset to add to the current column.
      * @return A new set of coordinates with adjusted row and column values.
      */
-    public Coordinates generate(final int theOffsetRow, final int theOffsetColumn) {
-        return new Coordinates(level, row() + theOffsetRow, column() + theOffsetColumn);
+    public Coordinates generate(int offsetRow, int offsetColumn) {
+        return new Coordinates(level, row() + offsetRow, column() + offsetColumn);
     }
     /**
      * Compares this set of coordinates with another set of coordinates for sorting purposes.
      *
-     * @param theO The other set of coordinates to compare with.
+     * @param o The other set of coordinates to compare with.
      * @return 0 if coordinates are equal, a positive value if this coordinates are greater,
      *         a negative value if this coordinates are smaller.
      */
     @Override
-    public int compareTo(final Coordinates theO) {
-        if (equals(theO)) {
+    public int compareTo(Coordinates o) {
+        if (equals(o)) {
             return 0;
         }
-        if (level != theO.level) {
-            return level - theO.level;
+        if (level != o.level) {
+            return level - o.level;
         }
-        if (column != theO.column) {
-            return column - theO.column;
+        if (column != o.column) {
+            return column - o.column;
         }
-        return row - theO.row;
-    }
-
-    /**
-     * Generates new coordinates based on the specified theDirection.
-     *
-     * @param theDirection The theDirection indicating the row and column offsets.
-     * @return A new set of coordinates with adjusted row and column values.
-     */
-    public Coordinates generate(final Direction theDirection) { // rows are y offsets, columns are x offsets
-        return generate(theDirection.getYOffset(), theDirection.getXOffset());
+        return row - o.row;
     }
 }

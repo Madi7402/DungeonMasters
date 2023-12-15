@@ -1,25 +1,21 @@
 package model;
 
-import controller.PropertyChange;
 import controller.PropertyChangeEnableFight;
-import javafx.scene.image.Image;
-import res.SQLite;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serial;
 import java.io.Serializable;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Random;
 
 /**
  * An abstract class that represents an entity in the dungeon that can engage in combat.
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
  */
-public abstract class DungeonCharacter extends PropertyChange implements PropertyChangeEnableFight, Serializable {
+public abstract class DungeonCharacter implements PropertyChangeEnableFight, Serializable {
     /** UID for Serialization */
     @Serial
-    private static final long serialVersionUID = 1L; // Update on class changes (!)
+    private static final long serialVersionUID = 1L; // Update on class changes?
     /**
      * The maximum length of a Character's Name
      */
@@ -31,15 +27,11 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
     /**
      * The statistics of the DungeonCharacter.
      */
-    protected CharStats myStats;
+    protected CharStats myStats; // TODO -JA: Do we want this to be private?
     /**
      * The name provided to the DungeonCharacter.
      */
-    private String myName;
-    /**
-     * The Image path for the Character
-     */
-    private String myImagePath;
+    private final String myName;
     /**
      * The experience level of the DungeonCharacter.
      */
@@ -52,55 +44,15 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
     private final PropertyChangeSupport myPcs;
 
     DungeonCharacter(final String theName, final int theLevel) {
-        setMyName(theName);
-        setMyLevel(theLevel);
-        myStats = new CharStats(this.getClass().getSimpleName());
+        myName = theName;   // TODO -JA: validate inputs
+        myLevel = theLevel; // TODO -JA: validate inputs
+        myStats = new CharStats(this.getClass().getSimpleName()); // TODO -JA: Currently SQL issue cases termination, catch/try here?
         myHealthPoints = myStats.startingHealth(); // TODO -JA: Do we just want to build this into CharStats?
         myPcs = new PropertyChangeSupport(this);
-        final String imgQuery = "SELECT img FROM character where name == '" + this.getClass().getSimpleName().toLowerCase() + "'";
-        try (SQLite db = new SQLite(imgQuery)) {
-            ResultSet rs = db.getMyResults();
-            myImagePath = rs.getString("img");
-        } catch (SQLException e) {
-            System.out.println();
-        }
     }
 
-    /**
-     * Get the name of the Character.
-     * @return the name of the Character
-     */
     public String getMyName() {
         return myName;
-    }
-
-    /**
-     * Return the character's image
-     * @return Image or null if null
-     */
-    public Image getMyImage() {
-        try {
-            return new Image("img/" + myImagePath);
-        } catch(Exception e) {
-            // We do what we must because we can
-            System.err.println(getClass().getSimpleName() + " img was null!: " + myImagePath);
-        }
-        return null;
-    }
-
-    /**
-     * Set the name of the Character
-     * @throws IllegalArgumentException if length > MAX_NAME_LENGTH or null
-     */
-    public void setMyName(final String theName) {
-        if (theName == null || theName.length() > MAX_NAME_LENGTH) {
-            throw new IllegalArgumentException("Name must not be longer than " + MAX_NAME_LENGTH + " or null");
-        }
-
-        if (theName.isEmpty())
-            myName = "Unnamed " + getClass().getSimpleName();
-        else
-            myName = theName;
     }
 
     /**
@@ -112,28 +64,16 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
     }
 
     /**
-     * Set current level of the Character.
-     * @throws IllegalArgumentException if level is < 1
-     */
-    public void setMyLevel(final int theLevel) {
-        if (theLevel < 1) {
-            throw new IllegalArgumentException("Level must be a positive integer");
-        }
-        myLevel = theLevel;
-    }
-
-    /**
-     * Set myHealthPoints for this DungeonCharacter, if < 0, the character has died.
+     * Set myHealthPoints for this DungeonCharacter.
      * @param theHealthPoints a value above >= 0 representing the character's health points
+     * @throws IllegalArgumentException if theHealthPoints < 0
      */
-    public void setMyHealthPoints(int theHealthPoints) {
-        if (theHealthPoints <= 0) { // The character has died!
-            fireEvent(DEATH);
-            theHealthPoints = 0;
+    public void setMyHealthPoints(final int theHealthPoints) {
+        if (theHealthPoints < 0) {
+            throw new IllegalArgumentException("Health points must not be less than 0");
         }
         fireEvent(HEALTH_CHANGED, myHealthPoints, theHealthPoints);
         this.myHealthPoints = theHealthPoints;
-        fireEvent(HEALTH_UPDATE);
     }
 
     /**
@@ -173,7 +113,7 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
 
         // TODO -JA: keep track of maximum health for the character and don't exceed that.
         int newHealthPoints = myHealthPoints += theHealth;
-        fireEvent(HEALTH_CHANGED, myHealthPoints, newHealthPoints); // TODO -JA: Why can't OverWorld see this event?
+        fireEvent(HEALTH_CHANGED, myHealthPoints, newHealthPoints);
         myHealthPoints = newHealthPoints;
         return true;
     }
@@ -212,9 +152,42 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
     }
 
     /**
-     * Get the maximum amount of health the character may have.
+     * Fire event to observers.
+     * @param theEvent the event from PropertyChangeEnableFight
      */
-    public int getMyMaxHealthPoints() {
-        return myStats.startingHealth();
+    protected void fireEvent(final String theEvent) {
+        myPcs.firePropertyChange(theEvent, null, true);
+    }
+
+    /**
+     * Fire event to observers with initial and ending value.
+     * @param theEvent the event from PropertyChangeEnableFight
+     * @param theStart the initial value
+     * @param theEnd the changed value
+     */
+    protected void fireEvent(final String theEvent, final int theStart, final int theEnd) {
+        myPcs.firePropertyChange(theEvent, theStart, theEnd);
+    }
+
+    @Override
+    public void addPropertyChangeListener(final PropertyChangeListener theListener) {
+        myPcs.addPropertyChangeListener(theListener);
+    }
+
+    @Override
+    public void addPropertyChangeListener(final String thePropertyName,
+                                          final PropertyChangeListener theListener) {
+        myPcs.addPropertyChangeListener(thePropertyName, theListener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(final PropertyChangeListener theListener) {
+        myPcs.removePropertyChangeListener(theListener);
+    }
+
+    @Override
+    public void removePropertyChangeListener(final String thePropertyName,
+                                             final PropertyChangeListener theListener) {
+        myPcs.removePropertyChangeListener(thePropertyName, theListener);
     }
 }

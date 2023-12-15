@@ -16,22 +16,22 @@ public enum Direction {
     /**
      * The x offset indicating movement in the horizontal direction.
      */
-    private final int myXOffset;
+    private final int xOffset;
 
     /**
      * The y offset indicating movement in the vertical direction.
      */
-    private final int myYOffset;
+    private final int yOffset;
 
     /**
      * Constructs a direction with the specified x and y offsets.
      *
-     * @param theXOffset The x offset indicating movement in the horizontal direction.
-     * @param theYOffset The y offset indicating movement in the vertical direction.
+     * @param xOffset The x offset indicating movement in the horizontal direction.
+     * @param yOffset The y offset indicating movement in the vertical direction.
      */
-    Direction(final int theXOffset, final int theYOffset) {
-        this.myXOffset = theXOffset;
-        this.myYOffset = theYOffset;
+    Direction(int xOffset, int yOffset) {
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
     }
 
     /**
@@ -40,7 +40,7 @@ public enum Direction {
      * @return The x offset.
      */
     public int getXOffset() {
-        return myXOffset;
+        return xOffset;
     }
 
     /**
@@ -49,24 +49,6 @@ public enum Direction {
      * @return The y offset.
      */
     public int getYOffset() {
-        return myYOffset;
-    }
-
-    public Direction getOppositeDirection() {
-        switch(this) {
-            case NORTH -> {
-                return SOUTH;
-            }
-            case SOUTH -> {
-                return NORTH;
-            }
-            case EAST -> {
-                return WEST;
-            }
-            case WEST -> {
-                return EAST;
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + this);
-        }
+        return yOffset;
     }
 }
