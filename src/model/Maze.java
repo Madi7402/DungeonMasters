@@ -44,9 +44,9 @@ public class Maze implements Serializable {
         initializeMaze(theRoomFactory);
     }
 
-    public Room getStartingRoom() {
+    public Room getStartingRoom(final int theLevel) {
         for (var room : myRooms.values()) {
-            if (room.getPortal().equals(Portal.ENTRANCE)) {
+            if (room.getPortal().equals(Portal.ENTRANCE) && room.getCoordinate().level() == theLevel) {
                 return room;
             }
         }
