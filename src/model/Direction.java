@@ -52,6 +52,13 @@ public enum Direction {
         return myYOffset;
     }
 
+    /**
+     * Gets the opposite direction of the current direction.
+     * For example, if the current direction is NORTH, the opposite direction will be SOUTH.
+     *
+     * @return The opposite direction.
+     * @throws IllegalStateException if the current direction is unexpected or invalid.
+     */
     public Direction getOppositeDirection() {
         switch(this) {
             case NORTH -> {
