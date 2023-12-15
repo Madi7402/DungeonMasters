@@ -45,22 +45,23 @@ public class Room implements Serializable {
     private MonsterType myMonsterType;
     /**
      * Indicates whether the room has a pillar.
-     * A pillar is a special item that...
+     * A pillar is a special item that the hero must collect to win the game.
+     * There are four pillars, which represent the pillars of OOP.
      */
     private boolean hasPillar;
     /**
      * Indicates whether the room has a pit.
-     * A pit is a dangerous element that...
+     * A pit is a dangerous element that causes the hero to lose health points.
      */
     private boolean hasPit;
     /**
      * Indicates whether the room has a healing potion.
-     * A healing potion is an item that...
+     * A healing potion is an item that allows the hero to regain health points.
      */
     private boolean hasHealingPotion;
     /**
      * Indicates whether the room has a vision potion.
-     * A vision potion is an item that...
+     * A vision potion is an item that allows the hero to see all adjacent rooms.
      */
     private boolean hasVisionPotion;
     /**
@@ -90,7 +91,8 @@ public class Room implements Serializable {
      * @param theCoordinates       The coordinates of the room.
      */
     public Room(final boolean hasPit, final boolean hasHealingPotion, final boolean hasVisionPotion,
-                final MonsterType theMonsterType, final EnumSet<Direction> theDoors, final Coordinates theCoordinates) {
+                final MonsterType theMonsterType, final EnumSet<Direction> theDoors,
+                final Coordinates theCoordinates) {
         this.myPortal = Portal.NONE;
         this.isVisited = false;
         this.hasPillar = false;
@@ -199,6 +201,33 @@ public class Room implements Serializable {
     }
 
     /**
+     * Checks whether the room contains a pillar.
+     *
+     * @return true if the room has a pillar, otherwise return false.
+     */
+    public boolean hasPillar() {
+        return hasPillar;
+    }
+
+    /**
+     * Checks whether the room contains a healing potion.
+     *
+     * @return true if the room has a healing potion, otherwise return false.
+     */
+    public boolean hasHealingPotion() {
+        return hasHealingPotion;
+    }
+
+    /**
+     * Checks whether the room contains a vision potion.
+     *
+     * @return true if the room has a vision potion, otherwise return false.
+     */
+    public boolean hasVisionPotion() {
+        return hasVisionPotion;
+    }
+
+    /**
      * Checks whether the room contains a pit.
      *
      * @return true if the room has a pit, otherwise return false.
@@ -255,7 +284,7 @@ public class Room implements Serializable {
     public void addItem(final Item theItem) {
         myItems.put(theItem.getType(), theItem);
     }
-    // use this in place of set pit, set pillar, etc. for anything that's an item
+
 
     /**
      * Removes all equipable items from the room and returns them.
