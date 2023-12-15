@@ -32,7 +32,7 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
      * Construct a Hero.
      * @param theName the provided name of the Hero
      */
-    Hero(final String theName) { // TODO -JA: Do we want to construct with a starting level?
+    Hero(final String theName) {
         super(theName, 1);
     }
 
@@ -128,8 +128,8 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
      * Take damage from stepping in a pit, notably this can not be blocked.
      */
     public void hitPit() {
-        fireEvent(HIT_PIT);
-       setMyHealthPoints(getMyHealthPoints() - 15);// TODO make this configurable
+       fireEvent(HIT_PIT);
+       setMyHealthPoints(getMyHealthPoints() - 15); // TODO consider making configurable
     }
 
     /**

@@ -156,7 +156,7 @@ public class OverworldController extends AbstractController implements PropertyC
         myDamageAnimation.setCycleCount(5);
     }
 
-    public void setAdventure(DungeonAdventure theDungeonAdventure) throws IOException {
+    public void setAdventure(DungeonAdventure theDungeonAdventure) {
         myDungeonAdventure = theDungeonAdventure;
         Dungeon dungeon = theDungeonAdventure.getMyDungeon();
         Hero hero = theDungeonAdventure.getMyHero();
@@ -182,18 +182,10 @@ public class OverworldController extends AbstractController implements PropertyC
 
         updateInventoryList();
 
-        myInventoryListView.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.intValue() >= 0) {
-                System.out.println("Selected Index: " + newValue.intValue());
-            } else {
-                System.out.println("No item selected");
-            }
-        });
-
         myInventoryUseButton.setOnAction(actionEvent -> {
-            System.out.println(myInventoryListView.getSelectionModel().getSelectedItem());
             myDungeonAdventure.getMyHero().useItem(myInventoryListView.getSelectionModel().getSelectedItem());
         });
+
         myInventoryInfoButton.setOnAction(actionEvent -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, myInventoryListView.getSelectionModel().getSelectedItem().getDescription());
             alert.setHeaderText(myInventoryListView.getSelectionModel().getSelectedItem().getName());
@@ -207,17 +199,17 @@ public class OverworldController extends AbstractController implements PropertyC
 
     private void updateInventoryList() {
         ObservableList<Item> items = FXCollections.observableArrayList(myDungeonAdventure.getMyHero().getInventory());
-        myInventoryListView.setItems(items); // TODO -JA: Add tooltips?
+        myInventoryListView.setItems(items);
     }
 
-    public void updateRoomGrid() throws IOException {
+    public void updateRoomGrid() {
         if (myDungeonAdventure != null) {
             loadRoom(myDungeonAdventure.getMyDungeon().getMyCurrentRoom(), myCurrentRoom);
             getAdjacentRooms();
         }
     }
 
-    public void getAdjacentRooms() throws IOException { // I don't want to talk about this
+    public void getAdjacentRooms() { // I don't want to talk about this
         Coordinates myCurrentCoordinates = myDungeonAdventure.getMyDungeon().getMyCurrentRoom().getCoordinate();
         Maze maze = myDungeonAdventure.getMyDungeon().getMyMaze();
         Room north = maze.getRoom(myCurrentCoordinates, Direction.NORTH);
@@ -284,9 +276,16 @@ public class OverworldController extends AbstractController implements PropertyC
         }
     }
 
-    public void loadRoom(Room theRoom, SubScene theSubScene) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Room.fxml"));
-        Parent fxmlRoot = loader.load();
+    public void loadRoom(Room theRoom, SubScene theSubScene) {
+        FXMLLoader loader = null;
+        Parent fxmlRoot = null;
+        try {
+            loader = new FXMLLoader(getClass().getResource("Room.fxml"));
+            fxmlRoot = loader.load();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            System.exit(1);
+        }
         theSubScene.setRoot(fxmlRoot);
         RoomController rc = loader.getController();
         rc.setRoom(theRoom);
@@ -295,25 +294,14 @@ public class OverworldController extends AbstractController implements PropertyC
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
-            case NAVIGATED -> {
-                try {
-                    updateRoomGrid();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            case NAVIGATED -> updateRoomGrid();
             case NAV_FAIL -> System.err.println("Failed to navigate, no doors? Edge of map?"); // TODO -JA: Play failure sound or animate direction that failed
             case HIT_PIT -> myDamageAnimation.play();
             case HEALTH_CHANGED, HEALTH_UPDATE -> myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
             case VISION_POTION_USED -> {
                 myDungeonAdventure.getMyDungeon().getMyMaze().setSurroundingRoomsVisible(myDungeonAdventure.getMyDungeon().getMyCurrentCoordinates(), 1);
-                try {
-                    updateRoomGrid();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                updateRoomGrid();
             }
-
             case DEATH -> myDieButton.fire();
             case INVENTORY_ACTION -> updateInventoryList();
             case FIGHT_BEGIN -> {
