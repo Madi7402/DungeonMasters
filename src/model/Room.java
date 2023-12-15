@@ -88,10 +88,16 @@ public class Room implements Serializable {
                 final EnumSet<Direction> theDoors, final Coordinates theCoordinates) {
         this.myPortal = Portal.NONE;
         this.isVisited = false;
-        this.hasPillar = false;
+        this.hasPillar = false; // TODO: PILLAR ROOM?
         this.hasPit = hasPit;
         this.hasHealingPotion = hasHealingPotion;
+        if (hasHealingPotion) {
+            addItem(new Item(ItemType.HEALING_POTION));
+        }
         this.hasVisionPotion = hasVisionPotion;
+        if (hasVisionPotion) {
+            addItem(new Item(ItemType.VISION_POTION));
+        }
         this.myDoors = theDoors;
         this.myCoordinates = theCoordinates;
     }
@@ -295,7 +301,7 @@ public class Room implements Serializable {
         var equipableItems = myItems.values().stream().filter(Item::isEquipable).toList();
 
         for (var equipableItem : equipableItems) {
-            myItems.remove(equipableItem.getType()); // TODO: decrement item count?
+            myItems.remove(equipableItem.getType());
         }
         return equipableItems;
     }
