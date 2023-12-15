@@ -10,8 +10,8 @@ import model.*;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 
+import static controller.PropertyChangeEnableDungeon.GAME_WIN;
 import static controller.PropertyChangeEnableFight.*;
 import static controller.PropertyChangeEnableFight.ATTACK_MISS;
 import static controller.PropertyChangeEnableHero.INVENTORY_ACTION;
@@ -96,6 +96,7 @@ public class CombatMenuController extends AbstractController implements Property
             case HEALTH_CHANGED, HEALTH_UPDATE -> updateHealth(evt, source, name);
             case ATTACK_BLOCK -> myLogTextArea.appendText("\n" + name + " blocked the attack.");
             case ATTACK_MISS -> myLogTextArea.appendText("\n" + name + " missed!");
+            case GAME_WIN -> switchScene("VictoryScreen.fxml");
             case INVENTORY_ACTION -> updateInventoryList();
             default -> System.err.println("Unhandled Event: " + evt.getPropertyName());
         }

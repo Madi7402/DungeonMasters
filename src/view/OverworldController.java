@@ -296,6 +296,7 @@ public class OverworldController extends AbstractController implements PropertyC
             case DEATH -> switchScene("GameOverScreen.fxml");
             case INVENTORY_ACTION -> updateInventoryList();
             case FIGHT_BEGIN -> switchToFightScene();
+            case GAME_WIN -> switchScene("VictoryScreen.fxml");
             default -> System.err.println("Received unknown event " + evt.getPropertyName());
         }
     }
