@@ -121,6 +121,7 @@ public class CombatMenuController extends AbstractController implements Property
                 } else {
                     myAttackButton.setDisable(true);
                     mySpecialAttackButton.setDisable(true);
+                    myDungeonAdventure.getMyDungeon().getMyCurrentRoom().setMonsterType(MonsterType.NONE);
                 }
             }
             case ATTACK -> myLogTextArea.appendText("\n" + name + " Attacked!");
