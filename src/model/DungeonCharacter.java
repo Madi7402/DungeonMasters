@@ -19,7 +19,7 @@ import java.util.Random;
 public abstract class DungeonCharacter extends PropertyChange implements PropertyChangeEnableFight, Serializable {
     /** UID for Serialization */
     @Serial
-    private static final long serialVersionUID = 1L; // Update on class changes (!)
+    private static final long serialVersionUID = 2L; // Update on class changes (!)
     /**
      * The maximum length of a Character's Name
      */
@@ -217,4 +217,16 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
     public int getMyMaxHealthPoints() {
         return myStats.startingHealth();
     }
+
+    /**
+     * Get the attack speed of the character
+     * @return Character's attack speed
+     */
+    public int getAttackSpeed() { return myStats.attackSpeed(); }
+
+    /**
+     * Is the character alive?
+     * @return true if Character's HealthPoints are more than zero
+     */
+    public boolean isAlive() { return myHealthPoints > 0; }
 }
