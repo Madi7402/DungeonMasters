@@ -25,8 +25,10 @@ public class Warrior extends Hero {
     @Override
     public boolean specialSkill(final DungeonCharacter theTarget) {
         if (!randomChance(SPECIAL_SKILL.getChance())) {
+            fireEvent(ATTACK_MISS);
             return false;
         }
+        fireEvent(ATTACK);
         theTarget.takeDamage(randomValue(75, 175)); // TODO -JA: replace Magic numbers?
         return true;
     }
