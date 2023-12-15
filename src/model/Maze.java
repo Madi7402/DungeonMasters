@@ -277,7 +277,7 @@ public class Maze implements Serializable {
      * @param theCoordinate The coordinates of the room.
      * @return True if the room is within bounds; otherwise, false.
      */
-    private boolean isValidRoom(final Coordinates theCoordinate) {
+    public boolean isValidRoom(final Coordinates theCoordinate) {
         return myRooms.containsKey(theCoordinate);
     }
 

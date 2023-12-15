@@ -66,31 +66,54 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
     }
 
     public boolean goDirection(Direction theDirection) {
-        Room newRoom = myMaze.getRoom(myCurrentCoordinates, theDirection);
-        if (newRoom != null && myCurrentRoom.getDoors().contains(theDirection)) {
-            myCurrentRoom = newRoom;
-            myCurrentRoom.setVisited(true);
-            myCurrentCoordinates = myCurrentRoom.getCoordinate();
-            fireEvent(NAVIGATED);
-        } else {
+        if (!myCurrentRoom.getDoors().contains(theDirection)) {
             fireEvent(NAV_FAIL);
             return false;
         }
+        Room newRoom = myMaze.getRoom(myCurrentCoordinates, theDirection);
 
+        if (navigateToRoom(newRoom)) {
+            checkForPit();
+            checkForMonster();
 
+            // Collect items from room
+            for (Item item : myCurrentRoom.takeEquipableItems()) {
+                myHero.getItem(item);
+            }
+
+            return true;
+        }
+
+        fireEvent(NAV_FAIL);
+        return false; // Could not navigate to room
+    }
+
+    private boolean navigateToRoom(final Room theRoom) {
+        if (theRoom == null || !myMaze.isValidRoom(theRoom.getCoordinate())) {
+            return false;
+        }
+
+        myCurrentRoom = theRoom;
+        myCurrentRoom.setVisited(true);
+        myCurrentCoordinates = myCurrentRoom.getCoordinate();
+        fireEvent(NAVIGATED);
+
+        return true;
+    }
+
+    private void checkForPit() {
         if (myCurrentRoom.hasPit()) {
             myHero.hitPit();
         }
+    }
 
+    private void checkForMonster() {
         if (myCurrentRoom.hasMonster()) {
-            fireEvent(FIGHT_BEGIN);
+            startMonsterFight();
         }
+    }
 
-        // Get items from room
-        // TODO: Should we wait until after the fight has ended to retrieve items?
-        for (Item item : myCurrentRoom.takeEquipableItems()) {
-            myHero.getItem(item);
-        }
-        return true;
+    private void startMonsterFight() {
+        fireEvent(FIGHT_BEGIN);
     }
 }
