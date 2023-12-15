@@ -39,6 +39,11 @@ public class Room implements Serializable {
      */
     private EnumSet<Direction> myDoors;
     /**
+     * The monster type associated with the room (if it has a monster).
+     * It can be one of the following: NONE, GREMLIN, OGRE, SKELETON
+     */
+    private MonsterType myMonsterType;
+    /**
      * Indicates whether the room has a pillar.
      * A pillar is a special item that...
      */
@@ -85,10 +90,10 @@ public class Room implements Serializable {
      * @param theCoordinates       The coordinates of the room.
      */
     public Room(final boolean hasPit, final boolean hasHealingPotion, final boolean hasVisionPotion,
-                final EnumSet<Direction> theDoors, final Coordinates theCoordinates) {
+                final MonsterType theMonsterType, final EnumSet<Direction> theDoors, final Coordinates theCoordinates) {
         this.myPortal = Portal.NONE;
         this.isVisited = false;
-        this.hasPillar = false; // TODO: PILLAR ROOM?
+        this.hasPillar = false;
         this.hasPit = hasPit;
         this.hasHealingPotion = hasHealingPotion;
         if (hasHealingPotion) {
@@ -98,6 +103,7 @@ public class Room implements Serializable {
         if (hasVisionPotion) {
             addItem(new Item(ItemType.VISION_POTION));
         }
+        this.myMonsterType = theMonsterType;
         this.myDoors = theDoors;
         this.myCoordinates = theCoordinates;
     }
@@ -107,7 +113,7 @@ public class Room implements Serializable {
      *
      * @param thePortal The portal type for the room.
      */
-    public void setMyPortal(final Portal thePortal) {
+    public void setPortal(final Portal thePortal) {
         this.myPortal = thePortal;
     }
 
@@ -116,7 +122,7 @@ public class Room implements Serializable {
      *
      * @return The portal type of the room.
      */
-    public Portal getMyPortal() {
+    public Portal getPortal() {
         return myPortal;
     }
 
@@ -132,10 +138,10 @@ public class Room implements Serializable {
     /**
      * Sets the visitation status of the room.
      *
-     * @param theIsVisited The visitation status to set.
+     * @param theVisited The visitation status to set.
      */
-    public void setIsVisited(final boolean theIsVisited) {
-        this.isVisited = theIsVisited;
+    public void setVisited(final boolean theVisited) {
+        this.isVisited = theVisited;
     }
 
     /**
@@ -154,7 +160,6 @@ public class Room implements Serializable {
             myDoors.remove(theDirection);
             return false;
         }
-        // TODO - maybe this should return true (add not remove door)
 
         myNeighbors.put(theDirection, theNeighbor);
         theNeighbor.myNeighbors.put(theDirection.getOppositeDirection(), this);
@@ -275,12 +280,23 @@ public class Room implements Serializable {
     /**
      * Sets the presence of a pillar in the room.
      *
-     * @param theHasPillar True if the room has a pillar, false otherwise.
+     * @param thePillar True if the room has a pillar, false otherwise.
      */
-    public void setPillar(final boolean theHasPillar) {
-        this.hasPillar = theHasPillar; // might need to add Item instead TO DO !!!
+    public void setPillar(final boolean thePillar) {
+        this.hasPillar = thePillar;
     }
 
+    public boolean hasMonster() {
+        return myMonsterType != MonsterType.NONE;
+    }
+
+    public MonsterType getMyMonsterType() {
+        return myMonsterType;
+    }
+
+    public void setMonsterType(final MonsterType theMonsterType) {
+        this.myMonsterType = theMonsterType;
+    }
 
     /**
      * Adds an item to the room.
@@ -310,8 +326,12 @@ public class Room implements Serializable {
         return myDoors;
     }
 
+    /**
+     * Removes any doors that exist in the specified direction.
+     * @param theDirection
+     */
     public void tryRemoveDoor(Direction theDirection) {
-        // TODO - if a door exists in this direction, remove it
+        myDoors.remove(theDirection);
     }
 
     /**
@@ -321,12 +341,4 @@ public class Room implements Serializable {
     public boolean hasPit() {
         return hasPit;
     }
-
-    // TODO - get rid of all the Item setters (pillar, potion, pit)
-    // get rid of the related fields
-    // keep has functions, check item tree instead of fields
-    // update toString to use these functions for the printing
-    // map means one pit, one pillar, and one potion of each type
-    // don't touch Portal!!!
-    // and then update Maze to use Items instead of booleans
 }

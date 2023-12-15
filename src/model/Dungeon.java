@@ -48,7 +48,7 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
         myCurrentRoom = myMaze.getStartingRoom();
         myCurrentCoordinates = myCurrentRoom.getCoordinate();
 
-        myCurrentRoom.setIsVisited(true);
+        myCurrentRoom.setVisited(true);
     }
 
     public Room getMyCurrentRoom() {
@@ -67,7 +67,7 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
         Room newRoom = myMaze.getRoom(myCurrentCoordinates, theDirection);
         if (newRoom != null && myCurrentRoom.getDoors().contains(theDirection)) {
             myCurrentRoom = newRoom;
-            myCurrentRoom.setIsVisited(true);
+            myCurrentRoom.setVisited(true);
             myCurrentCoordinates = myCurrentRoom.getCoordinate();
             fireEvent(NAVIGATED);
         } else {
