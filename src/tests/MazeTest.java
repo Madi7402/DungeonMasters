@@ -25,7 +25,7 @@ public class MazeTest {
     @Test
     public void mazeTest() {
         final var maze = new Maze(myRandomRoomFactory, 3, 3);
-        System.out.println(maze.toString());
+        System.out.println(maze);
         assertNotNull(maze.toString());
     }
 
