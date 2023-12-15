@@ -21,11 +21,11 @@ public class Maze implements Serializable {
     /**
      * The width of the maze, representing the number of columns (or rooms).
      */
-    private int myWidth = 5;
+    private final int myWidth;
     /**
      * The height of the maze, representing the number of rows.
      */
-    private int myHeight = 5;
+    private final int myHeight;
     /**
      * The fixed number of levels in the maze.
      */
@@ -115,13 +115,12 @@ public class Maze implements Serializable {
 
             if (!isExitFound && isExitRoom(theRoom)) {
                 isExitFound = true;
-                // TODO - add extra scary monster to guard exit
+                theRoom.setPillar(true);
+                theRoom.setMonsterType(MonsterType.getRandomMonster(new Random()));
             }
 
             if (!hasDeadEnd && isDeadEndRoom(theRoom)) {
                 hasDeadEnd = true;
-                theRoom.setPillar(true);
-                // TODO - add extra scary monster to guard pillar
             }
         }
     }
