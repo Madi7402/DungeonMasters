@@ -9,15 +9,31 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Controller for the main start menu ("StartMenu.fxml").
+ * @author Jonathan Abrams, Madison Pope, Martha Emerson
+ */
 public class MenuController extends AbstractController {
 
+    /**
+     * Button that switches to the new game screen when pressed ("NewGame.fxml").
+     * @throws IOException Input/Output exception.
+     */
     public void newGameButton() throws IOException {
         switchScene("NewGame.fxml");
     }
+
+    /**
+     * Button that switches to the load game screen when pressed ("LoadGameMenu.fxml").
+     * @throws IOException Input/Output exception.
+     */
      public void loadGameButton() throws IOException {
         switchScene("LoadGameMenu.fxml");
     }
 
+    /**
+     * Button that initializes and loads a credits pop up when pressed.
+     */
     public void creditsButton(){
         Stage creditStage = new Stage();
         creditStage.initModality(Modality.APPLICATION_MODAL);
