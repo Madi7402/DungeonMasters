@@ -23,22 +23,40 @@ public abstract class PropertyChange implements PropertyChangeEnable {
         myPcs.firePropertyChange(theEvent, theStart, theEnd);
     }
 
+    /**
+     * Add a property change listener when given a listener.
+     * @param theListener The PropertyChangeListener to be added.
+     */
     @Override
     public void addPropertyChangeListener(final PropertyChangeListener theListener) {
         myPcs.addPropertyChangeListener(theListener);
     }
 
+    /**
+     * Add a property change listener when given a listener and a property name.
+     * @param thePropertyName The name of the property to listen on.
+     * @param theListener The PropertyChangeListener to be added.
+     */
     @Override
     public void addPropertyChangeListener(final String thePropertyName,
                                           final PropertyChangeListener theListener) {
         myPcs.addPropertyChangeListener(thePropertyName, theListener);
     }
 
+    /**
+     * Remove a property change listener when given a listener.
+     * @param theListener The PropertyChangeListener to be removed.
+     */
     @Override
     public void removePropertyChangeListener(final PropertyChangeListener theListener) {
         myPcs.removePropertyChangeListener(theListener);
     }
 
+    /**
+     * Remove a property change listener when given a listener and a property name.
+     * @param thePropertyName The name of the property that was listened on.
+     * @param theListener The PropertyChangeListener to be removed.
+     */
     @Override
     public void removePropertyChangeListener(final String thePropertyName,
                                              final PropertyChangeListener theListener) {

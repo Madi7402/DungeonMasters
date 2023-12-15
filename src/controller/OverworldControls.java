@@ -6,6 +6,10 @@ import model.DungeonControls;
 
 import java.util.Objects;
 
+/**
+ * Class that handles dungeon movement controls.
+ * @author Jonathan Abrams, Madison Pope, Martha Emerson
+ */
 public class OverworldControls implements DungeonControls {
     private final Dungeon myDungeon;
     public OverworldControls(final Dungeon theDungeon) {
