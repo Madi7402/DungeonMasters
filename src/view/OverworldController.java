@@ -324,11 +324,11 @@ public class OverworldController extends AbstractController implements PropertyC
 
     /**
      * Property Change method to handle PropertyChangeEvents.
-     * @param evt A PropertyChangeEvent object describing the event source and the property that has changed.
+     * @param theEvent A PropertyChangeEvent object describing the event source and the property that has changed.
      */
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        switch (evt.getPropertyName()) {
+    public void propertyChange(PropertyChangeEvent theEvent) {
+        switch (theEvent.getPropertyName()) {
             case NAVIGATED -> {
                 try {
                     updateRoomGrid();
@@ -357,7 +357,7 @@ public class OverworldController extends AbstractController implements PropertyC
                     throw new RuntimeException(e);
                 }
             }
-            default -> System.err.println("Received unknown event " + evt.getPropertyName());
+            default -> System.err.println("Received unknown event " + theEvent.getPropertyName());
         }
     }
 

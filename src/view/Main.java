@@ -12,16 +12,15 @@ import javafx.scene.Parent;
  * @author Joanthan Abrams, Madison Pope, Martha Emerson
  */
 public class Main extends Application {
-
-    private static int WINDOW_WIDTH = 1280;
-    private static int WINDOW_HEIGHT = 720;
+    private final static int WINDOW_WIDTH = 1280;
+    private final static int WINDOW_HEIGHT = 720;
 
     /**
      * Main method that launches the program.
-     * @param args
+     * @param theArgs String[] of program arguments.
      */
-    public static void main(String[] args){
-        launch(args);
+    public static void main(String[] theArgs){
+        launch(theArgs);
     }
 
     /**

@@ -17,17 +17,17 @@ public abstract class AbstractController {
     private Scene myScene;
     private Parent myRoot;
 
-    private static int WINDOW_WIDTH = 1280;
-    private static int WINDOW_HEIGHT = 720;
+    private final static int WINDOW_WIDTH = 1280;
+    private final static int WINDOW_HEIGHT = 720;
 
     /**
      * A universal method for switching scenes (fxml files).
-     * @param sceneName a String name of the fxml file you want to switch to (Ex: "File.fxml").
+     * @param theSceneName a String name of the fxml file you want to switch to (Ex: "File.fxml").
      * @return FXMLLoader
-     * @throws IOException
+     * @throws IOException Input/Output exception.
      */
-    public FXMLLoader switchScene(String sceneName) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(sceneName)));
+    public FXMLLoader switchScene(String theSceneName) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(theSceneName)));
         myRoot = fxmlLoader.load();
         myScene = new Scene(myRoot, WINDOW_WIDTH, WINDOW_HEIGHT);
         AbstractController ac = fxmlLoader.getController();
@@ -39,7 +39,7 @@ public abstract class AbstractController {
 
     /**
      * A method that switches back to the main menu.
-     * @throws IOException
+     * @throws IOException Input/Output exception.
      */
     public void backToMenuButton() throws IOException {
         switchScene("StartMenu.fxml");
@@ -47,7 +47,7 @@ public abstract class AbstractController {
 
     /**
      * A method that switches to the game over screen.
-     * @throws IOException
+     * @throws IOException Input/Output exception.
      */
     public void gameOver() throws IOException {
         switchScene("GameOverScreen.fxml");
