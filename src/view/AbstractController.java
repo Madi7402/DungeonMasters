@@ -32,7 +32,7 @@ public abstract class AbstractController {
     }
 
     public void gameOver() throws IOException {
-        switchScene("GameOver.fxml");
+        switchScene("GameOverScreen.fxml");
     }
 
     protected void setMyStage(final Stage theStage) {

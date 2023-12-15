@@ -42,7 +42,7 @@ public class CombatMenuController extends AbstractController implements Property
     @FXML
     private TextArea myLogTextArea;
     @FXML
-    private Button myHiddenGameOverButton;
+    private Button myDieButton;
 
     @FXML
     private ListView<Item> myInventoryListView;
@@ -76,7 +76,7 @@ public class CombatMenuController extends AbstractController implements Property
             }
         });
 
-        myHiddenGameOverButton.setOnAction(actionEvent -> {
+        myDieButton.setOnAction(actionEvent -> {
             myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
             myDungeonAdventure.getMyDungeon().removePropertyChangeListener(this);
             try {
@@ -118,7 +118,6 @@ public class CombatMenuController extends AbstractController implements Property
                 myLogTextArea.appendText("\n" + name + " DIED!");
                 if (source.equals(myHero)) {
                     myDieButton.fire(); // HACK
-                    myHiddenGameOverButton.fire(); // HACK
                 } else {
                     myAttackButton.setDisable(true);
                     mySpecialAttackButton.setDisable(true);
