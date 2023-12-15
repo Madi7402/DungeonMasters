@@ -2,7 +2,6 @@ package view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -43,7 +42,7 @@ public class CombatMenuController extends AbstractController implements Property
     @FXML
     private TextArea myLogTextArea;
     @FXML
-    private Button myHiddenGameOverButton;
+    private Button myDieButton;
 
     @FXML
     private ListView<Item> myInventoryListView;
@@ -77,7 +76,7 @@ public class CombatMenuController extends AbstractController implements Property
             }
         });
 
-        myHiddenGameOverButton.setOnAction(actionEvent -> {
+        myDieButton.setOnAction(actionEvent -> {
             myDungeonAdventure.getMyHero().removePropertyChangeListener(this);
             myDungeonAdventure.getMyDungeon().removePropertyChangeListener(this);
             try {
@@ -118,10 +117,11 @@ public class CombatMenuController extends AbstractController implements Property
             case DEATH -> {
                 myLogTextArea.appendText("\n" + name + " DIED!");
                 if (source.equals(myHero)) {
-                    myHiddenGameOverButton.fire(); // HACK
+                    myDieButton.fire(); // HACK
                 } else {
                     myAttackButton.setDisable(true);
                     mySpecialAttackButton.setDisable(true);
+                    myDungeonAdventure.getMyDungeon().getMyCurrentRoom().setMonsterType(MonsterType.NONE);
                 }
             }
             case ATTACK -> myLogTextArea.appendText("\n" + name + " Attacked!");
