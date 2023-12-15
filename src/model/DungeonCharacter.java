@@ -58,7 +58,6 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
         myHealthPoints = myStats.startingHealth(); // TODO -JA: Do we just want to build this into CharStats?
         myPcs = new PropertyChangeSupport(this);
         final String imgQuery = "SELECT img FROM character where name == '" + this.getClass().getSimpleName().toLowerCase() + "'";
-        System.out.println(imgQuery);
         try (SQLite db = new SQLite(imgQuery)) {
             ResultSet rs = db.getMyResults();
             myImagePath = rs.getString("img");

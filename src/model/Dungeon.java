@@ -8,6 +8,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
+import static controller.PropertyChangeEnableFight.FIGHT_BEGIN;
+
 /**
  * Creates the maze of rooms within the dungeon.
  * @author Jonathan Abrams, Madison Pope, Martha Emerson
@@ -80,8 +82,12 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
             myHero.hitPit();
         }
 
-        // TODO: is there a monster?
+        if (myCurrentRoom.hasMonster()) {
+            fireEvent(FIGHT_BEGIN);
+        }
+
         // Get items from room
+        // TODO: Should we wait until after the fight has ended to retrieve items?
         for (Item item : myCurrentRoom.takeEquipableItems()) {
             myHero.getItem(item);
         }
