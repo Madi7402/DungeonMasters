@@ -47,26 +47,26 @@ public class Room implements Serializable {
      * Indicates whether the room has a pillar.
      * A pillar is a special item that...
      */
-    private boolean hasPillar; // will go away, only need method
+    private boolean hasPillar;
     /**
      * Indicates whether the room has a pit.
      * A pit is a dangerous element that...
      */
-    private boolean hasPit; // will go away, only need method
+    private boolean hasPit;
     /**
      * Indicates whether the room has a healing potion.
      * A healing potion is an item that...
      */
-    private boolean hasHealingPotion; // will go away, only need method
+    private boolean hasHealingPotion;
     /**
      * Indicates whether the room has a vision potion.
      * A vision potion is an item that...
      */
-    private boolean hasVisionPotion; // will go away, only need method
+    private boolean hasVisionPotion;
     /**
      * Indicates whether the room has been visited by the backtracking algorithm.
      */
-    private boolean isVisited; // keep here
+    private boolean isVisited;
     /**
      * The coordinates of the room in the maze.
      * Coordinates include the level, row, and column of the room.
@@ -109,21 +109,21 @@ public class Room implements Serializable {
     }
 
     /**
-     * Sets the portal type for the room.
-     *
-     * @param thePortal The portal type for the room.
-     */
-    public void setPortal(final Portal thePortal) {
-        this.myPortal = thePortal;
-    }
-
-    /**
      * Retrieves the portal type associated with the room.
      *
      * @return The portal type of the room.
      */
     public Portal getPortal() {
         return myPortal;
+    }
+
+    /**
+     * Sets the portal type for the room.
+     *
+     * @param thePortal The portal type for the room.
+     */
+    public void setPortal(final Portal thePortal) {
+        this.myPortal = thePortal;
     }
 
     /**
@@ -142,6 +142,78 @@ public class Room implements Serializable {
      */
     public void setVisited(final boolean theVisited) {
         this.isVisited = theVisited;
+    }
+
+    /**
+     * Retrieves the coordinate of a room in the maze.
+     *
+     * @return The coordinate of the room.
+     */
+    public Coordinates getCoordinate() {
+        return this.myCoordinates;
+    }
+
+    /**
+     * Retrieves the neighbors of the room.
+     *
+     * @return A collection of neighboring rooms.
+     */
+    public Collection<Room> getNeighbors() {
+        return this.myNeighbors.values();
+    }
+
+    /**
+     * Retrieves the directions in which the room has doors.
+     *
+     * @return An EnumSet containing the directions in which the room has doors.
+     */
+    public EnumSet<Direction> getDoors() {
+        return myDoors;
+    }
+
+    /**
+     * Retrieves the type of monster present in the room.
+     *
+     * @return The type of monster as a MonsterType enum value.
+     */
+    public MonsterType getMyMonsterType() {
+        return myMonsterType;
+    }
+
+    /**
+     * Sets the type of monster for the room.
+     *
+     * @param theMonsterType The MonsterType to be set for the room.
+     */
+    public void setMonsterType(final MonsterType theMonsterType) {
+        this.myMonsterType = theMonsterType;
+    }
+
+    /**
+     * Checks whether the room contains a monster.
+     *
+     * @return true if the room has a monster, otherwise return false.
+     */
+    public boolean hasMonster() {
+        return myMonsterType != MonsterType.NONE;
+    }
+
+    /**
+     * Checks whether the room contains a pit.
+     *
+     * @return true if the room has a pit, otherwise return false.
+     */
+    public boolean hasPit() {
+        return hasPit;
+    }
+
+    /**
+     * Sets the presence of a pillar in the room.
+     *
+     * @param thePillar True if the room has a pillar, false otherwise.
+     */
+    public void setPillar(final boolean thePillar) {
+        this.hasPillar = thePillar;
     }
 
     /**
@@ -164,6 +236,39 @@ public class Room implements Serializable {
         myNeighbors.put(theDirection, theNeighbor);
         theNeighbor.myNeighbors.put(theDirection.getOppositeDirection(), this);
         return true; // neighbor door matches yours
+    }
+
+    /**
+     * Removes any doors that exist in the specified direction.
+     *
+     * @param theDirection The direction in which the door should be removed.
+     */
+    public void tryRemoveDoor(Direction theDirection) {
+        myDoors.remove(theDirection);
+    }
+
+    /**
+     * Adds an item to the room.
+     *
+     * @param theItem The item to be added.
+     */
+    public void addItem(final Item theItem) {
+        myItems.put(theItem.getType(), theItem);
+    }
+    // use this in place of set pit, set pillar, etc. for anything that's an item
+
+    /**
+     * Removes all equipable items from the room and returns them.
+     *
+     * @return A collection of equipable items.
+     */
+    public Collection<Item> takeEquipableItems() {
+        var equipableItems = myItems.values().stream().filter(Item::isEquipable).toList();
+
+        for (var equipableItem : equipableItems) {
+            myItems.remove(equipableItem.getType());
+        }
+        return equipableItems;
     }
 
     /**
@@ -291,105 +396,5 @@ public class Room implements Serializable {
         sb.append(printBottomOfRoom()).append('\n');
 
         return sb.toString();
-    }
-
-    /**
-     * Retrieves the coordinate of a room in the maze.
-     *
-     * @return The coordinate of the room.
-     */
-    public Coordinates getCoordinate() {
-        return this.myCoordinates;
-    }
-
-    /**
-     * Retrieves the neighbors of the room.
-     *
-     * @return A collection of neighboring rooms.
-     */
-    public Collection<Room> getNeighbors() {
-        return this.myNeighbors.values();
-    }
-
-    /**
-     * Sets the presence of a pillar in the room.
-     *
-     * @param thePillar True if the room has a pillar, false otherwise.
-     */
-    public void setPillar(final boolean thePillar) {
-        this.hasPillar = thePillar;
-    }
-
-    /**
-     * Checks whether the room contains a monster.
-     *
-     * @return true if the room has a monster, otherwise return false.
-     */
-    public boolean hasMonster() {
-        return myMonsterType != MonsterType.NONE;
-    }
-
-    /**
-     * Retrieves the type of monster present in the room.
-     *
-     * @return The type of monster as a MonsterType enum value.
-     */
-    public MonsterType getMyMonsterType() {
-        return myMonsterType;
-    }
-
-    /**
-     * Sets the type of monster for the room.
-     *
-     * @param theMonsterType The MonsterType to be set for the room.
-     */
-    public void setMonsterType(final MonsterType theMonsterType) {
-        this.myMonsterType = theMonsterType;
-    }
-
-    /**
-     * Adds an item to the room.
-     *
-     * @param theItem The item to be added.
-     */
-    public void addItem(final Item theItem) {
-        myItems.put(theItem.getType(), theItem);
-    }
-        // use this in place of set pit, set pillar, etc. for anything that's an item
-
-    /**
-     * Removes all equipable items from the room and returns them.
-     *
-     * @return A collection of equipable items.
-     */
-    public Collection<Item> takeEquipableItems() {
-        var equipableItems = myItems.values().stream().filter(Item::isEquipable).toList();
-
-        for (var equipableItem : equipableItems) {
-            myItems.remove(equipableItem.getType());
-        }
-        return equipableItems;
-    }
-
-    public EnumSet<Direction> getDoors() {
-        return myDoors;
-    }
-
-    /**
-     * Removes any doors that exist in the specified direction.
-     *
-     * @param theDirection The direction in which the door should be removed.
-     */
-    public void tryRemoveDoor(Direction theDirection) {
-        myDoors.remove(theDirection);
-    }
-
-    /**
-     * Checks whether the room contains a pit.
-     *
-     * @return true if the room has a pit, otherwise return false.
-     */
-    public boolean hasPit() {
-        return hasPit;
     }
 }
