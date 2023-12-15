@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.OverworldController">
+<AnchorPane xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.OverworldController">
    <children>
       <Button fx:id="myDieButton" mnemonicParsing="false" onAction="#gameOver" opacity="0.0" />
       <SplitPane dividerPositions="0.75" layoutY="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0">
@@ -102,12 +102,12 @@
                                                 <Image url="@../../img/thief.png" />
                                              </image>
                                           </ImageView>
-                                          <TextFlow layoutX="5.0" layoutY="135.0" prefHeight="32.0" prefWidth="130.0" textAlignment="CENTER">
+                                          <TextFlow layoutX="5.0" layoutY="137.0" prefHeight="32.0" prefWidth="130.0" textAlignment="CENTER">
                                              <children>
                                                 <Text fx:id="myHeroNameDisplayText" strokeType="OUTSIDE" strokeWidth="0.0" />
                                              </children>
                                           </TextFlow>
-                                          <TextFlow fx:id="myHeroHealthFlow" layoutX="7.0" layoutY="159.0" prefHeight="16.0" prefWidth="127.0">
+                                          <TextFlow fx:id="myHeroHealthFlow" layoutX="7.0" layoutY="161.0" prefHeight="16.0" prefWidth="127.0">
                                              <children>
                                                 <Text fx:id="myHeroCharStatsText" strokeType="OUTSIDE" strokeWidth="0.0" />
                                              </children>
