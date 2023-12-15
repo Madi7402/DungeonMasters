@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import model.DungeonAdventure;
 
@@ -34,13 +35,17 @@ public class LoadGameController extends AbstractController implements Initializa
             FileInputStream fileInputStream = new FileInputStream(mySaveList.getSelectionModel().getSelectedItem());
             BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
             ObjectInputStream objectInputStream = new ObjectInputStream(bufferedInputStream);
-            DungeonAdventure da = (DungeonAdventure) objectInputStream.readObject();
-
+            DungeonAdventure da;
+            try {
+                da = (DungeonAdventure) objectInputStream.readObject();
+            } catch (InvalidClassException ice) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Sorry, Save file is incompatible: Possibly from an old version.");
+                alert.showAndWait();
+                return;
+            }
             FXMLLoader loader = switchScene("Overworld.fxml");
             OverworldController controller = loader.getController();
             controller.setAdventure(da);
-            //controller.setHeroImage(myHeroImageView.getImage()); // TODO - JA: Get this in Overworld Controller Instead from DA
-
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
