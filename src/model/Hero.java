@@ -153,10 +153,13 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
             throw new IllegalArgumentException("Item index out of bounds");
         }
         Item currentItem = myInventory.get(theIndex);
-        if (currentItem.getType() == HEALING_POTION || currentItem.getType() == VISION_POTION) {
+        if (currentItem.isEquipable() && currentItem.getType() != PILLAR_ABSTRACTION
+                && currentItem.getType() != PILLAR_ENCAPSULATION
+                && currentItem.getType() != PILLAR_INHERITANCE
+                && currentItem.getType() != PILLAR_POLYMORPHISM) {
             myInventory.remove(currentItem);
             return true;
-        } // TODO -JA: Make this more flexible with additional potential items
+        }
         return false; // Pillars are not removable
     }
 
