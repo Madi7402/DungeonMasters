@@ -21,13 +21,13 @@ public class DungeonAdventure implements Serializable {
      * Public constructor for DungeonAdventure
      */
     private DungeonAdventure() {
-        myDungeon = new Dungeon(10, 10); // TODO -JA: Is this default size good?
         myHero = new Thief("Default Hero");
+        myDungeon = new Dungeon(myHero,10, 10); // TODO -JA: Is this default size good?
     }
 
     public DungeonAdventure(final Hero theHero, final int theMapWidth, final int theMapHeight) {
-        myDungeon = new Dungeon(theMapWidth, theMapHeight);
         myHero = Objects.requireNonNull(theHero);
+        myDungeon = new Dungeon(myHero, theMapWidth, theMapHeight);
     }
 
     /**
