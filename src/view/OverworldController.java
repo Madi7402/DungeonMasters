@@ -35,10 +35,8 @@ import static controller.PropertyChangeEnableHero.VISION_POTION_USED;
 public class OverworldController extends AbstractController implements PropertyChangeListener {
     @FXML
     private ImageView myHeroImageView;
-
     @FXML
     private Text myHeroNameDisplayText;
-
     @FXML
     private SubScene myCurrentRoom;
     @FXML
@@ -69,29 +67,24 @@ public class OverworldController extends AbstractController implements PropertyC
     private FlowPane myFlowPane;
     @FXML
     private Circle myCircle;
-
     @FXML
     private Text myHeroHealthText;
-
     @FXML
     private Text myHeroCharStatsText;
     @FXML
     private ListView<Item> myInventoryListView;
-
     @FXML
     private Button myInventoryUseButton;
-
     @FXML
     private Button myInventoryInfoButton;
-
     @FXML
     private Button myFightButton;
-
     @FXML
     private Accordion myAccordion;
-
     @FXML
     private Button myPitButton;
+    @FXML
+    private Button myHpButton;
     private Timeline myDamageAnimation;
     private DungeonAdventure myDungeonAdventure;
     private OverworldControls myOverworldControls;
@@ -123,10 +116,16 @@ public class OverworldController extends AbstractController implements PropertyC
             }
         });
 
+        // Cheats/Dev Tools
         myPitButton.setOnAction(actionEvent -> myDungeonAdventure.getMyHero().hitPit());
-
         myFightButton.setOnAction(actionEvent -> switchToFightScene());
+        myHpButton.setOnAction(actionEvent -> giveHeroHpPotion());
+    }
 
+    private void giveHeroHpPotion() {
+        if (myDungeonAdventure != null) {
+            myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
+        }
     }
 
     private void switchToFightScene() {
