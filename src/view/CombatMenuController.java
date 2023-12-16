@@ -11,7 +11,6 @@ import model.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static controller.PropertyChangeEnableDungeon.GAME_WIN;
 import static controller.PropertyChangeEnableFight.*;
