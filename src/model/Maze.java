@@ -292,11 +292,10 @@ public class Maze implements Serializable {
      */
     public Room getRoom(final Coordinates theCoordinates, final Direction theDirection) {
         if (theCoordinates == null) {
-            return null;
+            throw new IllegalArgumentException("Coordinates cannot be null!");
         }
-        return myRooms.get(new Coordinates(theCoordinates.level(),
-                theCoordinates.row()+theDirection.getYOffset(),
-                theCoordinates.column()+theDirection.getXOffset()));
+
+        return getRoom(theCoordinates.generate(theDirection));
     }
 
     /**
