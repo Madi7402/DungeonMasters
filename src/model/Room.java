@@ -29,57 +29,29 @@ public class Room implements Serializable {
      */
     private final TreeMap<ItemType, Item> myItems = new TreeMap<>();
     /**
+     * The set of directions where the room has doors.
+     * These directions represent possible connections to adjacent rooms.
+     */
+    private final EnumSet<Direction> myDoors;
+    /**
+     * The coordinates of the room in the maze.
+     * Coordinates include the level, row, and column of the room.
+     */
+    private final Coordinates myCoordinates; // x, y, and z (levels)
+    /**
      * The portal type associated with the room.
      * It can be one of the following: NONE, ENTRANCE, or EXIT.
      */
     private Portal myPortal;
-    /**
-     * The set of directions where the room has doors.
-     * These directions represent possible connections to adjacent rooms.
-     */
-    private EnumSet<Direction> myDoors;
     /**
      * The monster type associated with the room (if it has a monster).
      * It can be one of the following: NONE, GREMLIN, OGRE, SKELETON
      */
     private MonsterType myMonsterType;
     /**
-     * Indicates whether the room has a pillar.
-     * A pillar is a special item that the hero must collect to win the game.
-     * There are four pillars, which represent the pillars of OOP.
-     */
-    private boolean hasPillar;
-    /**
-     * Indicates whether the room has a pit.
-     * A pit is a dangerous element that causes the hero to lose health points.
-     */
-    private boolean hasPit;
-    /**
-     * Indicates whether the room has a healing potion.
-     * A healing potion is an item that allows the hero to regain health points.
-     */
-    private boolean hasHealingPotion;
-    /**
-     * Indicates whether the room has a vision potion.
-     * A vision potion is an item that allows the hero to see all adjacent rooms.
-     */
-    private boolean hasVisionPotion;
-    /**
      * Indicates whether the room has been visited by the backtracking algorithm.
      */
     private boolean isVisited;
-    /**
-     * The coordinates of the room in the maze.
-     * Coordinates include the level, row, and column of the room.
-     */
-    private Coordinates myCoordinates; // x, y, and z (levels)
-
-    /**
-     * Default constructor for an empty room.
-     */
-    public Room() {
-
-    }
 
     /**
      * Constructor for a room with specific features.
@@ -95,13 +67,12 @@ public class Room implements Serializable {
                 final Coordinates theCoordinates) {
         this.myPortal = Portal.NONE;
         this.isVisited = false;
-        this.hasPillar = false;
-        this.hasPit = hasPit;
-        this.hasHealingPotion = hasHealingPotion;
+        if (hasPit) {
+            addItem(new Item(ItemType.PIT));
+        }
         if (hasHealingPotion) {
             addItem(new Item(ItemType.HEALING_POTION));
         }
-        this.hasVisionPotion = hasVisionPotion;
         if (hasVisionPotion) {
             addItem(new Item(ItemType.VISION_POTION));
         }
@@ -206,7 +177,10 @@ public class Room implements Serializable {
      * @return true if the room has a pillar, otherwise return false.
      */
     public boolean hasPillar() {
-        return hasPillar;
+        return (myItems.get(ItemType.PILLAR_ABSTRACTION) != null
+                || myItems.get(ItemType.PILLAR_ENCAPSULATION) != null
+                || myItems.get(ItemType.PILLAR_INHERITANCE) != null
+                || myItems.get(ItemType.PILLAR_POLYMORPHISM) != null);
     }
 
     /**
@@ -215,7 +189,7 @@ public class Room implements Serializable {
      * @return true if the room has a healing potion, otherwise return false.
      */
     public boolean hasHealingPotion() {
-        return hasHealingPotion;
+        return myItems.get(ItemType.HEALING_POTION) != null;
     }
 
     /**
@@ -224,7 +198,7 @@ public class Room implements Serializable {
      * @return true if the room has a vision potion, otherwise return false.
      */
     public boolean hasVisionPotion() {
-        return hasVisionPotion;
+        return myItems.get(ItemType.VISION_POTION) != null;
     }
 
     /**
@@ -233,7 +207,7 @@ public class Room implements Serializable {
      * @return true if the room has a pit, otherwise return false.
      */
     public boolean hasPit() {
-        return hasPit;
+        return myItems.get(ItemType.PIT) != null;
     }
 
     /**
@@ -242,7 +216,26 @@ public class Room implements Serializable {
      * @param thePillar True if the room has a pillar, false otherwise.
      */
     public void setPillar(final boolean thePillar) {
-        this.hasPillar = thePillar;
+        ItemType oopPillar = null;
+        var level = myCoordinates.level();
+
+        switch (level) {
+            case 0 : oopPillar = ItemType.PILLAR_ABSTRACTION;
+            break;
+            case 1 : oopPillar = ItemType.PILLAR_ENCAPSULATION;
+            break;
+            case 2 : oopPillar = ItemType.PILLAR_INHERITANCE;
+            break;
+            case 3 : oopPillar = ItemType.PILLAR_POLYMORPHISM;
+            break;
+            default : throw new IllegalStateException("This is not a valid level!");
+        }
+
+        if (thePillar) {
+            addItem(new Item(oopPillar));
+        } else {
+            myItems.remove(oopPillar);
+        }
     }
 
     /**
@@ -285,7 +278,6 @@ public class Room implements Serializable {
         myItems.put(theItem.getType(), theItem);
     }
 
-
     /**
      * Removes all equipable items from the room and returns them.
      *
@@ -308,16 +300,16 @@ public class Room implements Serializable {
     public boolean hasMultipleItems() {
         int itemCount = 0;
 
-        if (hasPit) {
+        if (hasPit()) {
             itemCount++;
         }
-        if (hasHealingPotion) {
+        if (hasHealingPotion()) {
             itemCount++;
         }
-        if (hasVisionPotion) {
+        if (hasVisionPotion()) {
             itemCount++;
         }
-        if (hasPillar) {
+        if (hasPillar()) {
             itemCount++;
         }
 
@@ -357,7 +349,7 @@ public class Room implements Serializable {
 
         if (hasMultipleItems()) {
             sb.append("M");
-        } else if (hasPillar) { // one pillar type per level
+        } else if (hasPillar()) { // one pillar type per level
             var level = myCoordinates.level();
 
             if (level == 0) { // fix magic numbers
@@ -371,15 +363,15 @@ public class Room implements Serializable {
             } else {
                 sb.append("?");
             }
-        } else if (hasPit) {
+        } else if (hasPit()) {
             sb.append("X");
         } else if (myPortal.equals(Portal.ENTRANCE)) {
             sb.append("i");
         } else if (myPortal.equals(Portal.EXIT)) {
             sb.append("O");
-        } else if (hasHealingPotion) {
+        } else if (hasHealingPotion()) {
             sb.append("H");
-        } else if (hasVisionPotion) {
+        } else if (hasVisionPotion()) {
             sb.append("V");
         } else {
             sb.append(" ");
