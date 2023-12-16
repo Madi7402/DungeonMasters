@@ -119,31 +119,9 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
      */
     public boolean checkIfExit() {
         if (myCurrentRoom.getPortal() == Portal.EXIT) {
-            switch (myCurrentCoordinates.level()) {
-                case 0 -> {
-                    myHero.giveItem(ItemType.PILLAR_ENCAPSULATION);
-                    navigateToRoom(myMaze.getStartingRoom(myCurrentCoordinates.level()+1));
-                    return true;
-                }
-                case 1 -> {
-                    myHero.giveItem(ItemType.PILLAR_ABSTRACTION);
-                    navigateToRoom(myMaze.getStartingRoom(myCurrentCoordinates.level()+1));
-                    return true;
-                }
-                case 2 -> {
-                    myHero.giveItem(ItemType.PILLAR_INHERITANCE);
-                    navigateToRoom(myMaze.getStartingRoom(myCurrentCoordinates.level()+1));
-                    return true;
-                }
-                case 3 -> {
-                    myHero.giveItem(ItemType.PILLAR_POLYMORPHISM);
-                    fireEvent(GAME_WIN);
-                    return true;
-                }
-                default -> {
-                    fireEvent(GAME_WIN);
-                    return true;
-                }
+            if (myCurrentRoom.getCoordinate().level() == 3) {
+                fireEvent(GAME_WIN);
+                return true;
             }
         }
         return false;
