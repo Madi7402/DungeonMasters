@@ -241,6 +241,24 @@ public class Maze implements Serializable {
     }
 
     /**
+     * Retrieves the width of the maze, representing the number of columns.
+     *
+     * @return The width of the maze.
+     */
+    public int getWidth() {
+        return myWidth;
+    }
+
+    /**
+     * Retrieves the height of the maze, representing the number of rows.
+     *
+     * @return The height of the maze.
+     */
+    public int getHeight() {
+        return myHeight;
+    }
+
+    /**
      * Retrieves the starting room of the maze, which is the room with the entrance portal.
      *
      * @return The starting room with the entrance portal.
