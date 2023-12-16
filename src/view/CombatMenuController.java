@@ -74,7 +74,7 @@ public class CombatMenuController extends AbstractController implements Property
      * @param theMoveType the type of action to be performed from the battle screen
      */
     private void heroAction(MoveType theMoveType) {
-        if (myMonster == null && (myHero != null && myHero.isAlive())) {
+        if (myMonster == null || !myMonster.isAlive()) {
             if (theMoveType == MoveType.ITEM) // No monster, can still use item
                 myHero.useItem(myInventoryListView.getSelectionModel().getSelectedItem());
             return;
