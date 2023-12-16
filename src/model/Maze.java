@@ -258,10 +258,6 @@ public class Maze implements Serializable {
         return myHeight;
     }
 
-    public int getLevel() {
-        return LEVELS;
-    }
-
     /**
      * Retrieves the starting room of the maze, which is the room with the entrance portal.
      *
