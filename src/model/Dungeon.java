@@ -37,6 +37,13 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
     private final PropertyChangeSupport myPcs;
 
 
+    /**
+     * Create a Maze of room to serve as the game's main Dungeon.
+     * @param theHero the Hero of the DungeonAdventure
+     * @param theWidth the width of the maze
+     * @param theHeight the height of the maze
+     * @throws IllegalArgumentException if the maze is smaller than 4x4
+     */
     public Dungeon(final Hero theHero, final int theWidth, final int theHeight) {
         if (theWidth < 4 || theHeight < 4) {
             throw new IllegalArgumentException("Map must be at least 4x4");
@@ -53,6 +60,10 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
         myCurrentRoom.setVisited(true);
     }
 
+    /**
+     * Get the room you are currently navigated to in the Maze.
+     * @return the current room of the Maze
+     */
     public Room getMyCurrentRoom() {
         return myCurrentRoom;
     }
@@ -85,24 +96,22 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
             return true;
         }
 
-        fireEvent(NAV_FAIL);
+        fireEvent(NAV_FAIL); // Fallback-failure case, shouldn't ever get here
         return false; // Could not navigate to room
     }
 
     private void checkIfExit() {
         if (myCurrentRoom.getPortal() == Portal.EXIT) {
             switch (myCurrentCoordinates.level()) {
-                case 0 -> myHero.giveItem(ItemType.PILLAR_ABSTRACTION);
-                case 1 -> myHero.giveItem(ItemType.PILLAR_POLYMORPHISM);
+                case 0 -> myHero.giveItem(ItemType.PILLAR_ENCAPSULATION);
+                case 1 -> myHero.giveItem(ItemType.PILLAR_ABSTRACTION);
                 case 2 -> myHero.giveItem(ItemType.PILLAR_INHERITANCE);
                 case 3 -> {
-                    System.err.println("4 hit");
-                    myHero.giveItem(ItemType.PILLAR_ENCAPSULATION);
+                    myHero.giveItem(ItemType.PILLAR_POLYMORPHISM);
                     fireEvent(GAME_WIN); // TODO: make this event happen later?
                     return;
                 }
                 default -> {
-                    System.err.println("default hit");
                     fireEvent(GAME_WIN);
                     return;
                 }
@@ -112,7 +121,12 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
         }
     }
 
-    private boolean navigateToRoom(final Room theRoom) {
+    /**
+     * Warp to any valid room. For testing.
+     * @param theRoom the room to navigate to
+     * @return true if room was valid
+     */
+    public boolean navigateToRoom(final Room theRoom) {
         if (theRoom == null || !myMaze.isValidRoom(theRoom.getCoordinate())) {
             return false;
         }
