@@ -6,11 +6,6 @@ package model;
  */
 public class Priestess extends Hero {
     /**
-     * The Priestess' special skill.
-     */
-    private static final SpecialSkill SPECIAL_SKILL = SpecialSkill.HEAL;
-
-    /**
      * Construct a Priestess.
      * @param theName the provided name of the Hero.
      */
@@ -19,15 +14,12 @@ public class Priestess extends Hero {
     }
 
     /**
-     * Perform special skill.
+     * Perform special skill (HEAL)
      *
      * @return true if successful
      */
     @Override
     public boolean specialSkill(final DungeonCharacter theTarget) {
-        if (!randomChance(SPECIAL_SKILL.getChance())) {
-            return false;
-        }
         heal(randomValue(myStats.minHeal(), myStats.maxHeal()));
         return true;
     }

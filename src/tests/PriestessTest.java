@@ -21,15 +21,7 @@ public class PriestessTest {
     public void testSpecSkillOdds() {
         Priestess priestess = new Priestess("TestName");
         Ogre ogre = new Ogre();
-        int trueCount = 0; // expect ~100%
-        int iterations = 10_000;
-        for (int i = 0; i < iterations; i++) {
-            if(priestess.specialSkill(ogre)) {
-                trueCount++;
-            }
-        }
-
-        // Expect 100% true
-        assertEquals(trueCount, iterations);
+        // Priestess always heals
+        assertTrue(priestess.specialSkill(ogre));
     }
 }
