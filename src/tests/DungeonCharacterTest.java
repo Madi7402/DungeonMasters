@@ -42,12 +42,10 @@ public class DungeonCharacterTest {
     }
 
     @Test
-    public void healTest() { // TODO -JA: test failure
+    public void healTest() {
         final Priestess priestess = new Priestess("TestName");
         priestess.giveItem(ItemType.HEALING_POTION);
-        if (priestess.useItem(0)) {
-            priestess.removeItem(0);
-        }
+        priestess.useItem(0);
         assertEquals(100, priestess.getMyHealthPoints());
     }
 }
