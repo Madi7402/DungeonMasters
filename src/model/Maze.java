@@ -44,15 +44,6 @@ public class Maze implements Serializable {
         initializeMaze(theRoomFactory);
     }
 
-    public Room getStartingRoom(final int theLevel) {
-        for (var room : myRooms.values()) {
-            if (room.getPortal().equals(Portal.ENTRANCE) && room.getCoordinate().level() == theLevel) {
-                return room;
-            }
-        }
-        throw new IllegalStateException("Maze has no entrance!");
-    }
-
     /**
      * Initializes the maze with rooms, entrance and exit portals, and ensures traversability across levels.
      * Iterates through each level, initializing rooms, setting portals, and validating the maze.
@@ -80,48 +71,6 @@ public class Maze implements Serializable {
         for (Map.Entry<Coordinates, Room> entry : myRooms.entrySet()) {
             Room room = entry.getValue();
             room.setVisited(false);
-        }
-    }
-
-    /**
-     * A helper class to validate maze criteria during the traversal process.
-     * Criteria include finding the exit and detecting dead-end rooms.
-     */
-    private class ValidMazeCriteria {
-        /**
-         * Indicates whether the exit has been found during maze traversal.
-         */
-        boolean isExitFound;
-        /**
-         * Indicates whether a dead-end room has been encountered during maze traversal.
-         */
-        boolean hasDeadEnd;
-        /**
-         * Checks if the maze traversal meets the specified criteria.
-         *
-         * @return True if the criteria are met; otherwise, false.
-         */
-        public boolean isValid() {
-            return (isExitFound && hasDeadEnd);
-        }
-
-        /**
-         * Validates the specified room against the criteria.
-         * Marks dead-end rooms with pillars and identifies the exit room.
-         *
-         * @param theRoom The room to be validated.
-         */
-        private void validateRoom(final Room theRoom) {
-
-            if (!isExitFound && isExitRoom(theRoom)) {
-                isExitFound = true;
-                theRoom.setPillar(true);
-                theRoom.setMonsterType(MonsterType.getRandomMonster(new Random()));
-            }
-
-            if (!hasDeadEnd && isDeadEndRoom(theRoom)) {
-                hasDeadEnd = true;
-            }
         }
     }
 
@@ -173,14 +122,16 @@ public class Maze implements Serializable {
         return entrance;
     }
 
-                // Ensure that Maze is traversable from entrance to exit
     /**
      * Recursively generates the maze starting from the specified coordinate.
-     * Explores directions from the coordinate, creates connections between rooms, and validates maze criteria.
+     * Explores directions from the coordinate, establishes connections between rooms, and validates maze traversal criteria.
+     * The method connects rooms, validates each room against specified criteria, and marks them as visited.
+     * The recursive traversal continues until the entire maze is generated or traversal criteria are met.
      *
      * @param theCoordinate The starting coordinate for maze generation.
      * @param theCriteria   The criteria used to validate the maze during traversal.
      * @return True if traversal is successful according to the specified criteria; otherwise, false.
+     * @throws IllegalArgumentException if the specified starting coordinate is invalid.
      */
     private boolean TraverseTo(final Coordinates theCoordinate, final ValidMazeCriteria theCriteria) {
         if (!isValidRoom(theCoordinate)) {
@@ -290,6 +241,20 @@ public class Maze implements Serializable {
     }
 
     /**
+     * Retrieves the starting room of the maze, which is the room with the entrance portal.
+     *
+     * @return The starting room with the entrance portal.
+     * @throws IllegalStateException If the maze has no entrance portal, indicating an invalid maze state.
+     */
+    public Room getStartingRoom(final int theLevel) {
+        for (var room : myRooms.values()) {
+            if (room.getPortal().equals(Portal.ENTRANCE) && room.getCoordinate().level() == theLevel) {
+                return room;
+            }
+        }
+        throw new IllegalStateException("Maze has no entrance!");
+    }
+    /**
      * Return the room at the provided coordinates
      * @param theCoordinates the coordinates of the room to be provided.
      * @return the room at the given coordinates
@@ -298,6 +263,14 @@ public class Maze implements Serializable {
         return myRooms.get(theCoordinates);
     }
 
+    /**
+     * Retrieves the neighboring room of a given coordinates in a specified direction.
+     * If the provided coordinates or direction is null, the method returns null.
+     *
+     * @param theCoordinates The coordinates of the reference room.
+     * @param theDirection   The direction from the reference room to the neighboring room.
+     * @return The neighboring room in the specified direction, or null if coordinates or direction is null.
+     */
     public Room getRoom(final Coordinates theCoordinates, final Direction theDirection) {
         if (theCoordinates == null) {
             return null;
@@ -307,6 +280,13 @@ public class Maze implements Serializable {
                 theCoordinates.column()+theDirection.getXOffset()));
     }
 
+    /**
+     * Sets the visibility of rooms at the specified coordinates.
+     * Iterates through the given list of coordinates and marks the corresponding rooms as visited.
+     * If a coordinate is invalid, the method skips the room.
+     *
+     * @param theCoordinates A list of coordinates representing the rooms to be made visible.
+     */
     private void setRoomsVisible(final List<Coordinates> theCoordinates) {
         for (Coordinates coord : theCoordinates ) {
             if (isValidRoom(coord)) {
@@ -372,4 +352,47 @@ public class Maze implements Serializable {
         }
         return sb.toString();
     }
+
+    /**
+     * A helper class to validate maze criteria during the traversal process.
+     * Criteria include finding the exit and detecting dead-end rooms.
+     */
+    private class ValidMazeCriteria {
+        /**
+         * Indicates whether the exit has been found during maze traversal.
+         */
+        boolean isExitFound;
+        /**
+         * Indicates whether a dead-end room has been encountered during maze traversal.
+         */
+        boolean hasDeadEnd;
+        /**
+         * Checks if the maze traversal meets the specified criteria.
+         *
+         * @return True if the criteria are met; otherwise, false.
+         */
+        public boolean isValid() {
+            return (isExitFound && hasDeadEnd);
+        }
+
+        /**
+         * Validates the specified room against the criteria.
+         * Marks dead-end rooms with pillars and identifies the exit room.
+         *
+         * @param theRoom The room to be validated.
+         */
+        private void validateRoom(final Room theRoom) {
+
+            if (!isExitFound && isExitRoom(theRoom)) {
+                isExitFound = true;
+                theRoom.setPillar(true);
+                theRoom.setMonsterType(MonsterType.getRandomMonster(new Random()));
+            }
+
+            if (!hasDeadEnd && isDeadEndRoom(theRoom)) {
+                hasDeadEnd = true;
+            }
+        }
+    }
+
 }

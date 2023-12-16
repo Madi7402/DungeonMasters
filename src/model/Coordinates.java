@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 public record Coordinates(int level, int row, int column) implements Comparable<Coordinates>, Serializable {
     @Serial
-    private static final long serialVersionUID = 0L; // Update on class changes (!)
+    private static final long serialVersionUID = 1L; // TODO Update on class changes (!) && add Javadoc - ?
     /**
      * Generates new coordinates based on the specified row and column offsets.
      *
