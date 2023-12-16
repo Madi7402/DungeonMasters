@@ -45,8 +45,6 @@ public class CombatMenuController extends AbstractController implements Property
     @FXML
     private TextArea myLogTextArea;
     @FXML
-    private Button myDieButton;
-    @FXML
     private ListView<Item> myInventoryListView;
     @FXML
     private Button myInventoryUseButton;
