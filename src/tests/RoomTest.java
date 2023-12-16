@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.util.EnumSet;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -193,6 +194,25 @@ class RoomTest {
 
         assertTrue(roomWithMonster.hasMonster());
         assertFalse(roomWithoutMonster.hasMonster());
+    }
+
+    @Test
+    public void testSerialization() throws IOException, ClassNotFoundException {
+        var outStream1 = new ByteArrayOutputStream();
+        var outStream2 = new ObjectOutputStream(outStream1);
+
+        Room originalRoom = new Room(true, false, true, MonsterType.SKELETON,
+                EnumSet.of(Direction.NORTH, Direction.EAST), new Coordinates(1, 2, 3));
+
+        outStream2.writeObject(originalRoom);
+        outStream2.flush();
+
+        var inStream1 = new ByteArrayInputStream(outStream1.toByteArray());
+        var inStream2 = new ObjectInputStream(inStream1);
+
+        Room deserializedRoom = (Room) inStream2.readObject();
+
+        assertEquals(originalRoom.getCoordinate(), deserializedRoom.getCoordinate());
     }
 
     @Test
