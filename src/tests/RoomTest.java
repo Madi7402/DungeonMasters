@@ -212,7 +212,7 @@ class RoomTest {
 
         Room deserializedRoom = (Room) inStream2.readObject();
 
-        assertEquals(originalRoom.getCoordinate(), deserializedRoom.getCoordinate());
+        assertEquals(originalRoom.getCoordinate(), deserializedRoom.getCoordinate()); // TODO - can test more fields
     }
 
     @Test
