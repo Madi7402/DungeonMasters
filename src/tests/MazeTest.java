@@ -106,18 +106,18 @@ public class MazeTest {
         }
     }
 
-    private List<Coordinates> getSurroundingCoordinates(Coordinates center, int radius) {
+    private List<Coordinates> getSurroundingCoordinates(final Coordinates theCenter, final int theRadius) {
         List<Coordinates> surroundingCoordinates = new ArrayList<>();
 
-        if (radius >= 0) {
-            for (int xOffset = -radius; xOffset <= radius; xOffset++) {
-                for (int yOffset = -radius; yOffset <= radius; yOffset++) {
-                    Coordinates surroundingCoord = center.generate(xOffset, yOffset);
-                    surroundingCoordinates.add(surroundingCoord);
+        if (theRadius >= 0) {
+            for (int xOffset = -theRadius; xOffset <= theRadius; xOffset++) {
+                for (int yOffset = -theRadius; yOffset <= theRadius; yOffset++) {
+                    Coordinates coordinates = theCenter.generate(xOffset, yOffset);
+                    surroundingCoordinates.add(coordinates);
                 }
             }
         } else {
-            surroundingCoordinates.add(center);
+            surroundingCoordinates.add(theCenter);
         }
 
         return surroundingCoordinates;

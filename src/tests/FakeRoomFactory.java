@@ -6,7 +6,7 @@ import model.Room;
 
 public class FakeRoomFactory extends AbstractRoomFactory {
     @Override
-    protected Room createRoom(Coordinates theCoordinates) {
+    protected Room createRoom(final Coordinates theCoordinates) {
         return null;
     }
 }

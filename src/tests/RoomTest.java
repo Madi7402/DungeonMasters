@@ -198,18 +198,18 @@ class RoomTest {
         assertEquals(originalRoom, deserializedRoom);
     }
 
-    private byte[] serialize(Room room) {
+    private byte[] serialize(final Room theRoom) {
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
              ObjectOutput out = new ObjectOutputStream(bos)) {
-            out.writeObject(room);
+            out.writeObject(theRoom);
             return bos.toByteArray();
         } catch (IOException e) {
             throw new RuntimeException("Serialization error: " + e.getMessage(), e);
         }
     }
 
-    private Room deserialize(byte[] data) {
-        try (ByteArrayInputStream bis = new ByteArrayInputStream(data);
+    private Room deserialize(final byte[] theData) {
+        try (ByteArrayInputStream bis = new ByteArrayInputStream(theData);
              ObjectInput in = new ObjectInputStream(bis)) {
             return (Room) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
