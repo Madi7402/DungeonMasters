@@ -220,9 +220,9 @@ public class Room implements Serializable {
         var level = myCoordinates.level();
 
         switch (level) {
-            case 0 : oopPillar = ItemType.PILLAR_ABSTRACTION;
+            case 0 : oopPillar = ItemType.PILLAR_ENCAPSULATION;
             break;
-            case 1 : oopPillar = ItemType.PILLAR_ENCAPSULATION;
+            case 1 : oopPillar = ItemType.PILLAR_ABSTRACTION;
             break;
             case 2 : oopPillar = ItemType.PILLAR_INHERITANCE;
             break;
