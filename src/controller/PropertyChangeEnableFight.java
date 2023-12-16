@@ -1,5 +1,9 @@
 package controller;
 
+/**
+ * Interface for events that can happen in a fight.
+ * @author Jonathan Abrams, Madison Pope, Martha Emerson.
+ */
 public interface PropertyChangeEnableFight extends PropertyChangeEnable {
     /**
      * The Fight has begun!

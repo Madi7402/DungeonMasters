@@ -1,5 +1,9 @@
 package model;
 
+/**
+ * Enum class for different types of items.
+ * @author Jonathan Abrams, Madison Pope, Martha Emerson
+ */
 public enum ItemType {
     /** Pillar 1/4 **/
     PILLAR_ENCAPSULATION,

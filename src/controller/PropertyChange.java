@@ -3,6 +3,10 @@ package controller;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ * Abstract class that handles property change listeners.
+ * @author Jonathan Abrams, Madison Pope, Martha Emerson.
+ */
 public abstract class PropertyChange implements PropertyChangeEnable {
     private final PropertyChangeSupport myPcs = new PropertyChangeSupport(this);
     /**

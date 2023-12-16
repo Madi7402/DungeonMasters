@@ -319,12 +319,12 @@ public class Maze implements Serializable {
     /**
      * Set the surrounding rooms to visible.
      * @param theCoordinates the center point of the rooms
-     * @param radius how far to reach (i.e. 1 is the 8 rooms surrounding the center point
+     * @param theRadius how far to reach (i.e. 1 is the 8 rooms surrounding the center point
      */
-    public void setSurroundingRoomsVisible(final Coordinates theCoordinates, final int radius) {
+    public void setSurroundingRoomsVisible(final Coordinates theCoordinates, final int theRadius) {
         List<Coordinates> coordinatesList = new ArrayList<>();
-        for (int xOffset = -radius; xOffset <= radius; xOffset++) {
-            for (int yOffset = -radius; yOffset <= radius; yOffset++) {
+        for (int xOffset = -theRadius; xOffset <= theRadius; xOffset++) {
+            for (int yOffset = -theRadius; yOffset <= theRadius; yOffset++) {
                 if (xOffset == 0 && yOffset == 0) {
                     continue;
                 }

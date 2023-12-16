@@ -2,6 +2,10 @@ package controller;
 
 import java.beans.PropertyChangeListener;
 
+/**
+ * Interface for property change listeners
+ * @author Jonathan Abrams, Madison Pope, Martha Emerson
+ */
 public interface PropertyChangeEnable {
 
     // CREDIT: TCSS305 Example code.

@@ -1,5 +1,9 @@
 package controller;
 
+/**
+ * Interface for events that can happen in the dungeon.
+ * @author Jonathan Abrams, Madison Pope, Martha Emerson.
+ */
 public interface PropertyChangeEnableDungeon extends PropertyChangeEnable {
     /**
      * The Hero has moved in the Maze
