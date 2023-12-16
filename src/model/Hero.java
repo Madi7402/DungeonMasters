@@ -79,6 +79,7 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
     /**
      * Add an Item into the Hero's inventory
      * @param theItem the Item to add to the Hero's inventory (e.g. a picked up item)
+     * @throws RuntimeException if Item is null
      */
     public void getItem(final Item theItem) {
         if (theItem == null) {
@@ -98,6 +99,7 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
      * Use the item at the given index, must be separately removed
      * @param theIndex the index of the item in the hero's inventory
      * @return true if item was used
+     * @throws IllegalArgumentException if index < 0 or index above inventory size
      */
     public boolean useItem(final int theIndex) {
         if (theIndex > myInventory.size()-1 || theIndex < 0) {
@@ -122,7 +124,7 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
             default -> {
                 // Other non-equipable/unique items, such as pillars, are NOT consumable
                 // Enforced by removeItem
-                return  removeItem(theIndex);
+                return removeItem(theIndex);
             }
         }
     }
@@ -138,10 +140,10 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
     /**
      * Use the provided Item from the inventory, must be separately removed.
      * @param theItem the Item to use
-     * @return true if the item was used
+     * @return true if the item was used, false if null or not in inventory
      */
     public boolean useItem(final Item theItem) {
-        if (theItem == null) { return false; }
+        if (theItem == null || !myInventory.contains(theItem)) { return false; }
         return useItem(myInventory.indexOf(theItem));
     }
 
