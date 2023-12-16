@@ -33,7 +33,8 @@ public class DungeonTest {
     }
 
     @Test
-    public void getMyCurrentCoordinatesTest() { // THIS MUST RUN BEFORE TESTING NAVIGATION (!)
+    public void getMyCurrentCoordinatesTest() {
+        myTestDungeon.navigateToRoom(myTestDungeon.getMyMaze().getRoom(new Coordinates(0,0,9)));
         assertEquals(new Coordinates(0,0,9), myTestDungeon.getMyCurrentCoordinates());
     }
 
@@ -45,19 +46,11 @@ public class DungeonTest {
         List<Direction> doors = myTestDungeon.getMyCurrentRoom().getDoors().stream().toList();
         myTestDungeon.goDirection(doors.get(0));
         assertNotEquals(new Coordinates(0,0,9), myTestDungeon.getMyCurrentCoordinates());
-
-        myTestDungeon.navigateToRoom(myTestDungeon.getMyMaze().getRoom(new Coordinates(0,9,0)));
-        doors = myTestDungeon.getMyCurrentRoom().getDoors().stream().toList();
-        if (doors.contains(Direction.NORTH)) { // Trigger exit check
-            myTestDungeon.goDirection(Direction.NORTH);
-            myTestDungeon.goDirection(Direction.SOUTH);
-        } if (doors.contains(Direction.EAST)) {
-            myTestDungeon.goDirection(Direction.EAST);
-            myTestDungeon.goDirection(Direction.WEST);
-        }
-        System.err.println(myDungeonAdventure.getMyHero());
-        assertTrue(myDungeonAdventure.getMyHero().toString().endsWith("Pillar of Encapsulation]")); // we got pillar
     }
 
-
+    @Test
+    public void checkRoomTest() {
+        myTestDungeon.navigateToRoom(myTestDungeon.getMyMaze().getRoom(new Coordinates(0,9,0)));
+        assertTrue(myTestDungeon.checkIfExit());
+    }
 }

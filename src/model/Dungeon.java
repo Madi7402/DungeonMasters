@@ -68,14 +68,27 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
         return myCurrentRoom;
     }
 
+    /**
+     * Get the Dungeon's Maze.
+     * @return get the Maze the Dungeon is using
+     */
     public Maze getMyMaze() {
         return myMaze;
     }
 
+    /**
+     * Get the coordinates of the current room of the Maze.
+     * @return current room coordinates
+     */
     public Coordinates getMyCurrentCoordinates() {
         return myCurrentCoordinates;
     }
 
+    /**
+     * Navigate the maze in the given direction.
+     * @param theDirection which way to go
+     * @return true if navigated, false if could not navigate (no doors, edge of map, etc.)
+     */
     public boolean goDirection(Direction theDirection) {
         if (!myCurrentRoom.getDoors().contains(theDirection)) {
             fireEvent(NAV_FAIL);
@@ -100,25 +113,40 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
         return false; // Could not navigate to room
     }
 
-    private void checkIfExit() {
+    /**
+     * Check if we're on an exit, fire GAME_WIN if we're on the last exit.
+     * @return true if we're in an exit room
+     */
+    public boolean checkIfExit() {
         if (myCurrentRoom.getPortal() == Portal.EXIT) {
             switch (myCurrentCoordinates.level()) {
-                case 0 -> myHero.giveItem(ItemType.PILLAR_ENCAPSULATION);
-                case 1 -> myHero.giveItem(ItemType.PILLAR_ABSTRACTION);
-                case 2 -> myHero.giveItem(ItemType.PILLAR_INHERITANCE);
+                case 0 -> {
+                    myHero.giveItem(ItemType.PILLAR_ENCAPSULATION);
+                    navigateToRoom(myMaze.getStartingRoom(myCurrentCoordinates.level()+1));
+                    return true;
+                }
+                case 1 -> {
+                    myHero.giveItem(ItemType.PILLAR_ABSTRACTION);
+                    navigateToRoom(myMaze.getStartingRoom(myCurrentCoordinates.level()+1));
+                    return true;
+                }
+                case 2 -> {
+                    myHero.giveItem(ItemType.PILLAR_INHERITANCE);
+                    navigateToRoom(myMaze.getStartingRoom(myCurrentCoordinates.level()+1));
+                    return true;
+                }
                 case 3 -> {
                     myHero.giveItem(ItemType.PILLAR_POLYMORPHISM);
-                    fireEvent(GAME_WIN); // TODO: make this event happen later?
-                    return;
+                    fireEvent(GAME_WIN);
+                    return true;
                 }
                 default -> {
                     fireEvent(GAME_WIN);
-                    return;
+                    return true;
                 }
-
             }
-            navigateToRoom(myMaze.getStartingRoom(myCurrentCoordinates.level()+1));
         }
+        return false;
     }
 
     /**

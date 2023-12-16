@@ -157,22 +157,15 @@ public class OverworldController extends AbstractController implements PropertyC
 
         // Add event listeners
         dungeon.addPropertyChangeListener(this);
-
         hero.addPropertyChangeListener(this);
 
-        // TODO JA: Get icon for HERO from myDungeonAdventure rather than stealing from NewGame
         myHeroNameDisplayText.setText(hero.getMyName());
         myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
         myHeroCharStatsText.setText(myDungeonAdventure.getMyHero().getStatsString());
         myHeroImageView.setImage(hero.getMyImage());
 
-        //TODO JA: remove these hacks
-        if (hero.getInventory().isEmpty()) {
-            myDungeonAdventure.getMyHero().giveItem(ItemType.VISION_POTION);
-            myDungeonAdventure.getMyHero().giveItem(ItemType.HEALING_POTION);
-        }
-
         updateInventoryList();
+
 
         myInventoryUseButton.setOnAction(actionEvent ->
                 myDungeonAdventure.getMyHero().useItem(myInventoryListView.getSelectionModel().getSelectedItem()));
@@ -186,6 +179,7 @@ public class OverworldController extends AbstractController implements PropertyC
 
         // Draw initial room grid
         updateRoomGrid();
+        myDungeonAdventure.getMyDungeon().checkIfExit(); // check if exit after returning from Fight scene
     }
 
     private void updateInventoryList() {
