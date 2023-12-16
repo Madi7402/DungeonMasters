@@ -280,7 +280,9 @@ public class OverworldController extends AbstractController implements PropertyC
     public void propertyChange(PropertyChangeEvent evt) {
         switch (evt.getPropertyName()) {
             case NAVIGATED -> updateRoomGrid();
-            case NAV_FAIL -> System.err.println("Failed to navigate, no doors? Edge of map?"); // TODO -JA: Play failure sound or animate direction that failed
+            case NAV_FAIL -> {
+                // TODO -JA: Play failure sound or animate direction that failed
+            }
             case HIT_PIT -> myDamageAnimation.play();
             case HEALTH_CHANGED, HEALTH_UPDATE -> myHeroHealthText.setText("Health: " + myDungeonAdventure.getMyHero().getMyHealthPoints());
             case VISION_POTION_USED -> {
