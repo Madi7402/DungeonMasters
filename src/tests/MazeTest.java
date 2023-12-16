@@ -48,7 +48,7 @@ public class MazeTest {
     void testGetStartingRoom() {
         Maze maze = new Maze(myRandomRoomFactory, 5, 5);
 
-        Room startingRoom = maze.getStartingRoom();
+        Room startingRoom = maze.getStartingRoom(0);
 
         assertNotNull(startingRoom);
         assertEquals(Portal.ENTRANCE, startingRoom.getPortal());
