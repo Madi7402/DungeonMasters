@@ -1,7 +1,6 @@
 package tests;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import model.AbstractRoomFactory;
 import model.Maze;
@@ -25,7 +24,6 @@ public class MazeTest {
     @Test
     public void mazeTest() {
         final var maze = new Maze(myRandomRoomFactory, 3, 3);
-        System.out.println(maze);
         assertNotNull(maze.toString());
     }
 

@@ -10,6 +10,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -80,9 +81,8 @@ public abstract class DungeonCharacter extends PropertyChange implements Propert
      */
     public Image getMyImage() {
         try {
-            return new Image("img/" + myImagePath);
-        } catch(Exception e) {
-            // We do what we must because we can
+            return new Image(Objects.requireNonNull(getClass().getResourceAsStream("/img/" + myImagePath)));
+        } catch(NullPointerException npe) {
             System.err.println(getClass().getSimpleName() + " img was null!: " + myImagePath);
         }
         return null;
