@@ -130,9 +130,16 @@
                                        </children></AnchorPane>
                               </content>
                             </TitledPane>
-                            <TitledPane animated="false" text="Objectives">
+                            <TitledPane animated="false" text="Objective">
                               <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <TextFlow prefHeight="283.0" prefWidth="312.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your objective is to collect all the pillars by beating the Monsters at each room exit." />
+                                             </children>
+                                          </TextFlow>
+                                       </children></AnchorPane>
                               </content>
                             </TitledPane>
                           </panes>
