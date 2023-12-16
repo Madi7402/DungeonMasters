@@ -177,7 +177,7 @@ public class OverworldController extends AbstractController implements PropertyC
         myInventoryUseButton.setOnAction(actionEvent ->
                 myDungeonAdventure.getMyHero().useItem(myInventoryListView.getSelectionModel().getSelectedItem()));
 
-        myInventoryInfoButton.setOnAction(actionEvent -> {
+        myInventoryInfoButton.setOnAction(actionEvent -> { // TODO: Don't run if no item is selected
             Alert alert = new Alert(Alert.AlertType.INFORMATION, myInventoryListView.getSelectionModel().getSelectedItem().getDescription());
             alert.setHeaderText(myInventoryListView.getSelectionModel().getSelectedItem().getName());
             alert.setTitle("Item Information");

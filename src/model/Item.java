@@ -5,10 +5,8 @@ import res.SQLite;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * An item within the dungeon that can be used by the player. Uses SQLite.
@@ -121,6 +119,8 @@ public class Item implements Serializable {
     public double getMyStatMultiplier() {
         return myStatMultiplier;
     }
+
+    public boolean isUnique() { return isUnique; }
 
     /**
      * Get the ItemType of the Item

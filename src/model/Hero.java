@@ -7,7 +7,6 @@ import controller.PropertyChangeEnableFight;
 import controller.PropertyChangeEnableHero;
 
 import static controller.PropertyChangeEnableDungeon.HIT_PIT;
-import static model.ItemType.*;
 
 /**
  * A dungeon character that can be played by the player. Only one can exist per dungeon.
@@ -110,16 +109,20 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
                 boolean didHeal = heal(currentItem.getMyHealthPoints());
                 if (didHeal) {
                     fireEvent(HEALTH_CHANGED);
-                    return true;
+                    return removeItem(theIndex);
                 }
+                // in the future, we could not discard the item if it wasn't used
+                // (for example if there were health caps
                 return false;
             }
             case VISION_POTION -> {
                 fireEvent(VISION_POTION_USED); // Advise view to reveal relevant part of maze
-                return true;
+                return removeItem(theIndex);
             }
             default -> {
-                return false; // Other items, such as pillars, are NOT consumable
+                // Other non-equipable/unique items, such as pillars, are NOT consumable
+                // Enforced by removeItem
+                return  removeItem(theIndex);
             }
         }
     }
@@ -153,11 +156,9 @@ public abstract class Hero extends DungeonCharacter implements PropertyChangeEna
             throw new IllegalArgumentException("Item index out of bounds");
         }
         Item currentItem = myInventory.get(theIndex);
-        if (currentItem.isEquipable() && currentItem.getType() != PILLAR_ABSTRACTION
-                && currentItem.getType() != PILLAR_ENCAPSULATION
-                && currentItem.getType() != PILLAR_INHERITANCE
-                && currentItem.getType() != PILLAR_POLYMORPHISM) {
+        if (currentItem.isEquipable() && !currentItem.isUnique()) {
             myInventory.remove(currentItem);
+            fireEvent(INVENTORY_ACTION);
             return true;
         }
         return false; // Pillars are not removable
