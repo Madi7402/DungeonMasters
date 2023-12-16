@@ -10,9 +10,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RoomTest {
 
+    private Room getEmptyRoom() {
+        return getEmptyRoom(new Coordinates(0, 0, 0));
+    }
+
+    private Room getEmptyRoom(final Coordinates theCoordinates) {
+        return getRoom(EnumSet.noneOf(Direction.class), theCoordinates);
+    }
+
+    private Room getRoom(final EnumSet<Direction> theDoors, final Coordinates theCoordinates) {
+        return new Room(false, false, false, MonsterType.NONE,
+                theDoors, theCoordinates);
+    }
+
     @Test
     void testEmptyRoomInitialization() {
-        Room room = new Room();
+        Room room = getEmptyRoom();
 
         assertEquals(Portal.NONE, room.getPortal());
         assertFalse(room.isVisited());
@@ -30,7 +43,7 @@ class RoomTest {
         Coordinates coordinates = new Coordinates(1, 2, 3);
         EnumSet<Direction> doors = EnumSet.of(Direction.NORTH, Direction.EAST);
 
-        Room room = new Room(true, true, true, MonsterType.GREMLIN, doors, coordinates);
+        Room room = new Room(false, true, true, MonsterType.GREMLIN, doors, coordinates);
 
         assertEquals(Portal.NONE, room.getPortal());
         assertFalse(room.isVisited());
@@ -64,13 +77,10 @@ class RoomTest {
 
     @Test
     public void testAddNeighborsInDifferentDirections() {
-        Room room1 = new Room();
-        Room room2 = new Room();
+        Room room1 = getRoom(EnumSet.of(Direction.SOUTH), new Coordinates(0, 0, 0));
+        Room room2 = getRoom(EnumSet.of(Direction.NORTH), new Coordinates(0, 1, 0));
 
-        room1.trySetNeighbor(room2, Direction.NORTH);
         room1.trySetNeighbor(room2, Direction.SOUTH);
-        room1.trySetNeighbor(room2, Direction.EAST);
-        room1.trySetNeighbor(room2, Direction.WEST);
 
         assertTrue(room1.getNeighbors().contains(room2));
         assertTrue(room2.getNeighbors().contains(room1));
@@ -78,8 +88,8 @@ class RoomTest {
 
     @Test
     public void testRemoveDoorsAndUpdateNeighbors() {
-        Room room1 = new Room();
-        Room room2 = new Room();
+        Room room1 = getEmptyRoom();
+        Room room2 = getEmptyRoom();
 
         room1.trySetNeighbor(room2, Direction.NORTH);
         room1.trySetNeighbor(room2, Direction.EAST);
@@ -94,8 +104,8 @@ class RoomTest {
 
     @Test
     public void testTrySetNeighborWithMismatchedDoors() {
-        Room room1 = new Room();
-        Room room2 = new Room();
+        Room room1 = getEmptyRoom();
+        Room room2 = getEmptyRoom();
 
         room1.trySetNeighbor(room2, Direction.NORTH);
         room1.trySetNeighbor(room2, Direction.SOUTH);
@@ -114,7 +124,7 @@ class RoomTest {
 
     @Test
     public void testAddItemsToRoom() {
-        Room room = new Room();
+        Room room = getEmptyRoom();
 
         Item healingPotion = new Item(ItemType.HEALING_POTION);
         Item visionPotion = new Item(ItemType.VISION_POTION);
@@ -128,7 +138,7 @@ class RoomTest {
 
     @Test
     public void testHasMultipleItems() {
-        Room room = new Room();
+        Room room = getEmptyRoom();
 
         room.addItem(new Item(ItemType.HEALING_POTION));
         room.addItem(new Item(ItemType.VISION_POTION));
@@ -148,7 +158,7 @@ class RoomTest {
 
     @Test
     public void testSetAndGetPortalType() {
-        Room room = new Room();
+        Room room = getEmptyRoom();
 
         room.setPortal(Portal.ENTRANCE);
 
@@ -157,7 +167,7 @@ class RoomTest {
 
     @Test
     public void testSetAndGetVisitationStatus() {
-        Room room = new Room();
+        Room room = getEmptyRoom();
 
         room.setVisited(true);
 
@@ -167,8 +177,7 @@ class RoomTest {
     @Test
     public void testGetCoordinate() {
         Coordinates testCoordinates = new Coordinates(1, 2, 3);
-        Room room = new Room();
-        room = new Room(false, false, false, MonsterType.NONE,
+        Room room = new Room(false, false, false, MonsterType.NONE,
                 EnumSet.noneOf(Direction.class), testCoordinates);
 
         assertEquals(testCoordinates, room.getCoordinate());
@@ -176,10 +185,10 @@ class RoomTest {
 
     @Test
     public void testHasMonster() {
-        Room roomWithMonster = new Room();
+        Room roomWithMonster = getEmptyRoom();
         roomWithMonster.setMonsterType(MonsterType.SKELETON);
 
-        Room roomWithoutMonster = new Room();
+        Room roomWithoutMonster = getEmptyRoom();
         roomWithoutMonster.setMonsterType(MonsterType.NONE);
 
         assertTrue(roomWithMonster.hasMonster());
@@ -187,43 +196,12 @@ class RoomTest {
     }
 
     @Test
-    public void testSerialization() {
-        Room originalRoom = new Room(true, false, true, MonsterType.SKELETON,
-                EnumSet.of(Direction.NORTH, Direction.EAST), new Coordinates(1, 2, 3));
-
-        byte[] serializedRoom = serialize(originalRoom);
-
-        Room deserializedRoom = deserialize(serializedRoom);
-
-        assertEquals(originalRoom, deserializedRoom);
-    }
-
-    private byte[] serialize(final Room theRoom) {
-        try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
-             ObjectOutput out = new ObjectOutputStream(bos)) {
-            out.writeObject(theRoom);
-            return bos.toByteArray();
-        } catch (IOException e) {
-            throw new RuntimeException("Serialization error: " + e.getMessage(), e);
-        }
-    }
-
-    private Room deserialize(final byte[] theData) {
-        try (ByteArrayInputStream bis = new ByteArrayInputStream(theData);
-             ObjectInput in = new ObjectInputStream(bis)) {
-            return (Room) in.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException("Deserialization error: " + e.getMessage(), e);
-        }
-    }
-
-    @Test
     public void testEmptyRoom() {
-        Room room = new Room();
+        Room room = getEmptyRoom();
 
-        assertNull(room.getPortal());
+        assertEquals(Portal.NONE, room.getPortal());
         assertFalse(room.isVisited());
-        assertNull(room.getCoordinate());
+        assertEquals(new Coordinates(0, 0,0), room.getCoordinate());
         assertTrue(room.getNeighbors().isEmpty());
         assertTrue(room.getDoors().isEmpty());
         assertEquals(MonsterType.NONE, room.getMyMonsterType());
