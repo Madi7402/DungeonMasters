@@ -241,6 +241,24 @@ public class Maze implements Serializable {
     }
 
     /**
+     * Retrieves the width of the maze, representing the number of columns.
+     *
+     * @return The width of the maze.
+     */
+    public int getWidth() {
+        return myWidth;
+    }
+
+    /**
+     * Retrieves the height of the maze, representing the number of rows.
+     *
+     * @return The height of the maze.
+     */
+    public int getHeight() {
+        return myHeight;
+    }
+
+    /**
      * Retrieves the starting room of the maze, which is the room with the entrance portal.
      *
      * @return The starting room with the entrance portal.
@@ -273,11 +291,10 @@ public class Maze implements Serializable {
      */
     public Room getRoom(final Coordinates theCoordinates, final Direction theDirection) {
         if (theCoordinates == null) {
-            return null;
+            throw new IllegalArgumentException("Coordinates cannot be null!");
         }
-        return myRooms.get(new Coordinates(theCoordinates.level(),
-                theCoordinates.row()+theDirection.getYOffset(),
-                theCoordinates.column()+theDirection.getXOffset()));
+
+        return getRoom(theCoordinates.generate(theDirection));
     }
 
     /**
