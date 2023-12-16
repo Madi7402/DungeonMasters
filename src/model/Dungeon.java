@@ -123,6 +123,7 @@ public class Dungeon extends PropertyChange implements PropertyChangeEnableDunge
                 fireEvent(GAME_WIN);
                 return true;
             }
+            navigateToRoom(myMaze.getStartingRoom(myCurrentCoordinates.level()+1));
         }
         return false;
     }
